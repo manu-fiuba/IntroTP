@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:17
+    container_name: f2fantasy_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: f2fantasy_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data

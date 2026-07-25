@@ -68,6 +68,16 @@ body {
     color: #cccccc;
 }
 
+/* Estilo para botones deshabilitados */
+button:disabled, .btn:disabled {
+    background-color: #444;
+    color: #888;
+    border-color: #444;
+    cursor: not-allowed;
+    transform: none;
+    opacity: 1;
+}
+
 /* --- ESTILOS DE LAS PÁGINAS INTERNAS --- */
 .app-body {
     display: block; /* Sobrescribimos el flex del body del index */
@@ -106,6 +116,7 @@ body {
     border: 2px solid #589bd8;
 }
 
+/* --- HOME --- */
 /* Equipos */
 .home-container {
     padding: 2rem 1.5rem;
@@ -116,7 +127,7 @@ body {
     margin: 0 auto;
 }
 
-/* Si la pantalla tiene al menos 1024px de ancho, pasamos a 3 columnas */
+/* Si la pantalla tiene al menos 1200px de ancho, pasamos a 3 columnas */
 @media (min-width: 1200px) {
     .home-container {
         grid-template-columns: repeat(3, 1fr);
@@ -192,4 +203,189 @@ body {
 .plus-icon {
     font-size: 2.5rem;
     font-weight: 300;
+}
+
+/* --- CONSTRUCTOR DE EQUIPO (/create-team y /manage-team) --- */
+
+.budget-panel {
+    background-color: #1a1a1a;
+    border-bottom: 2px solid #333;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10; /* Para que este siempre por encima al hacer scroll */
+}
+
+.budget-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.budget-label {
+    font-size: 0.85rem;
+    color: #aaa;
+    text-transform: uppercase;
+}
+
+.budget-value {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #589bd8;
+}
+
+.builder-container {
+    padding: 2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 6rem; /* Espacio para la barra de acciones */
+}
+
+@media (min-width: 768px) {
+    .builder-container {
+        grid-template-columns: 1.5fr 1fr; /* 60% Equipo, 40% Mercado */
+    }
+}
+
+.my-team-section h2, .market-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+/* --- LAYOUT EXACTO DE TARJETAS (2 - 3 - 2) --- */
+
+.roster-row {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.mb-1 { margin-bottom: 1rem; }
+
+.mb-divider {
+    margin-bottom: 2rem;
+}
+
+/* Tarjeta base: todos con el mismo alto */
+.roster-card {
+    height: 160px;  /* Alto fijo igual para todos */
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+}
+
+/* Cálculo exacto de anchos */
+.driver-slot {
+    /* 3 elementos menos los 2 espacios de 1rem */
+    width: calc((100% - 2rem) / 3); 
+}
+
+.constructor-slot {
+    /* 2 elementos menos 1 espacio de 1rem */
+    width: calc((100% - 1rem) / 2);
+}
+
+/* Estilos de estado vacío */
+.roster-card.empty {
+    background-color: transparent;
+    border: 2px dashed #444;
+    color: #888;
+}
+
+.roster-card.empty:hover {
+    border-color: #589bd8;
+    color: #fff;
+    background-color: rgba(88, 155, 216, 0.05);
+}
+
+/* Lista del Mercado */
+.market-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 500px;
+    overflow-y: auto; /* Scroll interno para el mercado */
+    padding-right: 0.5rem;
+}
+
+.market-item {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #333;
+}
+
+.market-item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.market-item-info span {
+    font-size: 0.8rem;
+    color: #aaa;
+}
+
+.market-item-action {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.price {
+    font-weight: 700;
+}
+
+.btn-add {
+    background-color: #589bd8;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Barra de acciones inferior */
+.builder-actions {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #1a1a1a;
+    border-top: 1px solid #333;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    z-index: 10;
 }

@@ -67,3 +67,129 @@ body {
     border: 2px solid #555555;
     color: #cccccc;
 }
+
+/* --- ESTILOS DE LAS PÁGINAS INTERNAS --- */
+.app-body {
+    display: block; /* Sobrescribimos el flex del body del index */
+    background-color: #121212;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+/* Header */
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #1a1a1a;
+    border-bottom: 1px solid #333;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    filter: invert(1); /* Vuelve blanco el SVG */
+}
+
+.header-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.pfp {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #589bd8;
+}
+
+/* Equipos */
+.home-container {
+    padding: 2rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr; /* Por defecto una sola columna (una debajo de otra) */
+    gap: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Si la pantalla tiene al menos 1024px de ancho, pasamos a 3 columnas */
+@media (min-width: 1200px) {
+    .home-container {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1200px;
+    }
+}
+
+/* Tarjetas de Equipo */
+.team-card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.team-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+.points-badge {
+    background-color: #589bd8;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.team-roster .roster-group {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.team-roster strong {
+    color: #aaaaaa;
+}
+
+.btn-full {
+    width: 100%;
+    display: block;
+}
+
+/* Slot Vacío */
+.empty-slot {
+    background-color: transparent;
+    border: 2px dashed #444;
+    text-decoration: none;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.empty-slot:hover {
+    border-color: #589bd8;
+    color: #fff;
+    background-color: rgba(88, 155, 216, 0.05);
+}
+
+.empty-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.plus-icon {
+    font-size: 2.5rem;
+    font-weight: 300;
+}

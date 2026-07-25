@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F2 Fantasy | Home</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+
+    <!-- Tipografía Titillium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="app-body">
+
+    <!-- Header -->
+    <header class="app-header">
+        <button class="menu-btn" aria-label="Abrir menú">
+            <img src="./img/menu.svg" alt="Menú" width="28" height="28">
+        </button>
+        <h1 class="header-title">Home</h1>
+        <a href="profile.html" class="profile-link">
+            <img src="./img/circle-user.svg" alt="Perfil" class="pfp">
+        </a>
+    </header>
+
+    <main class="home-container">
+        
+        <!-- Slot 1 (Ejemplo Equipo Creado) -->
+        <article class="team-card">
+            <header class="team-header">
+                <h2>Mi Equipo</h2>
+                <span class="points-badge">1250 pts</span>
+            </header>
+            
+            <div class="team-stats">
+                <p>Cambios restantes: <strong>2</strong></p>
+            </div>
+            
+            <div class="team-roster">
+                <div class="roster-group">
+                    <strong>Pilotos:</strong>
+                    <span>Antonelli, Bearman, Martins, Hadjar, Aron</span>
+                </div>
+                <div class="roster-group">
+                    <strong>Escuderías:</strong>
+                    <span>PREMA Racing, Campos Racing</span>
+                </div>
+            </div>
+            
+            <a href="manage-team.html" class="btn btn-outline btn-full">Gestionar Equipo</a>
+        </article>
+
+        <!-- Slot 2 (Vacío) -->
+        <a href="create-team.html" class="team-card empty-slot">
+            <div class="empty-content">
+                <span class="plus-icon">+</span>
+                <h3>Crear nuevo equipo</h3>
+                <p>Slot disponible</p>
+            </div>
+        </a>
+
+        <!-- Slot 3 (Vacío) -->
+        <a href="create-team.html" class="team-card empty-slot">
+            <div class="empty-content">
+                <span class="plus-icon">+</span>
+                <h3>Crear nuevo equipo</h3>
+                <p>Slot disponible</p>
+            </div>
+        </a>
+
+    </main>
+
+</body>
+</html>

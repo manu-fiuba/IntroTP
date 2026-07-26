@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F2 Fantasy | Registro</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="app-body auth-layout">
+    
+    <main class="auth-container">
+        <div class="auth-brand">
+            <h1>F2 Fantasy</h1>
+        </div>
+        
+        <form class="auth-card" action="login.html">
+            <h2>Crear Cuenta</h2>
+            
+            <div class="form-group">
+                <label for="reg-username">Nombre de Usuario</label>
+                <input type="text" id="reg-username" name="username" placeholder="Elige un usuario" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-password">Contraseña</label>
+                <input type="password" id="reg-password" name="password" placeholder="Crea una contraseña" required>
+            </div>
+
+            <div class="form-group">
+                <label for="reg-password-confirm">Confirmar Contraseña</label>
+                <input type="password" id="reg-password-confirm" name="password-confirm" placeholder="Repite tu contraseña" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-full">Registrarse</button>
+            
+            <p class="auth-footer">
+                ¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a>
+            </p>
+        </form>
+    </main>
+
+</body>
+</html>

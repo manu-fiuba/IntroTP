@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F2 Fantasy | Crear Liga</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="app-body auth-layout">
+    
+    <!-- Este contenedor lo reutilizamos del Login/Register -->
+    <main class="auth-container">
+        
+        <form class="auth-card" action="leagues.html">
+            <h2>Crear Liga Privada</h2>
+            
+            <div class="form-group">
+                <label for="league-name">Nombre de la Liga</label>
+                <input type="text" id="league-name" name="league-name" placeholder="Ej: Amigos de la Facu" required>
+            </div>
+
+            <div class="form-group">
+                <label for="league-desc">Descripción (Opcional)</label>
+                <input type="text" id="league-desc" name="league-desc" placeholder="Ej: El ganador se lleva...">
+            </div>
+            
+            <div class="form-group">
+                <label for="league-password">Contraseña (Opcional)</label>
+                <input type="password" id="league-password" name="league-password" placeholder="Contraseña">
+            </div>
+
+            <div class="form-group">
+                <label for="league-max">Participantes Máximos</label>
+                <input type="number" id="league-max" name="league-max" min="2" max="200" value="10" required>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <a href="home.html" class="btn btn-outline btn-full">Cancelar</a>
+                <button type="submit" class="btn btn-primary btn-full">Crear Liga</button>
+            </div>
+        </form>
+    </main>
+
+</body>
+</html>

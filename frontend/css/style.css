@@ -448,7 +448,7 @@ button:disabled, .btn:disabled {
     color: #aaaaaa;
 }
 
-.form-group input {
+.form-group input, .form-group select {
     background-color: #121212;
     border: 1px solid #333;
     color: #ffffff;
@@ -456,11 +456,26 @@ button:disabled, .btn:disabled {
     border-radius: 6px;
     font-size: 1rem;
     transition: border-color 0.2s;
+    appearance: none; 
+    -webkit-appearance: none;
 }
 
-.form-group input:focus {
+.form-group input:focus, .form-group select:focus {
     outline: none;
     border-color: #589bd8;
+}
+
+.form-group select {
+    background-image: url("../img/arrow-down.svg");
+    background-repeat: no-repeat;
+    background-position: right 1rem top 50%;
+    background-size: 1.3rem auto;
+    cursor: pointer;
+}
+
+.form-group select option {
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 .auth-footer {

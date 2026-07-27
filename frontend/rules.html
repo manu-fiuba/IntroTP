@@ -11,7 +11,27 @@
     <link rel="stylesheet" href="./css/style.css">
 </head>
 <body class="app-body">
-    
+    <!-- Menú Lateral -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div> <!-- Overlay oscuro para el fondo -->
+
+    <aside class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header-menu">
+            <button class="close-btn" id="closeSidebar" aria-label="Cerrar menú">
+                <img src="./img/x.svg" alt="Cerrar" width="28" height="28">
+            </button>
+            <h2>Menú</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="home.html" class="nav-link">Inicio</a>
+            <a href="my-teams.html" class="nav-link">Equipos</a>
+            <a href="leagues.html" class="nav-link">Ligas</a>
+            <a href="rules.html" class="nav-link">Reglas</a>
+            <a href="profile.html" class="nav-link">Perfil</a>
+            <div class="sidebar-divider"></div>
+            <a href="index.html" class="nav-link logout-link">Cerrar Sesión</a>
+        </nav>
+    </aside>
+
     <header class="app-header">
         <button class="menu-btn" id="openSidebar" aria-label="Abrir menú">
             <img src="./img/menu.svg" alt="Menú" width="28" height="28">

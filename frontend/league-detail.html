@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F2 Fantasy | Amigos de la Facu</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="app-body">
+    
+    <!-- Menú Lateral -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div> <!-- Overlay oscuro para el fondo -->
+
+    <aside class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header-menu">
+            <button class="close-btn" id="closeSidebar" aria-label="Cerrar menú">
+                <img src="./img/x.svg" alt="Cerrar" width="28" height="28">
+            </button>
+            <h2>Menú</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="home.html" class="nav-link">Inicio</a>
+            <a href="my-teams.html" class="nav-link">Equipos</a>
+            <a href="leagues.html" class="nav-link">Ligas</a>
+            <a href="rules.html" class="nav-link">Reglas</a>
+            <a href="profile.html" class="nav-link">Perfil</a>
+            <div class="sidebar-divider"></div>
+            <a href="index.html" class="nav-link logout-link">Cerrar Sesión</a>
+        </nav>
+    </aside>
+
+    <!-- Header con botón de retroceso opcional o menú -->
+    <header class="app-header">
+        <button class="menu-btn" id="openSidebar" aria-label="Abrir menú">
+            <img src="./img/menu.svg" alt="Menú" width="28" height="28">
+        </button>
+        <h1 class="header-title">Detalle de Liga</h1>
+        <a href="profile.html" class="profile-link">
+            <img src="./img/circle-user.svg" alt="Perfil" class="pfp">
+        </a>
+    </header>
+
+    <main class="league-detail-container">
+        
+        <!-- Tarjeta de Información de la Liga -->
+        <section class="league-info-card">
+            <div class="league-info-header">
+                <h2 class="league-title-large">Amigos de la Facu</h2>
+                
+                <div class="league-position-badge-blue">
+                    <strong>2&deg;</strong>
+                </div>
+            </div>
+            
+            <p class="league-desc-text">El que pierde a fin de año paga el asado. Solo cuentas principales.</p>
+            
+            <div class="league-meta-grid">
+                <div class="meta-item">
+                    <span class="meta-label">Administrador</span>
+                    <span class="meta-value">Tato Fernandez</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Tu Equipo</span>
+                    <span class="meta-value">Escudería Huevo</span>
+                </div>
+
+                <div class="meta-item col-span-full">
+                    <span class="meta-label">Código de invitación</span>
+                    <div class="join-code-box">X89B-2026</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tabla de Posiciones -->
+        <section class="leaderboard-section">
+            <h3 class="section-subtitle">Tabla de Posiciones</h3>
+            
+            <div class="table-responsive">
+                <table class="leaderboard-table">
+                    <thead>
+                        <tr>
+                            <th class="col-pos">#</th>
+                            <th class="col-team">Participante</th>
+                            <th class="col-pts">Puntos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Fila 1: Oro -->
+                        <tr class="rank-1">
+                            <td class="col-pos">1</td>
+                            <td class="col-team">
+                                <div class="participant-info">
+                                    <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
+                                    <div class="participant-text">
+                                        <span class="user-name">Matías Fernandez</span>
+                                        <span class="team-name">Corsa Power</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-pts">1340</td>
+                        </tr>
+                        
+                        <!-- Fila 2: Plata + Usuario Actual -->
+                        <tr class="rank-2 current-user-row">
+                            <td class="col-pos">2</td>
+                            <td class="col-team">
+                                <div class="participant-info">
+                                    <img src="./img/circle-user.svg" alt="Tu Perfil" class="participant-avatar">
+                                    <div class="participant-text">
+                                        <span class="user-name">Tu Nombre</span>
+                                        <span class="team-name">Escudería Huevo</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-pts">1250</td>
+                        </tr>
+
+                        <!-- Fila 3: Bronce -->
+                        <tr class="rank-3">
+                            <td class="col-pos">3</td>
+                            <td class="col-team">
+                                <div class="participant-info">
+                                    <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
+                                    <div class="participant-text">
+                                        <span class="user-name">Juan Pérez</span>
+                                        <span class="team-name">Escudería Pistera</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-pts">1120</td>
+                        </tr>
+                        
+                        <!-- Fila 4 -->
+                        <tr>
+                            <td class="col-pos">4</td>
+                            <td class="col-team">
+                                <div class="participant-info">
+                                    <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
+                                    <div class="participant-text">
+                                        <span class="user-name">Lucas Gómez</span>
+                                        <span class="team-name">Frenada Larga</span>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="col-pts">980</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Abandonar -->
+        <section class="danger-zone">
+            <button class="btn btn-danger btn-full">Abandonar Liga</button>
+        </section>
+
+    <script src="./js/sidebar.js"></script>
+</body>
+</html>

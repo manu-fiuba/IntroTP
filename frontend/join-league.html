@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F2 Fantasy | Unirse a Liga</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="app-body auth-layout">
+    
+    <main class="auth-container">
+        
+        <form class="auth-card" action="leagues.html">
+            <h2>Unirse a Liga Privada</h2>
+            
+            <div class="form-group">
+                <label for="join-code">Código de la Liga</label>
+                <input type="text" id="join-code" name="join-code" placeholder="Ej: X89B-2026" required>
+            </div>
+
+            <div class="form-group">
+                <label for="join-password">Contraseña de Acceso</label>
+                <input type="password" id="join-password" name="join-password" placeholder="Ingresa la contraseña">
+            </div>
+
+            <div class="form-group">
+                <label for="join-team">Equipo a utilizar</label>
+                <!-- Equipos de ejemplo -->
+                <select id="join-team" name="join-team" required
+                    oninvalid="this.setCustomValidity('Elige un equipo')"
+                    onchange="this.setCustomValidity('')">
+                    <option value="" selected>Selecciona un equipo</option>
+                    <option value="1">Mi equipo</option>
+                    <option value="2">Escudería Huevo</option>
+                </select>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                <a href="leagues.html" class="btn btn-outline btn-full">Cancelar</a>
+                <button type="submit" class="btn btn-primary btn-full">Unirse</button>
+            </div>
+        </form>
+    </main>
+
+</body>
+</html>

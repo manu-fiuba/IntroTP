@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F2 Fantasy | Crear Equipo</title>
+    <link rel="icon" type="image/x-icon" href="./img/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="app-body">
+    <!-- Menú Lateral -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div> <!-- Overlay oscuro para el fondo -->
+
+    <aside class="sidebar-menu" id="sidebarMenu">
+    <div class="sidebar-header-menu">
+            <button class="close-btn" id="closeSidebar" aria-label="Cerrar menú">
+                <img src="./img/x.svg" alt="Cerrar" width="28" height="28">
+            </button>
+            <h2>Menú</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="home.html" class="nav-link">Inicio</a>
+            <a href="my-teams.html" class="nav-link">Equipos</a>
+            <a href="leagues.html" class="nav-link">Ligas</a>
+            <a href="rules.html" class="nav-link">Reglas</a>
+            <a href="profile.html" class="nav-link">Perfil</a>
+            <div class="sidebar-divider"></div>
+            <a href="index.html" class="nav-link logout-link">Cerrar Sesión</a>
+        </nav>
+    </aside>
+
+    <!-- Header -->
+    <header class="app-header">
+        <button class="menu-btn" id="openSidebar" aria-label="Abrir menú">
+            <img src="./img/menu.svg" alt="Menú" width="28" height="28">
+        </button>
+        <h1 class="header-title">Crear Equipo</h1>
+        <a href="profile.html" class="profile-link">
+            <img src="./img/circle-user.svg" alt="Perfil" class="pfp">
+        </a>
+    </header>
+
+    <!-- Panel de Presupuesto Fijo -->
+    <section class="budget-panel">
+        <div class="budget-info">
+            <span class="budget-label">Presupuesto Restante</span>
+            <span class="budget-value">$100.0M</span>
+        </div>
+        <div class="slots-info">
+            <span>Seleccionados: <strong>0/7</strong></span>
+        </div>
+    </section>
+
+    <main class="builder-container">
+        
+<!-- Columna Izquierda: Tu Equipo -->
+        <section class="my-team-section">
+            
+            <!-- Fila 1: 2 Pilotos -->
+            <div class="roster-row justify-center mb-1">
+                <button class="roster-card driver-slot empty">
+                    <span class="plus-icon">+</span>
+                </button>
+                <button class="roster-card driver-slot empty">
+                    <span class="plus-icon">+</span>
+                </button>
+            </div>
+
+            <!-- Fila 2: 3 Pilotos -->
+            <div class="roster-row mb-divider">
+                <button class="roster-card driver-slot empty">
+                    <span class="plus-icon">+</span>
+                </button>
+                <button class="roster-card driver-slot empty">
+                    <span class="plus-icon">+</span>
+                </button>
+                <button class="roster-card driver-slot empty">
+                    <span class="plus-icon">+</span>
+                </button>
+            </div>
+
+            <!-- Fila 3: 2 Escuderías -->
+            <div class="roster-row">
+                <button class="roster-card constructor-slot empty">
+                    <span class="plus-icon">+</span>
+                </button>
+                <button class="roster-card constructor-slot empty">
+                    <span class="plus-icon">+</span>
+                </button>
+            </div>
+            
+        </section>
+        <!-- Columna Derecha: Mercado de Opciones -->
+        <section class="market-section">
+            <h2>Mercado</h2>
+            <div class="market-list">
+                <!-- Ejemplo de un piloto en el mercado -->
+                <div class="market-item">
+                    <div class="market-item-info">
+                        <strong>K. Antonelli</strong>
+                        <span>PREMA Racing</span>
+                    </div>
+                    <div class="market-item-action">
+                        <span class="price">$15.5M</span>
+                        <button class="btn-add">+</button>
+                    </div>
+                </div>
+
+                <!-- Ejemplo de una escudería en el mercado -->
+                <div class="market-item">
+                    <div class="market-item-info">
+                        <strong>Campos Racing</strong>
+                        <span>Escudería</span>
+                    </div>
+                    <div class="market-item-action">
+                        <span class="price">$22.0M</span>
+                        <button class="btn-add">+</button>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Barra de acciones inferior -->
+    <footer class="builder-actions">
+        <a href="my-teams.html" class="btn btn-outline">Cancelar</a>
+        <!-- Botón deshabilitado por defecto -->
+        <button class="btn btn-primary" disabled>Guardar Equipo</button>
+    </footer>
+
+    <script src="./js/sidebar.js"></script>
+</body>
+</html>

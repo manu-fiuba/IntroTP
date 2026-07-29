@@ -12,14 +12,18 @@
 </head>
 <body class="app-body">
     
-    <!-- Overlay y Menú Lateral (Sidebar) -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Menú Lateral -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div> <!-- Overlay oscuro para el fondo -->
+
     <aside class="sidebar-menu" id="sidebarMenu">
-        <div class="sidebar-header-menu">
-            <button class="close-btn" id="closeSidebar" aria-label="Cerrar menú">&times;</button>
+    <div class="sidebar-header-menu">
+            <button class="close-btn" id="closeSidebar" aria-label="Cerrar menú">
+                <img src="./img/x.svg" alt="Cerrar" width="28" height="28">
+            </button>
             <h2>Menú</h2>
         </div>
         <nav class="sidebar-nav">
+            <a href="home.html" class="nav-link">Inicio</a>
             <a href="my-teams.html" class="nav-link">Equipos</a>
             <a href="leagues.html" class="nav-link">Ligas</a>
             <a href="rules.html" class="nav-link">Reglas</a>

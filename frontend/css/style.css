@@ -117,8 +117,7 @@ button:disabled, .btn:disabled {
     border: 2px solid #589bd8;
 }
 
-/* --- HOME --- */
-/* Equipos */
+/* --- Equipos --- */
 .home-container {
     padding: 2rem 1.5rem;
     display: grid;
@@ -134,76 +133,6 @@ button:disabled, .btn:disabled {
         grid-template-columns: repeat(3, 1fr);
         max-width: 1200px;
     }
-}
-
-/* Tarjetas de Equipo */
-.team-card {
-    background-color: #1e1e1e;
-    border: 1px solid #333;
-    border-radius: 12px;
-    padding: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.team-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #333;
-    padding-bottom: 0.5rem;
-}
-
-.points-badge {
-    background-color: #589bd8;
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-.team-roster .roster-group {
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.team-roster strong {
-    color: #aaaaaa;
-}
-
-.btn-full {
-    width: 100%;
-    display: block;
-}
-
-/* Slot Vacío */
-.empty-slot {
-    background-color: transparent;
-    border: 2px dashed #444;
-    text-decoration: none;
-    color: #888;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.empty-slot:hover {
-    border-color: #589bd8;
-    color: #fff;
-    background-color: rgba(88, 155, 216, 0.05);
-}
-
-.empty-content {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.plus-icon {
-    font-size: 2.5rem;
-    font-weight: 300;
 }
 
 /* --- CONSTRUCTOR DE EQUIPO (/create-team y /manage-team) --- */
@@ -1239,14 +1168,22 @@ button:disabled, .btn:disabled {
     border: 1px solid #444;
 }
 
-/* Grilla de 3 Columnas y Tarjetas */
+/* --- GRILLA ESTRICTA (3 o 1) RESPONSIVE --- */
 .grid-3-cols {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: minmax(280px, 450px); 
+    justify-content: center; /* Centra la tarjeta única en la pantalla */
     gap: 1.5rem;
 }
 
-.summary-card {
+@media (min-width: 1024px) {
+    .grid-3-cols {
+        grid-template-columns: repeat(3, 1fr);
+        justify-content: stretch; /* Aquí sí permitimos que las 3 ocupen todo el ancho */
+    }
+}
+
+.team-card {
     background-color: #1e1e1e;
     border: 1px solid #333;
     border-radius: 12px;
@@ -1256,7 +1193,7 @@ button:disabled, .btn:disabled {
     gap: 1rem;
 }
 
-.summary-header {
+.team-header {
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -1278,7 +1215,7 @@ button:disabled, .btn:disabled {
     color: #fff;
 }
 
-.summary-stats-box {
+.team-stats-box {
     background-color: #121212;
     border: 1px solid #333;
     border-radius: 8px;
@@ -1299,7 +1236,7 @@ button:disabled, .btn:disabled {
     color: #fff;
 }
 
-.summary-footer {
+.team-footer {
     display: flex;
     justify-content: flex-end;
     margin-top: 0.5rem;
@@ -1315,6 +1252,44 @@ button:disabled, .btn:disabled {
 .link-action:hover {
     text-decoration: underline;
 }
+
+/* Slot Vacío */
+.empty-slot {
+background-color: transparent;
+    border: 2px dashed #444;
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos vayan uno debajo del otro */
+    align-items: center;    /* Centra horizontalmente */
+    justify-content: center;/* Centra verticalmente en el medio exacto */
+    text-decoration: none;
+    min-height: 250px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.empty-slot:hover {
+    border-color: #589bd8;
+    color: #fff;
+    background-color: rgba(88, 155, 216, 0.05);
+}
+
+.empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centra los textos respecto al icono */
+    text-align: center;
+    color: #888;
+    transition: color 0.2s ease;
+    margin-top: -2rem;
+}
+
+.plus-icon {
+    font-size: 3rem;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 0.25rem;
+}
+
 
 /* Elementos de la sección de estadísticas */
 .total-pts-box {

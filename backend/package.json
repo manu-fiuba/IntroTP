@@ -1,0 +1,19 @@
+{
+  "name": "f2fantasy-backend",
+  "version": "1.0.0",
+  "description": "Backend API REST de F2Fantasy. TP de Introducción al Desarrollo de Software.",
+  "main": "src/api.js",
+  "scripts": {
+    "start": "node src/api.js",
+    "dev": "nodemon src/api.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1",
+    "pg": "^8.22.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

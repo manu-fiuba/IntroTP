@@ -1,0 +1,28 @@
+/* Clases utilitarias (spacing, alineación) usadas en varias páginas */
+
+.mt-2 {
+    margin-top: 2rem;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+
+.mb-1 { margin-bottom: 1rem; }
+
+.mb-divider {
+    margin-bottom: 2rem;
+}
+
+.mt-1 {
+    margin-top: 1.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.col-span-full {
+    grid-column: 1 / -1; 
+}

@@ -1,0 +1,176 @@
+/* Banner de próxima carrera y countdown (home.html) */
+.dashboard-container {
+    padding: 2rem 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Banner de Próxima Carrera */
+.next-race-banner {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 900px) {
+    .next-race-banner {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.race-circuit-img {
+    background-color: transparent; 
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 250px; 
+}
+
+.race-circuit-img img {
+    max-width: 150px;
+    height: auto;
+}
+
+.race-info {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.round-badge {
+    color: #589bd8;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.round-badge.micro {
+    font-size: 0.65rem;
+    display: block;
+}
+.race-info h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #fff;
+    margin: 0.25rem 0;
+    line-height: 1;
+}
+
+.race-info p {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.race-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.race-actions {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: #1a1a1a;
+    border-left: 1px solid #333;
+}
+
+.countdown-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.countdown-label {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+}
+
+.countdown-timer {
+    display: flex;
+    align-items: flex-start; 
+    gap: 0.5rem;
+    background-color: #121212;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #333;
+}
+
+.time-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 45px; 
+}
+
+.time-box strong {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+}
+
+.time-box span {
+    font-size: 0.65rem;
+    color: #aaa;
+    margin-top: 0.2rem;
+}
+
+.time-sep {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #589bd8;
+    line-height: 1;
+    margin-top: -0.1rem;
+}
+
+/* Títulos Decorados */
+.decorated-heading {
+    border-top: 4px solid #589bd8;
+    border-bottom: 1px solid #333;
+    padding: 0.75rem 0;
+    margin: 2rem 0 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.decorated-heading h2 {
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: #fff;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.heading-tag {
+    color: #aaa;
+    font-weight: 600;
+}
+
+.heading-btn {
+    background-color: #222;
+    color: #fff;
+    text-decoration: none;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid #444;
+}
+

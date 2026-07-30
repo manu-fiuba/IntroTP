@@ -1,0 +1,23 @@
+/* Página de bienvenida (index.html) */
+.landing-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.brand-title {
+    font-size: 4rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.landing-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}

@@ -1,0 +1,63 @@
+/* Página de perfil (profile.html) */
+.profile-container {
+    padding: 2rem 1.5rem;
+    max-width: 450px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-card {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-align: center;
+}
+
+.profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #589bd8;
+    margin-bottom: 0.5rem;
+}
+
+.profile-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.profile-username {
+    font-size: 0.95rem;
+    color: #aaaaaa;
+}
+
+.form-group input[type="file"] {
+    background-color: #121212;
+    border: 1px solid #333;
+    color: #aaaaaa;
+    padding: 0.6rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.form-group input[type="file"]::file-selector-button {
+    background-color: #589bd8;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Titillium Web', sans-serif;
+}

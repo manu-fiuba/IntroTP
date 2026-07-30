@@ -1,0 +1,73 @@
+/* Página de reglas (rules.html) */
+.rules-container {
+    padding: 2rem 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.rules-box {
+    background-color: #1e1e1e;
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+}
+
+.rules-box h2 {
+    color: #589bd8;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #333;
+    padding-bottom: 0.5rem;
+}
+
+.rules-box h3 {
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 1rem;
+}
+
+.mt-1 {
+    margin-top: 1.5rem;
+}
+
+.rules-box p {
+    color: #cccccc;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.rules-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.rules-table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #333;
+    color: #eeeeee;
+}
+
+/* Efecto cebra para mejor lectura de datos */
+.rules-table tr:nth-child(odd) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.rules-table td:first-child {
+    font-weight: 600;
+}
+
+.rules-table td:last-child {
+    text-align: right;
+    color: #589bd8;
+    font-weight: 700;
+}
+
+.rules-notes {
+    font-size: 0.85rem;
+    color: #888888;
+    font-style: italic;
+}

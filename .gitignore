@@ -1,2 +1,2 @@
-/postgres_data
+/backend/.volumes/postgres_data
 .DS_Store

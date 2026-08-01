@@ -3,7 +3,7 @@
 start-db:
 	cd ./backend && docker compose up -d
 
-start-db:
+stop-db:
 	cd ./backend && docker compose down
 
 start-backend:

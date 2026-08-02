@@ -8,14 +8,19 @@ const mockDatabase = {
     // Tabla: constructors
     constructors: [
         { id: 1, name: "Campos Racing", market_price: 15.5, total_points: 45 },
-        { id: 2, name: "Prema Racing", market_price: 18.0, total_points: 60 }
+        { id: 2, name: "Prema Racing", market_price: 18.0, total_points: 60 },
+        { id: 3, name: "ART Grand Prix", market_price: 11.0, total_points: 20 }
     ],
 
     // Tabla: drivers
     drivers: [
         { id: 1, number: 10, name: "Franco Colapinto", constructor_id: 1, market_price: 8.5, total_points: 30 },
         { id: 2, number: 3, name: "Ollie Bearman", constructor_id: 2, market_price: 9.0, total_points: 35 },
-        { id: 3, number: 4, name: "Kimi Antonelli", constructor_id: 2, market_price: 9.5, total_points: 25 }
+        { id: 3, number: 4, name: "Kimi Antonelli", constructor_id: 2, market_price: 9.5, total_points: 25 },
+        { id: 4, number: 20, name: "Isack Hadjar", constructor_id: 1, market_price: 6.0, total_points: 15 },
+        { id: 5, number: 21, name: "Pepe Martí", constructor_id: 1, market_price: 5.0, total_points: 10 },
+        { id: 6, number: 1, name: "Victor Martins", constructor_id: 3, market_price: 6.5, total_points: 18 },
+        { id: 7, number: 2, name: "Zak O'Sullivan", constructor_id: 3, market_price: 5.5, total_points: 12 }
     ],
 
     // Tabla: users

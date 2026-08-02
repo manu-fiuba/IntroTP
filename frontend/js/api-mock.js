@@ -1,117 +1,45 @@
-// js/api.js
+// js/api-mock.js
 
-/**
- * Función auxiliar para simular el tiempo que tarda la red (latencia).
- * Retorna una Promise que se resuelve después de 'ms' milisegundos.
- */
 const delay = (ms = 500) => new Promise(resolve => setTimeout(resolve, ms));
 
-/**
- * Objeto 'api' que agrupa todas las llamadas a nuestro backend.
- * Cuando el backend esté listo, solo hay que cambiar el contenido de estas funciones
- * por un 'fetch()' real y borrar la referencia a 'mockDatabase'.
- */
 const api = {
     
     // ==========================================
-    // LIGAS
+    // AUTH / LOGIN
     // ==========================================
-
-    // Obtener todas las ligas
-    getLeagues: async () => {
-        await delay(); // Simulamos 500ms de carga
-        return {
-            status: 'success',
-            data: [...mockDatabase.leagues] // Devolvemos una copia del array del mock
-        };
-    },
-
-    // Crear una liga nueva
-    createLeague: async (leagueData) => {
-        await delay(800); // Simulamos que procesar la creación tarda un poco más
-        
-        // Creamos el nuevo objeto simulando lo que haría la base de datos
-        const newLeague = {
-            id: mockDatabase.leagues.length + 1,
-            owner_id: 1, // Asumimos que es el usuario demo logueado
-            join_code: "F2-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-            ...leagueData
-        };
-
-        // Lo guardamos en nuestra base de datos falsa para que persista
-        // mientras no recarguemos la pestaña del navegador.
-        mockDatabase.leagues.push(newLeague);
-
-        return {
-            status: 'success',
-            message: 'Liga creada exitosamente',
-            data: newLeague
-        };
-    },
-    
-    // ==========================================
-    // MERCADO Y EQUIPOS
-    // ==========================================
-
-    // Obtener todas las opciones del mercado (Pilotos y Escuderías)
-    getMarketOptions: async () => {
-        await delay(500); // Simulamos latencia de red
+    login: async (credentials) => {
+        await delay(800);
         return {
             status: 'success',
             data: {
-                drivers: [...mockDatabase.drivers],
-                constructors: [...mockDatabase.constructors]
-            }
+                user: { username: credentials.username, name: 'Piloto Destacado' },
+                token: 'mock-jwt-token-987654321'
+            },
+            message: 'Sesión iniciada correctamente'
         };
     },
 
-    // Guardar el equipo creado
-    createTeam: async (teamData) => {
-        await delay(800);
-        
-        // Asumiendo que el usuario es el 1 y tiene $100.0M por defecto según init.sql
-        const newTeam = {
-            id: mockDatabase.fantasyTeams.length + 1,
-            user_id: 1, 
-            name: teamData.name || "Mi Equipo",
-            budget_remaining: teamData.budget,
-            total_points: 0,
-            free_transfers_remaining: 2,
-            selected_drivers: teamData.drivers,
-            selected_constructors: teamData.constructors
-        };
+    // ==========================================
+    // LIGAS
+    // ==========================================
+    getLeagues: async () => {
+        await delay();
+        return { status: 'success', data: [...mockDatabase.leagues] };
+    },
 
-        mockDatabase.fantasyTeams.push(newTeam);
-
+    getUserLeagues: async () => {
+        await delay(400);
         return {
             status: 'success',
-            message: 'Equipo guardado con éxito',
-            data: newTeam
+            data: [
+                { id: '1', name: 'Amigos de la Facu', description: 'El que pierde a fin de año paga el asado.', position: 2, totalParticipants: 12, userTeamName: 'Mi Equipo' },
+                { id: '2', name: 'F2 Global Championship', description: 'Liga oficial.', position: 458, totalParticipants: 15000, userTeamName: 'Escudería Huevo' }
+            ]
         };
     },
 
-    // Obtener los equipos del usuario
-    getUserTeams: async () => {
-        await delay(400); // Simulamos carga
-        return {
-            status: 'success',
-            // Por ahora devolvemos todos los equipos creados en la base de datos
-            data: [...mockDatabase.fantasyTeams] 
-        };
-    },
-
-    // Unirse a una liga existente
-    joinLeague: async (joinData) => {
-        await delay(600); // Simulamos el procesamiento en el servidor
-        return {
-            status: 'success',
-            message: '¡Te has unido a la liga con éxito!'
-        };
-    },
-
-    // Obtener el detalle de una liga específica
     getLeagueDetails: async (leagueId) => {
-        await delay(500); // Simular red
+        await delay(500);
         return {
             status: 'success',
             data: {
@@ -125,96 +53,145 @@ const api = {
                 leaderboard: [
                     { position: 1, userName: 'Matías Fernandez', teamName: 'Corsa Power', points: 1340, isCurrentUser: false },
                     { position: 2, userName: 'Tu Nombre', teamName: 'Escudería Huevo', points: 1250, isCurrentUser: true },
-                    { position: 3, userName: 'Juan Pérez', teamName: 'Escudería Pistera', points: 1120, isCurrentUser: false },
-                    { position: 4, userName: 'Lucas Gómez', teamName: 'Frenada Larga', points: 980, isCurrentUser: false }
+                    { position: 3, userName: 'Juan Pérez', teamName: 'Escudería Pistera', points: 1120, isCurrentUser: false }
                 ]
             }
         };
     },
 
-    // Abandonar una liga
+    createLeague: async (leagueData) => {
+        await delay(800);
+        const newLeague = {
+            id: mockDatabase.leagues.length + 1,
+            owner_id: 1,
+            join_code: "F2-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
+            ...leagueData
+        };
+        mockDatabase.leagues.push(newLeague);
+        return { status: 'success', message: 'Liga creada exitosamente', data: newLeague };
+    },
+
+    joinLeague: async (joinData) => {
+        await delay(600);
+        return { status: 'success', message: '¡Te has unido a la liga con éxito!' };
+    },
+
     leaveLeague: async (leagueId) => {
         await delay(600);
-        return {
-            status: 'success',
-            message: 'Has abandonado la liga correctamente.'
-        };
+        return { status: 'success', message: 'Has abandonado la liga correctamente.' };
     },
-
-    // Obtener la lista de ligas del usuario
-    getUserLeagues: async () => {
-        await delay(400); // Simulamos el tiempo de red
-        return {
-            status: 'success',
-            data: [
-                {
-                    id: '1',
-                    name: 'Amigos de la Facu',
-                    description: 'El que pierde a fin de año paga el asado. Solo cuentas principales.',
-                    position: 2,
-                    totalParticipants: 12,
-                    userTeamName: 'Mi Equipo'
-                },
-                {
-                    id: '2',
-                    name: 'F2 Global Championship',
-                    description: 'Liga oficial abierta para todos los jugadores del mundo.',
-                    position: 458,
-                    totalParticipants: 15000,
-                    userTeamName: 'Escudería Huevo'
-                }
-            ]
-        };
-    },
-
-    // Simular el inicio de sesión
-    login: async (credentials) => {
-        await delay(800); // Simulamos el tiempo que tarda el servidor en validar
-        
-        // En un backend real, acá chequearíamos si el usuario y contraseña coinciden en la base de datos
-        // Por ahora, simulamos que cualquier intento es exitoso y devolvemos un "token" falso
-        return {
-            status: 'success',
-            data: {
-                user: {
-                    username: credentials.username,
-                    name: 'Piloto Destacado'
-                },
-                token: 'mock-jwt-token-987654321' // Este token se usaría en el futuro para mantener la sesión
-            },
-            message: 'Sesión iniciada correctamente'
-        };
-    },
-
-    // Obtener pilotos y escuderías para comprar
+    
+    // ==========================================
+    // MERCADO Y EQUIPOS
+    // ==========================================
     getMarketData: async () => {
         await delay(500);
+        
+        // 1. Mapeamos los pilotos cruzando datos con las escuderías
+        const mappedDrivers = mockDatabase.drivers.map(driver => {
+            // Buscamos a qué escudería pertenece este piloto
+            const teamInfo = mockDatabase.constructors.find(c => c.id === driver.constructor_id);
+            
+            return {
+                id: `d${driver.id}`, // Le agregamos la 'd' para mantener tu lógica de IDs
+                name: driver.name,
+                team: teamInfo ? teamInfo.name : 'Agente Libre',
+                price: driver.market_price
+            };
+        });
+
+        // 2. Mapeamos las escuderías
+        const mappedConstructors = mockDatabase.constructors.map(constructor => ({
+            id: `c${constructor.id}`,
+            name: constructor.name,
+            type: 'Escudería',
+            price: constructor.market_price
+        }));
+
         return {
             status: 'success',
             data: {
-                drivers: [
-                    { id: 'd1', name: 'K. Antonelli', team: 'PREMA Racing', price: 15.5 },
-                    { id: 'd2', name: 'Z. Maloney', team: 'Rodin Motorsport', price: 16.0 },
-                    { id: 'd3', name: 'P. Aron', team: 'Hitech Pulse-Eight', price: 14.5 },
-                    { id: 'd4', name: 'I. Hadjar', team: 'Campos Racing', price: 15.0 },
-                    { id: 'd5', name: 'G. Bortoleto', team: 'Invicta Racing', price: 13.5 },
-                    { id: 'd6', name: 'F. Colapinto', team: 'MP Motorsport', price: 12.0 }
-                ],
-                constructors: [
-                    { id: 'c1', name: 'PREMA Racing', type: 'Escudería', price: 22.0 },
-                    { id: 'c2', name: 'Campos Racing', type: 'Escudería', price: 20.0 },
-                    { id: 'c3', name: 'MP Motorsport', type: 'Escudería', price: 18.5 }
-                ]
+                drivers: mappedDrivers,
+                constructors: mappedConstructors
             }
         };
     },
 
-    // Guardar el equipo creado
+    getUserTeams: async () => {
+        await delay(400); 
+        // Ahora lee directamente de la base de datos simulada
+        const teams = mockDatabase.fantasyTeams.map(team => ({
+            id: team.id,
+            name: team.name,
+            totalPoints: team.total_points || Math.floor(Math.random() * 500) + 1000,
+            remainingBudget: team.budget_remaining || 0,
+            teamValue: 100 - (team.budget_remaining || 0)
+        }));
+
+        return { status: 'success', data: teams };
+    },
+
     saveTeam: async (teamData) => {
         await delay(800);
+        const newTeam = {
+            id: mockDatabase.fantasyTeams.length + 1,
+            user_id: 1, 
+            name: teamData.name || `Equipo ${mockDatabase.fantasyTeams.length + 1}`,
+            budget_remaining: teamData.budgetLeft || 0,
+            total_points: 0,
+            free_transfers_remaining: 2,
+            selected_drivers: teamData.drivers,
+            selected_constructors: teamData.constructors
+        };
+        mockDatabase.fantasyTeams.push(newTeam);
+
+        return { status: 'success', message: '¡Equipo guardado con éxito!', data: newTeam };
+    },
+
+    // ==========================================
+    // PERFIL DE USUARIO
+    // ==========================================
+    
+    // Obtener los datos del usuario logueado
+    getUserProfile: async () => {
+        await delay(400);
+        const user = mockDatabase.users[0]; // Asumimos que es el usuario demo
         return {
             status: 'success',
-            message: '¡Equipo guardado con éxito!'
+            data: {
+                firstName: user.first_name,
+                lastName: user.last_name,
+                username: user.username
+            }
+        };
+    },
+
+    // Actualizar nombre y apellido
+    updateUserProfile: async (profileData) => {
+        await delay(800);
+        
+        // Actualizamos nuestra base de datos falsa
+        mockDatabase.users[0].first_name = profileData.firstName;
+        mockDatabase.users[0].last_name = profileData.lastName;
+
+        return {
+            status: 'success',
+            message: 'Perfil actualizado correctamente.'
+        };
+    },
+
+    // Cambiar contraseña
+    changePassword: async (passwordData) => {
+        await delay(800);
+        
+        // Simplemente validamos que la nueva contraseña y la repetición coincidan
+        if (passwordData.newPassword !== passwordData.repeatPassword) {
+            throw new Error("Las contraseñas no coinciden");
+        }
+
+        return {
+            status: 'success',
+            message: 'Contraseña actualizada con éxito.'
         };
     }
 };

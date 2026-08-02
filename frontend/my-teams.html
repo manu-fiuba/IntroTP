@@ -49,65 +49,14 @@
     </header>
 
     <main class="dashboard-container">
-        <section class="grid-3-cols">
-            
-            <!-- Equipo 1 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T1</span>
-                    <h3 class="team-name">Mi equipo</h3>
-                </div>
-                <div class="total-pts-box">
-                    1796 PTS
-                </div>
-                <div class="transfer-info">
-                    <span>Presupuesto Restante</span>
-                    <strong>$4.5M</strong>
-                </div>
-                <div class="transfer-info">
-                    <span>Valor del Equipo</span>
-                    <strong>$102.1M</strong>
-                </div>
-                <!-- Gestionar Equipo-->
-                <div class="team-footer mt-1" style="margin-top: 1rem;">
-                    <a href="manage-team.html" class="btn btn-outline btn-full text-center" style="width: 100%;">Gestionar Equipo</a>
-                </div>
-            </article>
-
-            <!-- Equipo 2 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T2</span>
-                    <h3 class="team-name">Escudería Huevo</h3>
-                </div>
-                <div class="total-pts-box">
-                    1876 PTS
-                </div>
-                <div class="transfer-info">
-                    <span>Presupuesto Restante</span>
-                    <strong>$0.5M</strong>
-                </div>
-                <div class="transfer-info">
-                    <span>Valor del Equipo</span>
-                    <strong>$105.8M</strong>
-                </div>
-                <div class="team-footer mt-1" style="margin-top: 1rem;">
-                    <a href="manage-team.html" class="btn btn-outline btn-full text-center" style="width: 100%;">Gestionar Equipo</a>
-                </div>
-            </article>
-
-            <!-- Botón de Slot Vacío -->
-            <a href="create-team.html" class="team-card empty-slot">
-                <div class="empty-content">
-                    <span class="plus-icon">+</span>
-                    <h3>Crear nuevo equipo</h3>
-                    <p>Slot disponible</p>
-                </div>
-            </a>
-
+        <section class="grid-3-cols" id="teams-grid">
+            <p>Cargando tus equipos...</p>
         </section>
     </main>
 
     <script src="./js/sidebar.js"></script>
+    <script src="./js/data/mock-data.js"></script>
+    <script src="./js/api-mock.js"></script>
+    <script src="./js/pages/my-teams.js"></script>
 </body>
 </html>

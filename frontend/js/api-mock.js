@@ -165,5 +165,24 @@ const api = {
                 }
             ]
         };
+    },
+
+    // Simular el inicio de sesión
+    login: async (credentials) => {
+        await delay(800); // Simulamos el tiempo que tarda el servidor en validar
+        
+        // En un backend real, acá chequearíamos si el usuario y contraseña coinciden en la base de datos
+        // Por ahora, simulamos que cualquier intento es exitoso y devolvemos un "token" falso
+        return {
+            status: 'success',
+            data: {
+                user: {
+                    username: credentials.username,
+                    name: 'Piloto Destacado'
+                },
+                token: 'mock-jwt-token-987654321' // Este token se usaría en el futuro para mantener la sesión
+            },
+            message: 'Sesión iniciada correctamente'
+        };
     }
 };

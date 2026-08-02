@@ -1,5 +1,6 @@
 const pool = require('../db');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // ==========================================
 // LÓGICA DEL USUARIO
@@ -53,7 +54,52 @@ const registerUser = async (req, res) => {
 
 // Iniciar Sesión
 const loginUser = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de login en construcción' });
+    const { username, password } = req.body;
+
+    // Validaciones
+    if (!username || !password) {
+        return res.status(400).json({ error: 'El usuario y la contraseña son obligatorios.' });
+    }
+
+    try {
+        // Query
+        const query = 'SELECT id, username, password_hash FROM users WHERE username = $1';
+        const result = await pool.query(query, [username]);
+        const user = result.rows[0];
+
+        // El usuario no existe (user result vacío)
+        if (!user) {
+            return res.status(401).json({ error: 'Credenciales inválidas.' });
+        }
+
+        // Comparar la contraseña ingresada con el hash
+        const isMatch = await bcrypt.compare(password, user.password_hash);
+
+        if (!isMatch) {
+            return res.status(401).json({ error: 'Credenciales inválidas.' });
+        }
+
+        // Token de sesión
+        const token = jwt.sign(
+            { id: user.id, username: user.username }, // datos a guardar
+            'firma_secreta_f2', // firma
+            { expiresIn: '2h' } // El token expira en 2 horas por seguridad
+        );
+
+        // Respuesta exitosa
+        res.status(200).json({
+            message: 'Login exitoso',
+            token: token,
+            user: {
+                id: user.id,
+                username: user.username
+            }
+        });
+
+    } catch (error) {
+        console.error('Error en el proceso de login:', error);
+        res.status(500).json({ error: 'Error interno del servidor al iniciar sesión.' });
+    }
 };
 
 // Obtener datos de usuario

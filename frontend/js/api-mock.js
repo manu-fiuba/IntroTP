@@ -19,6 +19,34 @@ const api = {
         };
     },
 
+    // Registrar un nuevo usuario
+    register: async (userData) => {
+        await delay(800); // Simulamos el tiempo de red y creación en la base
+        
+        // Verificamos si el usuario ya existe (simulación)
+        const userExists = mockDatabase.users.some(u => u.username === userData.username);
+        
+        if (userExists) {
+            throw new Error('El nombre de usuario ya está en uso. Por favor, elige otro.');
+        }
+
+        // Creamos el usuario nuevo y lo guardamos en la base de datos falsa
+        const newUser = {
+            id: mockDatabase.users.length + 1,
+            username: userData.username,
+            first_name: "Nuevo",
+            last_name: "Piloto"
+        };
+        
+        mockDatabase.users.push(newUser);
+
+        return {
+            status: 'success',
+            message: 'Cuenta creada exitosamente. ¡Bienvenido!',
+            data: newUser
+        };
+    },
+
     // ==========================================
     // LIGAS
     // ==========================================

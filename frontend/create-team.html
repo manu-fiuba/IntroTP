@@ -47,10 +47,10 @@
     <section class="budget-panel">
         <div class="budget-info">
             <span class="budget-label">Presupuesto Restante</span>
-            <span class="budget-value">$100.0M</span>
+            <span class="budget-value" id="budget-amount">$100.0M</span>
         </div>
         <div class="slots-info">
-            <span>Seleccionados: <strong>0/7</strong></span>
+            <span>Seleccionados: <strong id="slots-count">0/7</strong></span>
         </div>
     </section>
 
@@ -96,31 +96,8 @@
         <!-- Columna Derecha: Mercado de Opciones -->
         <section class="market-section">
             <h2>Mercado</h2>
-            <div class="market-list">
-                <!-- Ejemplo de un piloto en el mercado -->
-                <div class="market-item">
-                    <div class="market-item-info">
-                        <strong>K. Antonelli</strong>
-                        <span>PREMA Racing</span>
-                    </div>
-                    <div class="market-item-action">
-                        <span class="price">$15.5M</span>
-                        <button class="btn-add">+</button>
-                    </div>
-                </div>
-
-                <!-- Ejemplo de una escudería en el mercado -->
-                <div class="market-item">
-                    <div class="market-item-info">
-                        <strong>Campos Racing</strong>
-                        <span>Escudería</span>
-                    </div>
-                    <div class="market-item-action">
-                        <span class="price">$22.0M</span>
-                        <button class="btn-add">+</button>
-                    </div>
-                </div>
-                
+            <div class="market-list" id="market-list">
+                <!-- JS inyectará los pilotos y escuderías acá dinámicamente -->
             </div>
         </section>
 
@@ -130,9 +107,15 @@
     <footer class="builder-actions">
         <a href="my-teams.html" class="btn btn-outline">Cancelar</a>
         <!-- Botón deshabilitado por defecto -->
-        <button class="btn btn-primary" disabled>Guardar Equipo</button>
+        <button class="btn btn-primary" id="save-team-btn" disabled>Guardar Equipo</button>
     </footer>
 
     <script src="./js/sidebar.js"></script>
+
+    <script src="js/data/mock-data.js"></script>
+
+    <script src="js/api-mock.js"></script>
+    
+    <script src="js/pages/create-team.js"></script>
 </body>
 </html>

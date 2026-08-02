@@ -47,7 +47,47 @@ const api = {
             message: 'Liga creada exitosamente',
             data: newLeague
         };
-    }
+    },
     
+    // ==========================================
+    // MERCADO Y EQUIPOS
+    // ==========================================
+
+    // Obtener todas las opciones del mercado (Pilotos y Escuderías)
+    getMarketOptions: async () => {
+        await delay(500); // Simulamos latencia de red
+        return {
+            status: 'success',
+            data: {
+                drivers: [...mockDatabase.drivers],
+                constructors: [...mockDatabase.constructors]
+            }
+        };
+    },
+
+    // Guardar el equipo creado
+    createTeam: async (teamData) => {
+        await delay(800);
+        
+        // Asumiendo que el usuario es el 1 y tiene $100.0M por defecto según init.sql
+        const newTeam = {
+            id: mockDatabase.fantasyTeams.length + 1,
+            user_id: 1, 
+            name: teamData.name || "Mi Equipo",
+            budget_remaining: teamData.budget,
+            total_points: 0,
+            free_transfers_remaining: 2,
+            selected_drivers: teamData.drivers,
+            selected_constructors: teamData.constructors
+        };
+
+        mockDatabase.fantasyTeams.push(newTeam);
+
+        return {
+            status: 'success',
+            message: 'Equipo guardado con éxito',
+            data: newTeam
+        };
+    }
     // Más adelante agregaremos getUser(), getDrivers(), createTeam(), etc.
 };

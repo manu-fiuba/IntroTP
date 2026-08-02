@@ -8,7 +8,7 @@ const pool = require('../db');
 const registerUser = async (req, res) => {
     const { username, password, repeatPassword } = req.body;
 
-    // 1. Validaciones básicas
+    // Validaciones
     if (!username || !password || !repeatPassword) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
     }
@@ -36,7 +36,7 @@ const registerUser = async (req, res) => {
     } catch (error) {
         console.error('Error al registrar usuario:', error);
         
-        // 23505 es el código de PostgreSQL para violaciones de restricción UNIQUE
+        // 23505: violaciones de restricción UNIQUE
         if (error.code === '23505') {
             return res.status(409).json({ error: 'El nombre de usuario ya está en uso.' });
         }

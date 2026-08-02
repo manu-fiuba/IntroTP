@@ -184,5 +184,37 @@ const api = {
             },
             message: 'Sesión iniciada correctamente'
         };
+    },
+
+    // Obtener pilotos y escuderías para comprar
+    getMarketData: async () => {
+        await delay(500);
+        return {
+            status: 'success',
+            data: {
+                drivers: [
+                    { id: 'd1', name: 'K. Antonelli', team: 'PREMA Racing', price: 15.5 },
+                    { id: 'd2', name: 'Z. Maloney', team: 'Rodin Motorsport', price: 16.0 },
+                    { id: 'd3', name: 'P. Aron', team: 'Hitech Pulse-Eight', price: 14.5 },
+                    { id: 'd4', name: 'I. Hadjar', team: 'Campos Racing', price: 15.0 },
+                    { id: 'd5', name: 'G. Bortoleto', team: 'Invicta Racing', price: 13.5 },
+                    { id: 'd6', name: 'F. Colapinto', team: 'MP Motorsport', price: 12.0 }
+                ],
+                constructors: [
+                    { id: 'c1', name: 'PREMA Racing', type: 'Escudería', price: 22.0 },
+                    { id: 'c2', name: 'Campos Racing', type: 'Escudería', price: 20.0 },
+                    { id: 'c3', name: 'MP Motorsport', type: 'Escudería', price: 18.5 }
+                ]
+            }
+        };
+    },
+
+    // Guardar el equipo creado
+    saveTeam: async (teamData) => {
+        await delay(800);
+        return {
+            status: 'success',
+            message: '¡Equipo guardado con éxito!'
+        };
     }
 };

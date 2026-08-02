@@ -139,6 +139,31 @@ const api = {
             status: 'success',
             message: 'Has abandonado la liga correctamente.'
         };
-    }
+    },
 
+    // Obtener la lista de ligas del usuario
+    getUserLeagues: async () => {
+        await delay(400); // Simulamos el tiempo de red
+        return {
+            status: 'success',
+            data: [
+                {
+                    id: '1',
+                    name: 'Amigos de la Facu',
+                    description: 'El que pierde a fin de año paga el asado. Solo cuentas principales.',
+                    position: 2,
+                    totalParticipants: 12,
+                    userTeamName: 'Mi Equipo'
+                },
+                {
+                    id: '2',
+                    name: 'F2 Global Championship',
+                    description: 'Liga oficial abierta para todos los jugadores del mundo.',
+                    position: 458,
+                    totalParticipants: 15000,
+                    userTeamName: 'Escudería Huevo'
+                }
+            ]
+        };
+    }
 };

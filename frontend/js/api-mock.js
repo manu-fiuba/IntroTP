@@ -107,6 +107,38 @@ const api = {
             status: 'success',
             message: '¡Te has unido a la liga con éxito!'
         };
+    },
+
+    // Obtener el detalle de una liga específica
+    getLeagueDetails: async (leagueId) => {
+        await delay(500); // Simular red
+        return {
+            status: 'success',
+            data: {
+                id: leagueId,
+                name: 'Amigos de la Facu',
+                description: 'El que pierde a fin de año paga el asado. Solo cuentas principales.',
+                adminName: 'Tato Fernandez',
+                userTeamName: 'Escudería Huevo',
+                inviteCode: 'X89B-2026',
+                userPosition: '2°',
+                leaderboard: [
+                    { position: 1, userName: 'Matías Fernandez', teamName: 'Corsa Power', points: 1340, isCurrentUser: false },
+                    { position: 2, userName: 'Tu Nombre', teamName: 'Escudería Huevo', points: 1250, isCurrentUser: true },
+                    { position: 3, userName: 'Juan Pérez', teamName: 'Escudería Pistera', points: 1120, isCurrentUser: false },
+                    { position: 4, userName: 'Lucas Gómez', teamName: 'Frenada Larga', points: 980, isCurrentUser: false }
+                ]
+            }
+        };
+    },
+
+    // Abandonar una liga
+    leaveLeague: async (leagueId) => {
+        await delay(600);
+        return {
+            status: 'success',
+            message: 'Has abandonado la liga correctamente.'
+        };
     }
 
 };

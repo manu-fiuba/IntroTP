@@ -1,4 +1,5 @@
 const pool = require('../db');
+const bcrypt = require('bcrypt');
 
 // ==========================================
 // LÓGICA DEL USUARIO
@@ -17,14 +18,19 @@ const registerUser = async (req, res) => {
         return res.status(400).json({ error: 'Las contraseñas no coinciden.' });
     }
 
+    // Hashing
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
     try {
         const query = `
             INSERT INTO users (username, password_hash)
             VALUES ($1, $2)
             RETURNING id, username;
         `;
-        
-        const values = [username, password];
+
+        // Query
+        const values = [username, hashedPassword];
         const result = await pool.query(query, values);
 
         // Respuesta exitosa

@@ -18,7 +18,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const loadMarket = async () => {
         try {
             marketList.innerHTML = '<p>Cargando mercado...</p>';
-            const response = await api.getMarketOptions();
+            
+            const response = await api.getMarketData();
             
             if (response.status === 'success') {
                 renderMarket(response.data.drivers, response.data.constructors);
@@ -37,15 +38,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         drivers.forEach(driver => {
             const item = document.createElement('div');
             item.className = 'market-item';
-            // Insertamos la estructura HTML del mock
             item.innerHTML = `
                 <div class="market-item-info">
                     <strong>${driver.name}</strong>
-                    <span>Piloto</span>
+                    <span>${driver.team}</span>
                 </div>
                 <div class="market-item-action">
-                    <span class="price">$${driver.market_price.toFixed(1)}M</span>
-                    <button class="btn-add" data-type="driver" data-id="${driver.id}" data-price="${driver.market_price}">+</button>
+                    <span class="price">$${driver.price.toFixed(1)}M</span>
+                    <button class="btn-add" data-type="driver" data-id="${driver.id}" data-price="${driver.price}">+</button>
                 </div>
             `;
             marketList.appendChild(item);
@@ -58,11 +58,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             item.innerHTML = `
                 <div class="market-item-info">
                     <strong>${constructor.name}</strong>
-                    <span>Escudería</span>
+                    <span>${constructor.type}</span>
                 </div>
                 <div class="market-item-action">
-                    <span class="price">$${constructor.market_price.toFixed(1)}M</span>
-                    <button class="btn-add" data-type="constructor" data-id="${constructor.id}" data-price="${constructor.market_price}">+</button>
+                    <span class="price">$${constructor.price.toFixed(1)}M</span>
+                    <button class="btn-add" data-type="constructor" data-id="${constructor.id}" data-price="${constructor.price}">+</button>
                 </div>
             `;
             marketList.appendChild(item);
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         addButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const type = e.target.dataset.type;
-                const id = parseInt(e.target.dataset.id);
+                const id = e.target.dataset.id;
                 const price = parseFloat(e.target.dataset.price);
 
                 // Validaciones básicas de presupuesto y cupo
@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Actualizar interfaz
                 updateUI();
                 
-                // Deshabilitar botón visualmente (simplificado)
+                // Deshabilitar botón visualmente
                 e.target.disabled = true;
                 e.target.textContent = '✓';
             });
@@ -130,15 +130,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         saveBtn.textContent = 'Guardando...';
         saveBtn.disabled = true;
 
-        const response = await api.createTeam({
-            budget: currentBudget,
+        const response = await api.saveTeam({
+            budgetLeft: currentBudget,
             drivers: selectedDrivers,
             constructors: selectedConstructors
         });
 
         if (response.status === 'success') {
             alert('¡Tu equipo ha sido creado!');
-            window.location.href = 'my-teams.html'; // Redirigir según tu menú lateral
+            window.location.href = 'my-teams.html';
         }
     });
 

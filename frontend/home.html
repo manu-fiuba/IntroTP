@@ -85,53 +85,8 @@
             <span class="heading-tag">Hungría</span>
         </div>
 
-        <section class="grid-3-cols">
-            
-            <!-- Equipo 1 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T1</span>
-                    <h3 class="team-name">Mi equipo</h3>
-                </div>
-                <div class="team-stats-box">
-                    <span class="stat-label">Puntos de carrera</span>
-                    <strong class="stat-value">232 PTS</strong>
-                </div>
-                <div class="team-footer">
-                    <a href="#" class="link-action">Ver resultado &rsaquo;</a>
-                </div>
-            </article>
-
-            <!-- Equipo 2 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T2</span>
-                    <h3 class="team-name">Escudería Huevo</h3>
-                </div>
-                <div class="team-stats-box">
-                    <span class="stat-label">Puntos de carrera</span>
-                    <strong class="stat-value">173 PTS</strong>
-                </div>
-                <div class="team-footer">
-                    <a href="#" class="link-action">Ver resultado &rsaquo;</a>
-                </div>
-            </article>
-
-            <!-- Equipo 3 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T3</span>
-                    <h3 class="team-name">Grace Racing</h3>
-                </div>
-                <div class="team-stats-box">
-                    <span class="stat-label">Puntos de carrera</span>
-                    <strong class="stat-value">214 PTS</strong>
-                </div>
-                <div class="team-footer">
-                    <a href="#" class="link-action">Ver resultado &rsaquo;</a>
-                </div>
-            </article>
-
+        <section class="grid-3-cols" id="last-race-grid">
+            <!-- JS inyectará las tarjetas acá -->
         </section>
 
         <!-- Estadísticas de Temporada -->
@@ -140,90 +95,15 @@
             <a href="my-teams.html" class="heading-btn">Mis Equipos &rsaquo;</a>
         </div>
 
-        <section class="grid-3-cols">
-            
-            <!-- Equipo 1 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T1</span>
-                    <h3 class="team-name">Mi equipo</h3>
-                </div>
-                <div class="total-pts-box">
-                    1796 PTS
-                </div>
-                <div class="season-best-box">
-                    <span class="stat-label">Semana con mejores resultados</span>
-                    <div class="best-race-info">
-                        <div>
-                            <span class="round-badge micro">ROUND 10</span>
-                            <strong>Hungría</strong>
-                            <br><span class="date-micro">25 - 26 Jul</span>
-                        </div>
-                        <strong class="best-pts">232 PTS</strong>
-                    </div>
-                </div>
-                <div class="transfer-info">
-                    <span>Transferencias gratuitas</span>
-                    <strong>2</strong>
-                </div>
-            </article>
-
-            <!-- Equipo 2 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T2</span>
-                    <h3 class="team-name">Escudería Huevo</h3>
-                </div>
-                <div class="total-pts-box">
-                    1876 PTS
-                </div>
-                <div class="season-best-box">
-                    <span class="stat-label">Semana con mejores resultados</span>
-                    <div class="best-race-info">
-                        <div>
-                            <span class="round-badge micro">ROUND 2</span>
-                            <strong>Arabia Saudita</strong>
-                            <br><span class="date-micro">14 - 15 Mar</span>
-                        </div>
-                        <strong class="best-pts">294 PTS</strong>
-                    </div>
-                </div>
-                <div class="transfer-info">
-                    <span>Transferencias gratuitas</span>
-                    <strong>0</strong>
-                </div>
-            </article>
-
-            <!-- Equipo 3 -->
-            <article class="team-card">
-                <div class="team-header">
-                    <span class="team-t-badge">T3</span>
-                    <h3 class="team-name">Grace Racing</h3>
-                </div>
-                <div class="total-pts-box">
-                    1677 PTS
-                </div>
-                <div class="season-best-box">
-                    <span class="stat-label">Semana con mejores resultados</span>
-                    <div class="best-race-info">
-                        <div>
-                            <span class="round-badge micro">ROUND 10</span>
-                            <strong>Hungría</strong>
-                            <br><span class="date-micro">25 - 26 Jul</span>
-                        </div>
-                        <strong class="best-pts">214 PTS</strong>
-                    </div>
-                </div>
-                <div class="transfer-info">
-                    <span>Transferencias gratuitas</span>
-                    <strong>2</strong>
-                </div>
-            </article>
-
+        <section class="grid-3-cols" id="season-stats-grid">
+            <!-- JS inyectará las tarjetas acá -->
         </section>
 
     </main>
     
     <script src="./js/sidebar.js"></script>
+    <script src="./js/data/mock-data.js"></script>
+    <script src="./js/api-mock.js"></script>
+    <script src="./js/pages/home.js"></script>
 </body>
 </html>

@@ -88,6 +88,16 @@ const api = {
             message: 'Equipo guardado con éxito',
             data: newTeam
         };
+    },
+
+    // Obtener los equipos del usuario
+    getUserTeams: async () => {
+        await delay(400); // Simulamos carga
+        return {
+            status: 'success',
+            // Por ahora devolvemos todos los equipos creados en la base de datos
+            data: [...mockDatabase.fantasyTeams] 
+        };
     }
     // Más adelante agregaremos getUser(), getDrivers(), createTeam(), etc.
 };

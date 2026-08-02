@@ -14,7 +14,7 @@
     
     <main class="auth-container">
         
-        <form class="auth-card" action="leagues.html">
+        <form class="auth-card" id="join-league-form">
             <h2>Unirse a Liga Privada</h2>
             
             <div class="form-group">
@@ -29,13 +29,11 @@
 
             <div class="form-group">
                 <label for="join-team">Equipo a utilizar</label>
-                <!-- Equipos de ejemplo -->
+                <!-- Vaciamos los options para que JS los inyecte -->
                 <select id="join-team" name="join-team" required
                     oninvalid="this.setCustomValidity('Elige un equipo')"
                     onchange="this.setCustomValidity('')">
-                    <option value="" selected>Selecciona un equipo</option>
-                    <option value="1">Mi equipo</option>
-                    <option value="2">Escudería Huevo</option>
+                    <option value="" selected>Cargando equipos...</option>
                 </select>
             </div>
             
@@ -45,6 +43,8 @@
             </div>
         </form>
     </main>
-
+    <script src="./js/data/mock-data.js"></script>
+    <script src="./js/api-mock.js"></script>
+    <script src="./js/pages/join-league.js"></script>
 </body>
 </html>

@@ -98,6 +98,15 @@ const api = {
             // Por ahora devolvemos todos los equipos creados en la base de datos
             data: [...mockDatabase.fantasyTeams] 
         };
+    },
+
+    // Unirse a una liga existente
+    joinLeague: async (joinData) => {
+        await delay(600); // Simulamos el procesamiento en el servidor
+        return {
+            status: 'success',
+            message: '¡Te has unido a la liga con éxito!'
+        };
     }
-    // Más adelante agregaremos getUser(), getDrivers(), createTeam(), etc.
+
 };

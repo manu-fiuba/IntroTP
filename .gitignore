@@ -1,2 +1,3 @@
-/backend/.volumes/postgres_data
+/backend/.volumes/
 .DS_Store
+node_modules/

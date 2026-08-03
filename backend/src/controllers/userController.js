@@ -104,7 +104,22 @@ const loginUser = async (req, res) => {
 
 // Obtener datos de usuario
 const getUserById = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de obtener usuario en construcción' });
+    const userId = req.params.id;
+
+    try {
+        // Traemos los datos ( Sin el password_hash por seguridad)
+        const query = 'SELECT id, username FROM users WHERE id = $1';
+        const result = await pool.query(query, [userId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Usuario no encontrado.' });
+        }
+
+        res.status(200).json(result.rows[0]);
+    } catch (error) {
+        console.error('Error al obtener el usuario:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 // Obtener ligas en las que está un usuario

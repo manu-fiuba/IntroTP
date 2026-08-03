@@ -134,17 +134,98 @@ const getTeamsByUser = async (req, res) => {
 
 // Actualizar datos del usuario
 const updateUser = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de actualizar perfil en construcción' });
+    const userId = parseInt(req.params.id);
+    const { first_name, last_name } = req.body;
+
+    // VALIDACIÓN DE SEGURIDAD
+    if (req.user.id !== userId) {
+        return res.status(403).json({ error: 'No tienes permiso para modificar este perfil.' });
+    }
+
+    try {
+        const query = `
+            UPDATE users 
+            SET first_name = COALESCE($1, first_name), 
+                last_name = COALESCE($2, last_name), 
+            WHERE id = $4
+            RETURNING id, username, first_name, last_name, country;
+        `;
+        
+        // COALESCE: si el frontend no manda un campo mantenga el valor que ya tenía en la base de datos
+        const values = [first_name, last_name, userId];
+        const result = await pool.query(query, values);
+
+        res.status(200).json({
+            message: 'Perfil actualizado con éxito',
+            user: result.rows[0]
+        });
+
+    } catch (error) {
+        console.error('Error al actualizar perfil:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 // Actualizar contraseña
 const updatePassword = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de actualizar contraseña en construcción' });
+    const userId = parseInt(req.params.id);
+    const { currentPassword, newPassword, repeatNewPassword } = req.body;
+
+    // VALIDACIÓN DE SEGURIDAD
+    if (req.user.id !== userId) {
+        return res.status(403).json({ error: 'No tienes permiso para realizar esta acción.' });
+    }
+
+    if (!currentPassword || !newPassword || !repeatNewPassword) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+    }
+
+    if (newPassword !== repeatNewPassword) {
+        return res.status(400).json({ error: 'Las nuevas contraseñas no coinciden.' });
+    }
+
+    try {
+        // Buscamos el hash actual en la DB
+        const userQuery = await pool.query('SELECT password_hash FROM users WHERE id = $1', [userId]);
+        const user = userQuery.rows[0];
+
+        // Verificamos que la contraseña actual sea correcta
+        const isMatch = await bcrypt.compare(currentPassword, user.password_hash);
+        if (!isMatch) {
+            return res.status(401).json({ error: 'La contraseña actual es incorrecta.' });
+        }
+
+        // Hasheamos la nueva contraseña
+        const saltRounds = 10;
+        const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
+
+        // Actualizamos en la DB
+        await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [hashedNewPassword, userId]);
+
+        res.status(200).json({ message: 'Contraseña actualizada con éxito.' });
+    } catch (error) {
+        console.error('Error al actualizar contraseña:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 // Elimiar usuario
 const deleteUser = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de eliminar usuario en construcción' });
+    const userId = parseInt(req.params.id);
+
+    // VALIDACIÓN DE SEGURIDAD
+    if (req.user.id !== userId) {
+        return res.status(403).json({ error: 'No tienes permiso para eliminar esta cuenta.' });
+    }
+
+    try {
+        await pool.query('DELETE FROM users WHERE id = $1', [userId]);
+        
+        res.status(200).json({ message: 'Cuenta eliminada permanentemente.' });
+    } catch (error) {
+        console.error('Error al eliminar cuenta:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 module.exports = {

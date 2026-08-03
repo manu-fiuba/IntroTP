@@ -56,8 +56,8 @@ const joinLeague = async (req, res) => {
     const userId = req.user.id;
     const { join_code, password, fantasy_team_id } = req.body;
 
-    if (!join_code || !password || !fantasy_team_id) {
-        return res.status(400).json({ error: 'Código de liga, contraseña e ID de tu equipo son obligatorios.' });
+    if (!join_code || !fantasy_team_id) {
+        return res.status(400).json({ error: 'Código de liga e ID de tu equipo son obligatorios.' });
     }
 
     try {
@@ -75,10 +75,17 @@ const joinLeague = async (req, res) => {
         const league = leagueQuery.rows[0];
 
         // Validar la contraseña de la liga
-        const isMatch = await bcrypt.compare(password, league.password_hash);
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Contraseña de liga incorrecta.' });
-        }
+        if (league.password_hash !== null) {
+            // La liga ES PRIVADA, requiere validación
+            if (!password) {
+                return res.status(401).json({ error: 'Esta liga requiere una contraseña para ingresar.' });
+            }
+            
+            const isMatch = await bcrypt.compare(password, league.password_hash);
+            if (!isMatch) {
+                return res.status(401).json({ error: 'Contraseña de liga incorrecta.' });
+            }
+        } 
 
         // Verificar si la liga ya está llena
         const countQuery = await pool.query('SELECT COUNT(*) as total_members FROM league_members WHERE league_id = $1', [league.id]);

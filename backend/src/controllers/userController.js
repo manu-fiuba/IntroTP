@@ -124,12 +124,39 @@ const getUserById = async (req, res) => {
 
 // Obtener ligas en las que está un usuario
 const getUserLeagues = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de ligas del usuario en construcción' });
+    const userId = req.params.id;
+
+    try {
+        // Usuario -> Equipo Fantasy -> Miembro de Liga -> Datos de la Liga
+        const query = `
+            SELECT l.id, l.name, l.description, l.max_participants
+            FROM leagues l
+            JOIN league_members lm ON l.id = lm.league_id
+            JOIN fantasy_teams ft ON lm.fantasy_team_id = ft.id
+            WHERE ft.user_id = $1;
+        `;
+        const result = await pool.query(query, [userId]);
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener ligas del usuario:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 // Obtener Equipos del usuario
 const getTeamsByUser = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de equipos del usuario en construcción' });
+    const userId = req.params.id;
+
+    try {
+        const query = 'SELECT * FROM fantasy_teams WHERE user_id = $1';
+        const result = await pool.query(query, [userId]);
+
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener equipos del usuario:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 // Actualizar datos del usuario

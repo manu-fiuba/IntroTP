@@ -6,22 +6,163 @@ const pool = require('../db');
 
 // Crear equipo
 const createTeam = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de crear equipo en construcción' });
+    const userId = req.user.id; // conocemos el usuario gracias al authenticateToken
+    const { name } = req.body;
+
+    if (!name) {
+        return res.status(400).json({ error: 'El nombre del equipo es obligatorio.' });
+    }
+
+    try {
+        // Inicializamos el equipo con 100M de presupuesto y 0 puntos.
+        const query = `
+            INSERT INTO fantasy_teams (user_id, name, budget, total_points)
+            VALUES ($1, $2, 100.0, 0)
+            RETURNING *;
+        `;
+        const result = await pool.query(query, [userId, name]);
+
+        res.status(201).json({
+            message: 'Equipo creado con éxito',
+            team: result.rows[0]
+        });
+    } catch (error) {
+        console.error('Error al crear equipo:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 // Obtener equipo
 const getTeamById = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de obtener equipo en construcción' });
+    const teamId = parseInt(req.params.id);
+
+    try {
+        // Datos básicos del equipo
+        const teamQuery = await pool.query('SELECT * FROM fantasy_teams WHERE id = $1', [teamId]);
+        if (teamQuery.rows.length === 0) {
+            return res.status(404).json({ error: 'Equipo no encontrado.' });
+        }
+        const team = teamQuery.rows[0];
+
+        // Lista de pilotos
+        const driversQuery = await pool.query(`
+            SELECT d.id, d.name, d.market_price, d.total_points
+            FROM drivers d
+            JOIN fantasy_team_drivers ftd ON d.id = ftd.driver_id
+            WHERE ftd.fantasy_team_id = $1
+        `, [teamId]);
+
+        // Lista de escuderías
+        const constructorsQuery = await pool.query(`
+            SELECT c.id, c.name, c.market_price, c.total_points
+            FROM constructors c
+            JOIN fantasy_team_constructors ftc ON c.id = ftc.constructor_id
+            WHERE ftc.fantasy_team_id = $1
+        `, [teamId]);
+
+        // Ensamblamos todo en un solo objeto para mandarlo al frontend
+        team.drivers = driversQuery.rows;
+        team.constructors = constructorsQuery.rows;
+
+        res.status(200).json(team);
+    } catch (error) {
+        console.error('Error al obtener equipo:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 // Actualizar alineación del equipo
 const updateTeamRoster = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de actualizar roster en construcción' });
+    const teamId = parseInt(req.params.id);
+    const userId = req.user.id;
+
+    const { driver_ids, constructor_ids } = req.body; 
+
+    // Validaciones (Cantidades exactas)
+    if (!Array.isArray(driver_ids) || driver_ids.length !== 5) {
+        return res.status(400).json({ error: 'Debes seleccionar exactamente 5 pilotos.' });
+    }
+    if (!Array.isArray(constructor_ids) || constructor_ids.length !== 2) {
+        return res.status(400).json({ error: 'Debes seleccionar exactamente 2 escuderías.' });
+    }
+
+    try {
+        // Verificar que el equipo exista y le pertenezca al usuario
+        const teamCheck = await pool.query('SELECT user_id FROM fantasy_teams WHERE id = $1', [teamId]);
+        
+        if (teamCheck.rows.length === 0) {
+            return res.status(404).json({ error: 'Equipo no encontrado.' });
+        }
+        if (teamCheck.rows[0].user_id !== userId) {
+            return res.status(403).json({ error: 'No tienes permiso para modificar este equipo.' });
+        }
+
+        // Calcular costo total de pilotos
+        const driversQuery = await pool.query(
+            'SELECT SUM(market_price) as total_drivers FROM drivers WHERE id IN ($1, $2, $3, $4, $5)', 
+            [driver_ids[0], driver_ids[1], driver_ids[2], driver_ids[3], driver_ids[4]]
+        );
+        const driversCost = parseFloat(driversQuery.rows[0].total_drivers || 0);
+
+        // Calcular costo total de escuderías
+        const constructorsQuery = await pool.query(
+            'SELECT SUM(market_price) as total_constructors FROM constructors WHERE id IN ($1, $2)', 
+            [constructor_ids[0], constructor_ids[1]]
+        );
+        const constructorsCost = parseFloat(constructorsQuery.rows[0].total_constructors || 0);
+
+        const totalCost = driversCost + constructorsCost;
+
+        // Validar límite de presupuesto
+        if (totalCost > 100.0) {
+            return res.status(400).json({ error: `Presupuesto excedido. Costo total: ${totalCost}M. Límite: 100.0M.` });
+        }
+
+        const budgetRemaining = 100.0 - totalCost;
+
+        // Actualizar el presupuesto restante en la tabla del equipo
+        await pool.query('UPDATE fantasy_teams SET budget_remaining = $1 WHERE id = $2', [budgetRemaining, teamId]);
+
+        // Borrar los jugadores y escuderías viejas de las tablas intermedias
+        await pool.query('DELETE FROM fantasy_team_drivers WHERE fantasy_team_id = $1', [teamId]);
+        await pool.query('DELETE FROM fantasy_team_constructors WHERE fantasy_team_id = $1', [teamId]);
+
+        // Insertar los nuevos pilotos y escuderías
+        for (const driverId of driver_ids) {
+            await pool.query('INSERT INTO fantasy_team_drivers (fantasy_team_id, driver_id) VALUES ($1, $2)', [teamId, driverId]);
+        }
+        for (const constructorId of constructor_ids) {
+            await pool.query('INSERT INTO fantasy_team_constructors (fantasy_team_id, constructor_id) VALUES ($1, $2)', [teamId, constructorId]);
+        }
+
+        res.status(200).json({
+            message: 'Roster actualizado con éxito',
+            budget_remaining: budgetRemaining
+        });
+
+    } catch (error) {
+        console.error('Error al actualizar roster:', error);
+        res.status(500).json({ error: 'Error interno del servidor al actualizar el equipo.' });
+    }
 };
 
 // Eliminar equipo
 const deleteTeam = async (req, res) => {
-    res.status(501).json({ message: 'Endpoint de borrar equipo en construcción' });
+    const teamId = parseInt(req.params.id);
+    const userId = req.user.id;
+
+    try {
+        const result = await pool.query('DELETE FROM fantasy_teams WHERE id = $1 AND user_id = $2 RETURNING id', [teamId, userId]);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Equipo no encontrado o no tienes permisos para borrarlo.' });
+        }
+
+        res.status(200).json({ message: 'Equipo eliminado correctamente.' });
+    } catch (error) {
+        console.error('Error al borrar equipo:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 };
 
 module.exports = {

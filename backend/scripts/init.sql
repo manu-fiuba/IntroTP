@@ -59,7 +59,7 @@ CREATE TABLE leagues (
     description TEXT,
     max_participants INT NOT NULL,
     join_code VARCHAR(50) UNIQUE NOT NULL,
-    password_hash VARCHAR(255) NOT NULL
+    password_hash VARCHAR(255)
 );
 
 

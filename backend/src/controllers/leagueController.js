@@ -11,8 +11,8 @@ const createLeague = async (req, res) => {
     const ownerId = req.user.id;
     const { name, description, max_participants, password } = req.body;
 
-    if (!name || !max_participants || !password) {
-        return res.status(400).json({ error: 'Nombre, límite de participantes y contraseña son obligatorios.' });
+    if (!name || !max_participants) {
+        return res.status(400).json({ error: 'Nombre y límite de participantes son obligatorios.' });
     }
 
     try {
@@ -24,9 +24,12 @@ const createLeague = async (req, res) => {
             joinCode += caracteres[crypto.randomInt(0, caracteres.length)];
         }
 
-        // Hashear la contraseña de la liga
-        const saltRounds = 10;
-        const passwordHash = await bcrypt.hash(password, saltRounds);
+        // Hashear la contraseña de la liga (si tiene)
+        let passwordHash = null;
+        if (password && password.trim() !== '') {
+            const saltRounds = 10;
+            passwordHash = await bcrypt.hash(password, saltRounds);
+        }
 
         // Insertar en la base de datos
         const query = `

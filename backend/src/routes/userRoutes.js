@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../middlewares/authMiddleware'); // Se verifica la sesión del usuario ara rutas que requieren permisos
 
 // ==========================================
 // CONTROLADORES
@@ -26,9 +27,9 @@ router.get('/:id', getUserById);
 router.get('/:id/teams', getTeamsByUser);
 router.get('/:id/leagues', getUserLeagues);
 
-router.patch('/:id', updateUser);
-router.patch('/:id/password', updatePassword);
+router.patch('/:id',  authenticateToken, updateUser);
+router.patch('/:id/password',  authenticateToken, updatePassword);
 
-router.delete('/:id', deleteUser);
+router.delete('/:id',  authenticateToken, deleteUser);
 
 module.exports = router;

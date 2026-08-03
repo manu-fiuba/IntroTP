@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const authenticateToken = require('../middlewares/authMiddleware'); // Se verifica la sesión del usuario ara rutas que requieren permisos
 
 // ==========================================
 // CONTROLADORES
@@ -15,9 +16,9 @@ const {
 // ENDPOINTS DE EQUIPOS FANTASY (/api/teams/...)
 // ==========================================
 
-router.post('/', createTeam); // C: Crea el equipo
+router.post('/', authenticateToken, createTeam);  // C: Crea el equipo
 router.get('/:id', getTeamById); // R: Trae el equipo, sus puntos y el roster actual
-router.put('/:id', updateTeamRoster); // U: Actualiza roster validando transferencias y presupuesto
-router.delete('/:id', deleteTeam); // D: Borra el equipo del usuario
+router.put('/:id', authenticateToken, updateTeamRoster); // U: Actualiza roster validando transferencias y presupuesto
+router.delete('/:id', authenticateToken, deleteTeam); // D: Borra el equipo del usuario
 
 module.exports = router;

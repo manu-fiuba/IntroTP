@@ -13,6 +13,7 @@ const userRoutes = require('./routes/userRoutes');
 const teamRoutes = require('./routes/teamRoutes');
 const leagueRoutes = require('./routes/leagueRoutes');
 const f2Routes = require('./routes/f2Routes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const { healthcheck } = require('./controllers/healthcheckController');
 
@@ -28,6 +29,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/teams', teamRoutes);
 app.use('/api/leagues', leagueRoutes);
 app.use('/api/f2', f2Routes);
+app.use('/api/admin', adminRoutes);
 
 // ==========================================
 // INICIO DEL SERVIDOR

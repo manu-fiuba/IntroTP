@@ -8,7 +8,9 @@ const {
     getAllDrivers, 
     getDriverById,
     getAllConstructors, 
-    getConstructorById 
+    getConstructorById,
+    getAllRaces,
+    getNextRace
 } = require('../controllers/f2Controller');
 
 // ==========================================
@@ -22,5 +24,9 @@ router.get('/drivers/:id', getDriverById);
 // -- Escuderías --
 router.get('/constructors', getAllConstructors);
 router.get('/constructors/:id', getConstructorById);
+
+// -- Carreras --
+router.get('/races/next', getNextRace);
+router.get('/races', getAllRaces);
 
 module.exports = router;

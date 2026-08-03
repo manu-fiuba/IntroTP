@@ -68,9 +68,74 @@ const getConstructorById = async (req, res) => {
     }
 };
 
+// FUNCIÓN AUXILIAR CUENTA REGRESIVA
+const calculateCountdown = (raceDateStr) => {
+    const now = new Date();
+    const raceDate = new Date(raceDateStr);
+    const diffMs = raceDate - now;
+    
+    if (diffMs > 0) {
+        const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diffMs / 1000 / 60) % 60);
+        return { status: 'upcoming', countdown: `${days}d ${hours}h ${minutes}m` };
+    } else {
+        return { status: 'completed', countdown: 'Finalizada' };
+    }
+};
+
+// Obtener todos los Grandes Premios
+const getAllRaces = async (req, res) => {
+    try {
+        const query = 'SELECT * FROM races ORDER BY date ASC';
+        const result = await pool.query(query);
+        
+        // Mapeamos el array de resultados para inyectarle la cuenta regresiva
+        const races = result.rows.map(race => {
+            const timeData = calculateCountdown(race.date);
+            return {
+                ...race,
+                status: timeData.status,
+                countdown: timeData.countdown
+            };
+        });
+        
+        res.status(200).json(races);
+    } catch (error) {
+        console.error('Error al obtener carreras:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+// Obtener próximo Gran Premio
+const getNextRace = async (req, res) => {
+    try {
+        const query = 'SELECT * FROM races WHERE date > NOW() ORDER BY date ASC LIMIT 1';
+        const result = await pool.query(query);
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'No hay carreras próximas programadas.' });
+        }
+        
+        const nextRace = result.rows[0];
+        const timeData = calculateCountdown(nextRace.date);
+        
+        res.status(200).json({
+            ...nextRace,
+            status: timeData.status,
+            countdown: timeData.countdown
+        });
+    } catch (error) {
+        console.error('Error al obtener la próxima carrera:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
 module.exports = {
     getAllDrivers,
     getDriverById,
     getAllConstructors,
-    getConstructorById
+    getConstructorById,
+    getAllRaces,
+    getNextRace
 };

@@ -63,7 +63,7 @@ const loginUser = async (req, res) => {
 
     try {
         // Query
-        const query = 'SELECT id, username, password_hash FROM users WHERE username = $1';
+        const query = 'SELECT id, username, password_hash, role FROM users WHERE username = $1';
         const result = await pool.query(query, [username]);
         const user = result.rows[0];
 
@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
 
         // Token de sesión
         const token = jwt.sign(
-            { id: user.id, username: user.username }, // datos a guardar
+            { id: user.id, username: user.username, role: user.role }, // datos a guardar
             'firma_secreta_f2', // firma
             { expiresIn: '2h' } // El token expira en 2 horas por seguridad
         );

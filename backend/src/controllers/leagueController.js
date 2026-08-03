@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto'); // nativo de Node js, genera códigos aleatorios
 
 // ==========================================
-// CONTROLADORES DE LIGAS
+// LÓGICA DE LIGAS
 // ==========================================
 
 // Crear Liga

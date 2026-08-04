@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5432:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
@@ -18,7 +18,7 @@ services:
     build: ./backend
     container_name: f2_backend
     ports:
-      - "5000:5000"
+      - "${BACK_PORT}:5000"
     env_file:
       - .env   
     depends_on:
@@ -30,7 +30,7 @@ services:
     container_name: f2_frontend
     restart: always
     ports:
-      - "3000:80" # puerto 80 del contenedor al 3000
+      - "${FRONT_PORT}:80" # puerto 80 del contenedor al 3000
 
 volumes:
   pgdata:

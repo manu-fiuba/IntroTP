@@ -1,7 +1,7 @@
 const express = require('express');
 const pool = require('./db')
 
-const PORT = 3000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
 
@@ -33,7 +33,7 @@ app.use('/api/admin', adminRoutes);
 
 // ==========================================
 // INICIO DEL SERVIDOR
-// ==========================================
+// =========================================
 app.listen(PORT, () => {
-    console.log(`Servidor de F2 Fantasy corriendo en http://localhost:${PORT}`);
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

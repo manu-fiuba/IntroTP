@@ -4,14 +4,14 @@ services:
     image: postgres:17
     container_name: f2fantasy_db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: f2fantasy_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   # BACKEND
   backend:
@@ -19,12 +19,8 @@ services:
     container_name: f2_backend
     ports:
       - "5000:5000"
-    environment:
-      DB_USER: postgres
-      DB_PASSWORD: password
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_NAME: f2_fantasy
+    env_file:
+      - .env   
     depends_on:
       - db
 

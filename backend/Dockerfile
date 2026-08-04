@@ -10,5 +10,4 @@ COPY . .
 
 EXPOSE 5000
 
-# Bandera nativa para leer el archivo .env
-CMD ["node", "--env-file=.env", "src/api.js"]
+CMD ["node", "src/api.js"]

@@ -82,7 +82,7 @@ const loginUser = async (req, res) => {
         // Token de sesión
         const token = jwt.sign(
             { id: user.id, username: user.username, role: user.role }, // datos a guardar
-            'firma_secreta_f2', // firma
+            process.env.JWT_SECRET, // firma
             { expiresIn: '2h' } // El token expira en 2 horas por seguridad
         );
 

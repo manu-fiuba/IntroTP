@@ -1,27 +1,39 @@
 const express = require('express');
-const pool = require('./db.js')
+const pool = require('./db')
 
+const PORT = 3000;
 const app = express();
 app.use(express.json());
 
-const PORT = 3000;
+// ==========================================
+// IMPORT DE ROUTERS
+// ==========================================
 
-app.get('/api/status', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT NOW() as server_time');
-    
-    res.status(200).json({
-        status: 'success',
-        message: 'API funcionando correctamente',
-        db_time: result.rows[0].server_time
-    });
-} catch (error) {
-    console.error('Fallo en la conexión a la base de datos:', error);
-    res.status(500).json({ 
-        status: 'error', 
-        message: 'Error de conexión' 
-    });
-}
+const userRoutes = require('./routes/userRoutes');
+const teamRoutes = require('./routes/teamRoutes');
+const leagueRoutes = require('./routes/leagueRoutes');
+const f2Routes = require('./routes/f2Routes');
+const adminRoutes = require('./routes/adminRoutes');
+
+const { healthcheck } = require('./controllers/healthcheckController');
+
+// ==========================================
+// ENDPOINTS
+// ==========================================
+
+// Healthcheck
+app.get('/api/status', healthcheck);
+
+// Routers
+app.use('/api/users', userRoutes);
+app.use('/api/teams', teamRoutes);
+app.use('/api/leagues', leagueRoutes);
+app.use('/api/f2', f2Routes);
+app.use('/api/admin', adminRoutes);
+
+// ==========================================
+// INICIO DEL SERVIDOR
+// ==========================================
+app.listen(PORT, () => {
+    console.log(`Servidor de F2 Fantasy corriendo en http://localhost:${PORT}`);
 });
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

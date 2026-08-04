@@ -86,6 +86,8 @@ const updateTeamRoster = async (req, res) => {
         return res.status(400).json({ error: 'Debes seleccionar exactamente 2 escuderías.' });
     }
 
+  const COSTO_POR_TRANSFERENCIA_EXTRA = 10; 
+
     try {
         // Verificar que el equipo exista y le pertenezca al usuario
         const teamCheck = await pool.query('SELECT user_id FROM fantasy_teams WHERE id = $1', [teamId]);
@@ -95,6 +97,39 @@ const updateTeamRoster = async (req, res) => {
         }
         if (teamCheck.rows[0].user_id !== userId) {
             return res.status(403).json({ error: 'No tienes permiso para modificar este equipo.' });
+        }
+
+
+        // Traer el roster anterior para comparar
+        const oldDriversQuery = await pool.query('SELECT driver_id FROM fantasy_team_drivers WHERE fantasy_team_id = $1', [teamId]);
+        const oldConstructorsQuery = await pool.query('SELECT constructor_id FROM fantasy_team_constructors WHERE fantasy_team_id = $1', [teamId]);
+        
+        // Mapeamos los resultados para tener arrays de ids
+        const oldDriverIds = oldDriversQuery.rows.map(row => row.driver_id);
+        const oldConstructorIds = oldConstructorsQuery.rows.map(row => row.constructor_id);
+
+        // Contar cuántas transferencias reales se hicieron
+        let totalTransfersMade = 0;
+        let remainingFree = team.free_transfers_remaining;
+        let pointsPenalty = 0;
+
+        // Si el equipo no tenía pilotos ni escuderías, es la creación inicial
+        if (oldDriverIds.length === 0 && oldConstructorIds.length === 0) {
+            totalTransfersMade = 0; // No gasta transferencias
+        } else {
+            // Es una modificación de un equipo que ya existía
+            const changedDrivers = driver_ids.filter(id => !oldDriverIds.includes(id)).length;
+            const changedConstructors = constructor_ids.filter(id => !oldConstructorIds.includes(id)).length;
+            totalTransfersMade = changedDrivers + changedConstructors;
+
+            // Calcular transferencias restantes o penalidad de puntos
+            if (totalTransfersMade > remainingFree) {
+                const extraTransfers = totalTransfersMade - remainingFree;
+                pointsPenalty = extraTransfers * COSTO_POR_TRANSFERENCIA_EXTRA;
+                remainingFree = 0;
+            } else {
+                remainingFree = remainingFree - totalTransfersMade;
+            }
         }
 
         // Calcular costo total de pilotos
@@ -121,7 +156,14 @@ const updateTeamRoster = async (req, res) => {
         const budgetRemaining = 100.0 - totalCost;
 
         // Actualizar el presupuesto restante en la tabla del equipo
-        await pool.query('UPDATE fantasy_teams SET budget_remaining = $1 WHERE id = $2', [budgetRemaining, teamId]);
+        await pool.query(
+            `UPDATE fantasy_teams 
+             SET budget_remaining = $1, 
+                 free_transfers_remaining = $2, 
+                 total_points = total_points - $3
+             WHERE id = $4`,
+            [budgetRemaining, remainingFree, pointsPenalty, teamId]
+        );
 
         // Borrar los jugadores y escuderías viejas de las tablas intermedias
         await pool.query('DELETE FROM fantasy_team_drivers WHERE fantasy_team_id = $1', [teamId]);

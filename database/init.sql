@@ -69,7 +69,7 @@ CREATE TABLE leagues (
 
 CREATE TABLE fantasy_teams (
     id SERIAL PRIMARY KEY,
-    user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
     name VARCHAR(100) NOT NULL,
     budget_remaining DECIMAL(5,1) DEFAULT 100.0,
     total_points INT DEFAULT 0,

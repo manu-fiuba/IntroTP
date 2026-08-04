@@ -1,4 +1,5 @@
 services:
+  # DATABASE
   db:
     image: postgres:17
     container_name: f2fantasy_db
@@ -9,5 +10,31 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./.volumes/postgres_data:/var/lib/postgresql/data
-      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # BACKEND
+  backend:
+    build: ./backend
+    container_name: f2_backend
+    ports:
+      - "5000:5000"
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: f2_fantasy
+    depends_on:
+      - db
+
+  # FRONTEND
+  frontend:
+    build: ./frontend
+    container_name: f2_frontend
+    restart: always
+    ports:
+      - "3000:80" # puerto 80 del contenedor al 3000
+
+volumes:
+  pgdata:

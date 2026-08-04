@@ -128,8 +128,29 @@ const deleteResult = async (req, res) => {
     }
 };
 
+const closeRaceWeekend = async (req, res) => {
+    try {
+        // Se otorgan las 2 transfers por nueva fecha, maximo 3 acumulados (lógica de negocio)
+        const query = `
+            UPDATE fantasy_teams 
+            SET free_transfers_remaining = LEAST(free_transfers_remaining + 2, 3)
+        `;
+        
+        await pool.query(query);
+
+        res.status(200).json({ 
+            message: 'Fin de semana cerrado con éxito. Las transferencias gratuitas han sido actualizadas para todos los equipos.' 
+        });
+
+    } catch (error) {
+        console.error('Error al resetear transferencias:', error);
+        res.status(500).json({ error: 'Error interno del servidor al cerrar la fecha.' });
+    }
+};
+
 module.exports = {
     createResult,
     updateResult,
-    deleteResult
+    deleteResult,
+    closeRaceWeekend
 };

@@ -10,16 +10,21 @@ const verifyAdmin = require('../middlewares/adminMiddleware');
 const {
     createResult,
     updateResult,
-    deleteResult
+    deleteResult,
+    closeRaceWeekend
 } = require('../controllers/adminController');
 
 // Aplicamos ambos middlewares
 router.use(authenticateToken);
 router.use(verifyAdmin);
 
-// Rutas de resultados
+// ==========================================
+// ENDPOINTS DE ADMINISTRADOR
+// ==========================================
+
 router.post('/results', createResult);
 router.patch('/results/:id', updateResult);
 router.delete('/results/:id', deleteResult);
+router.post('/close-weekend', closeRaceWeekend);
 
 module.exports = router;

@@ -1,8 +1,16 @@
 const express = require('express');
 const pool = require('./db')
+const cors = require('cors');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 5000;
 const app = express();
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // ==========================================
@@ -33,7 +41,7 @@ app.use('/api/admin', adminRoutes);
 
 // ==========================================
 // INICIO DEL SERVIDOR
-// ==========================================
+// =========================================
 app.listen(PORT, () => {
-    console.log(`Servidor de F2 Fantasy corriendo en http://localhost:${PORT}`);
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

@@ -12,8 +12,7 @@ const authenticateToken = (req, res, next) => {
     }
 
     try {
-        // misma clave secreta que pusimos en el login
-        const decoded = jwt.verify(token, 'firma_secreta_f2');
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
         next(); //Se ejecuta el controlador
         

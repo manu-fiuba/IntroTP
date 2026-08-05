@@ -28,6 +28,14 @@
                 <label for="league-desc">Descripción (Opcional)</label>
                 <input type="text" id="league-desc" name="league-desc" placeholder="Ej: El ganador se lleva...">
             </div>
+
+            <div class="form-group">
+                <label for="league-team">Jugar esta liga con</label>
+                <select id="league-team" name="league-team" required>
+                    <option value="" disabled selected>Elegí un equipo</option>
+                    <!-- create-league.js llena esto con tus equipos reales -->
+                </select>
+            </div>
             
             <div class="form-group">
                 <label for="league-password">Contraseña (Opcional)</label>

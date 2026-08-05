@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('./db')
 const cors = require('cors');
+const { createAdmin } = require('./scripts/createAdmin');
 
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -42,6 +43,8 @@ app.use('/api/admin', adminRoutes);
 // ==========================================
 // INICIO DEL SERVIDOR
 // =========================================
+
 app.listen(PORT, () => {
+    await createAdmin();
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

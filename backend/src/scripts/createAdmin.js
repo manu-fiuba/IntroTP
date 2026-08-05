@@ -1,3 +1,4 @@
+const pool = require('../db')
 const bcrypt = require('bcrypt');
 
 const createAdmin = async () => {

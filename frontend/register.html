@@ -17,8 +17,10 @@
             <h1>F2 Fantasy</h1>
         </div>
         
-        <form class="auth-card" id="register-form">
+        <form class="auth-card" id="registerForm">
             <h2>Crear Cuenta</h2>
+
+            <p class="form-error" id="registerError"></p>
             
             <div class="form-group">
                 <label for="reg-username">Nombre de Usuario</label>
@@ -35,7 +37,7 @@
                 <input type="password" id="reg-password-confirm" name="password-confirm" placeholder="Repite tu contraseña" required>
             </div>
             
-            <button type="submit" class="btn btn-primary btn-full">Registrarse</button>
+            <button type="submit" class="btn btn-primary btn-full" id="registerSubmit">Registrarse</button>
             
             <p class="auth-footer">
                 ¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a>
@@ -44,7 +46,7 @@
     </main>
 
     <script src="./js/data/mock-data.js"></script>
-    <script src="./js/api-mock.js"></script>
+    <script src="./js/data/api.js"></script>
     <script src="./js/pages/register.js"></script>
 </body>
 </html>

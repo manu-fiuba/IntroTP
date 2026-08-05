@@ -1,47 +1,49 @@
-// js/pages/register.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    const registerForm = document.getElementById('register-form');
 
-    registerForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evitamos que la página se recargue
+    if (Api.session.isLoggedIn()) {
+        window.location.href = 'home.html';
+        return;
+    }
 
-        const usernameInput = document.getElementById('reg-username').value.trim();
-        const passwordInput = document.getElementById('reg-password').value;
-        const confirmPasswordInput = document.getElementById('reg-password-confirm').value;
-        const submitBtn = registerForm.querySelector('button[type="submit"]');
+    const form = document.getElementById('registerForm');
+    const errorEl = document.getElementById('registerError');
+    const submitBtn = document.getElementById('registerSubmit');
 
-        // 1. Validación en el frontend: Chequeamos que las contraseñas sean iguales
-        if (passwordInput !== confirmPasswordInput) {
-            alert('Las contraseñas no coinciden. Por favor, verificalas.');
-            return; // Cortamos la ejecución acá
+    function showError(message) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+    }
+
+    function hideError() {
+        errorEl.classList.remove('visible');
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideError();
+
+        const username = document.getElementById('reg-username').value.trim();
+        const password = document.getElementById('reg-password').value;
+        const repeatPassword = document.getElementById('reg-password-confirm').value;
+
+        // Validación rápida en el cliente antes de llamar a la API
+        // (el mismo chequeo se repite del lado del servidor igual)
+        if (password !== repeatPassword) {
+            showError('Las contraseñas no coinciden.');
+            return;
         }
 
-        // Cambiamos el texto del botón mientras carga
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Creando cuenta...';
         submitBtn.disabled = true;
+        submitBtn.textContent = 'Creando cuenta...';
 
         try {
-            // 2. Llamamos a nuestra API simulada
-            const response = await api.register({
-                username: usernameInput,
-                password: passwordInput
-            });
-
-            if (response.status === 'success') {
-                alert(response.message);
-                // Redirigimos al login para que inicie sesión con su nueva cuenta
-                window.location.href = 'login.html';
-            }
+            await Api.users.register({ username, password, repeatPassword });
+            // Lo mandamos a loguearse con la cuenta recién creada
+            window.location.href = 'login.html';
         } catch (error) {
-            console.error("Error en el registro:", error);
-            // Mostramos el mensaje de error que nos devuelve la API (Ej: "Usuario ya en uso")
-            alert(error.message || 'Hubo un error al intentar crear la cuenta.');
-        } finally {
-            // Restauramos el botón
-            submitBtn.textContent = originalText;
+            showError(error.message);
             submitBtn.disabled = false;
+            submitBtn.textContent = 'Registrarse';
         }
     });
 });

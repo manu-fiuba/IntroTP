@@ -1,41 +1,41 @@
-// js/pages/login.js
-
 document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('login-form');
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evitamos que el navegador recargue la página
+    // Si ya hay una sesión activa, no tiene sentido ver el login de nuevo.
+    if (Api.session.isLoggedIn()) {
+        window.location.href = 'home.html';
+        return;
+    }
 
-        const usernameInput = document.getElementById('username').value;
-        const passwordInput = document.getElementById('password').value;
-        const submitBtn = loginForm.querySelector('button[type="submit"]');
+    const form = document.getElementById('loginForm');
+    const errorEl = document.getElementById('loginError');
+    const submitBtn = document.getElementById('loginSubmit');
 
-        // Cambiamos el estado del botón para que el usuario sepa que está cargando
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Iniciando sesión...';
+    function showError(message) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+    }
+
+    function hideError() {
+        errorEl.classList.remove('visible');
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideError();
+
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+
         submitBtn.disabled = true;
+        submitBtn.textContent = 'Ingresando...';
 
         try {
-            // Llamamos a nuestra API simulada
-            const response = await api.login({
-                username: usernameInput,
-                password: passwordInput
-            });
-
-            if (response.status === 'success') {
-                // FUTURO: Acá guardaríamos el token en localStorage o sessionStorage
-                // localStorage.setItem('auth_token', response.data.token);
-                
-                // Redirigimos al Home
-                window.location.href = 'home.html';
-            }
+            await Api.users.login({ username, password });
+            window.location.href = 'home.html';
         } catch (error) {
-            console.error("Error en el login:", error);
-            alert('Usuario o contraseña incorrectos. Por favor, intenta de nuevo.');
-            
-            // Restauramos el botón para que pueda volver a intentar
-            submitBtn.textContent = originalText;
+            showError(error.message);
             submitBtn.disabled = false;
+            submitBtn.textContent = 'Entrar';
         }
     });
 });

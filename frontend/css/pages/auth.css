@@ -100,3 +100,14 @@
 .auth-footer a:hover {
     text-decoration: underline;
 }
+
+.form-error {
+    display: none;
+    color: #ff6b6b;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.form-error.visible {
+    display: block;
+}

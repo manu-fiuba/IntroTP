@@ -9,6 +9,7 @@ const verifyAdmin = require('../middlewares/adminMiddleware');
 // ==========================================
 const {
     createResult,
+    getResults,
     updateResult,
     deleteResult,
     closeRaceWeekend
@@ -19,12 +20,14 @@ router.use(authenticateToken);
 router.use(verifyAdmin);
 
 // ==========================================
-// ENDPOINTS DE ADMINISTRADOR
+// ENDPOINTS DE ADMINISTRADOR (/api/admin/...)
 // ==========================================
 
 router.post('/results', createResult);
+router.get('/results/race/:race_id', getResults);
 router.patch('/results/:id', updateResult);
 router.delete('/results/:id', deleteResult);
 router.post('/close-weekend', closeRaceWeekend);
+router.get('/results/race/:race_id', getResults);
 
 module.exports = router;

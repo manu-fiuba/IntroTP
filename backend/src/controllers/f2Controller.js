@@ -7,7 +7,7 @@ const pool = require('../db');
 // Obtener todos los pilotos
 const getAllDrivers = async (req, res) => {
     try {
-        const query = 'SELECT * FROM drivers ORDER BY market_price DESC';
+        const query = 'SELECT * FROM drivers ORDER BY team_id ASC, market_price DESC';
         const result = await pool.query(query);
         
         res.status(200).json(result.rows);

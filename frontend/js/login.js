@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Login exitoso, vamos al dashboard
                 console.log("login exitoso")
-                window.location.href = 'home.html';
+                window.location.href = 'home';
             } catch (error) {
                 // Por ahora usamos un alert, más adelante podemos inyectar un span rojo en el DOM
                 alert(`Error: ${error.message}`);

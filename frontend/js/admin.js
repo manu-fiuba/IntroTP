@@ -3,7 +3,7 @@ import { fetchAPI } from './api.js';
 const userRole = localStorage.getItem('f2_role');
 if (userRole !== 'admin') {
     alert('Acceso denegado. Se requieren permisos de administrador.');
-    window.location.href = 'home.html';
+    window.location.href = 'home';
 }
 
 document.addEventListener('DOMContentLoaded', async () => {

@@ -26,7 +26,7 @@ export async function fetchAPI(endpoint, options = {}) {
             if (response.status === 401) {
                 localStorage.removeItem('f2_token');
                 localStorage.removeItem('f2_role');
-                window.location.href = 'login.html';
+                window.location.href = 'login';
             }
             // Lanzamos el error con el mensaje que viene del backend
             throw new Error(data.error || 'Error en la petición al servidor');

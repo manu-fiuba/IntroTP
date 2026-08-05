@@ -27,11 +27,11 @@ export async function register(username, password, passwordConfirm) {
 export function logout() {
     localStorage.removeItem('f2_token');
     localStorage.removeItem('f2_role');
-    window.location.href = 'index.html';
+    window.location.href = 'index';
 }
 
 export function requireAuth() {
     if (!localStorage.getItem('f2_token')) {
-        window.location.href = 'login.html';
+        window.location.href = 'login';
     }
 }

@@ -108,3 +108,12 @@
     background-color: rgba(255, 68, 68, 0.1);
     color: #ff6666;
 }
+
+.admin-link {
+    color: #ffaa00;
+}
+
+.admin-link:hover {
+    background-color: rgba(255, 174, 0, 0.1);
+    color: #ffaa00;
+}

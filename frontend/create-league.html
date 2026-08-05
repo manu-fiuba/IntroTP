@@ -15,8 +15,7 @@
     <!-- Este contenedor lo reutilizamos del Login/Register -->
     <main class="auth-container">
         
-        <form class="auth-card" id="createLeagueForm">
-            <h2>Crear Liga Privada</h2>
+        <form class="auth-card" action="leagues" id="createLeagueForm">
 
             <p class="form-error" id="createLeagueError"></p>
             
@@ -41,8 +40,10 @@
             </div>
             
             <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                <a href="leagues.html" class="btn btn-outline btn-full">Cancelar</a>
+
+                <a href="leagues" class="btn btn-outline btn-full">Cancelar</a>
                 <button type="submit" class="btn btn-primary btn-full" id="createLeagueSubmit">Crear Liga</button>
+
             </div>
         </form>
 

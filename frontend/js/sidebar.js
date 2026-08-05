@@ -60,10 +60,10 @@ const userRole = localStorage.getItem('f2_role');
 const sidebarNav = document.querySelector('.sidebar-nav');
 
 // Verificamos si es admin y si NO estamos ya en admin.html
-if (userRole === 'admin' && sidebarNav && !document.querySelector('a[href="admin.html"]')) {
+if (userRole === 'admin' && sidebarNav && !document.querySelector('a[href="admin"]')) {
     // Creamos el link
     const adminLink = document.createElement('a');
-    adminLink.href = 'admin.html';
+    adminLink.href = 'admin';
     adminLink.className = 'nav-link admin-link';
     adminLink.textContent = 'Panel Admin';
     

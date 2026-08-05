@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 await register(usernameInput, passwordInput, passwordConfirm);
                 
                 alert('Cuenta creada con éxito. Ya puedes iniciar sesión.');
-                window.location.href = 'login.html';
+                window.location.href = 'login';
             } catch (error) {
                 alert(`Error: ${error.message}`);
             } finally {

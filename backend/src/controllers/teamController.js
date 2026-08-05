@@ -16,7 +16,7 @@ const createTeam = async (req, res) => {
     try {
         // Inicializamos el equipo con 100M de presupuesto y 0 puntos.
         const query = `
-            INSERT INTO fantasy_teams (user_id, name, budget, total_points)
+            INSERT INTO fantasy_teams (user_id, name, budget_remaining, total_points)
             VALUES ($1, $2, 100.0, 0)
             RETURNING *;
         `;
@@ -76,7 +76,7 @@ const updateTeamRoster = async (req, res) => {
     const teamId = parseInt(req.params.id);
     const userId = req.user.id;
 
-    const { driver_ids, constructor_ids } = req.body; 
+    const { driver_ids, constructor_ids } = req.body;
 
     // Validaciones (Cantidades exactas)
     if (!Array.isArray(driver_ids) || driver_ids.length !== 5) {
@@ -86,12 +86,17 @@ const updateTeamRoster = async (req, res) => {
         return res.status(400).json({ error: 'Debes seleccionar exactamente 2 escuderías.' });
     }
 
-  const COSTO_POR_TRANSFERENCIA_EXTRA = 10; 
+    const COSTO_POR_TRANSFERENCIA_EXTRA = 10;
 
     try {
         // Verificar que el equipo exista y le pertenezca al usuario
-        const teamCheck = await pool.query('SELECT user_id FROM fantasy_teams WHERE id = $1', [teamId]);
-        
+        // (traemos también free_transfers_remaining acá, ya que antes se
+        // usaba una variable "team" que nunca se había definido)
+        const teamCheck = await pool.query(
+            'SELECT user_id, free_transfers_remaining FROM fantasy_teams WHERE id = $1',
+            [teamId]
+        );
+
         if (teamCheck.rows.length === 0) {
             return res.status(404).json({ error: 'Equipo no encontrado.' });
         }
@@ -99,18 +104,17 @@ const updateTeamRoster = async (req, res) => {
             return res.status(403).json({ error: 'No tienes permiso para modificar este equipo.' });
         }
 
-
         // Traer el roster anterior para comparar
         const oldDriversQuery = await pool.query('SELECT driver_id FROM fantasy_team_drivers WHERE fantasy_team_id = $1', [teamId]);
         const oldConstructorsQuery = await pool.query('SELECT constructor_id FROM fantasy_team_constructors WHERE fantasy_team_id = $1', [teamId]);
-        
+
         // Mapeamos los resultados para tener arrays de ids
         const oldDriverIds = oldDriversQuery.rows.map(row => row.driver_id);
         const oldConstructorIds = oldConstructorsQuery.rows.map(row => row.constructor_id);
 
         // Contar cuántas transferencias reales se hicieron
         let totalTransfersMade = 0;
-        let remainingFree = team.free_transfers_remaining;
+        let remainingFree = teamCheck.rows[0].free_transfers_remaining;
         let pointsPenalty = 0;
 
         // Si el equipo no tenía pilotos ni escuderías, es la creación inicial
@@ -134,14 +138,14 @@ const updateTeamRoster = async (req, res) => {
 
         // Calcular costo total de pilotos
         const driversQuery = await pool.query(
-            'SELECT SUM(market_price) as total_drivers FROM drivers WHERE id IN ($1, $2, $3, $4, $5)', 
+            'SELECT SUM(market_price) as total_drivers FROM drivers WHERE id IN ($1, $2, $3, $4, $5)',
             [driver_ids[0], driver_ids[1], driver_ids[2], driver_ids[3], driver_ids[4]]
         );
         const driversCost = parseFloat(driversQuery.rows[0].total_drivers || 0);
 
         // Calcular costo total de escuderías
         const constructorsQuery = await pool.query(
-            'SELECT SUM(market_price) as total_constructors FROM constructors WHERE id IN ($1, $2)', 
+            'SELECT SUM(market_price) as total_constructors FROM constructors WHERE id IN ($1, $2)',
             [constructor_ids[0], constructor_ids[1]]
         );
         const constructorsCost = parseFloat(constructorsQuery.rows[0].total_constructors || 0);
@@ -195,7 +199,7 @@ const deleteTeam = async (req, res) => {
 
     try {
         const result = await pool.query('DELETE FROM fantasy_teams WHERE id = $1 AND user_id = $2 RETURNING id', [teamId, userId]);
-        
+
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Equipo no encontrado o no tienes permisos para borrarlo.' });
         }

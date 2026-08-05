@@ -9,13 +9,24 @@ const crypto = require('crypto'); // nativo de Node js, genera códigos aleatori
 // Crear Liga
 const createLeague = async (req, res) => {
     const ownerId = req.user.id;
-    const { name, description, max_participants, password } = req.body;
+    const { name, description, max_participants, password, fantasy_team_id } = req.body;
 
     if (!name || !max_participants) {
         return res.status(400).json({ error: 'Nombre y límite de participantes son obligatorios.' });
     }
+    if (!fantasy_team_id) {
+        return res.status(400).json({ error: 'Tenés que elegir con qué equipo vas a jugar esta liga.' });
+    }
 
     try {
+        // El dueño también tiene que unirse con un equipo suyo, si no,
+        // la liga queda "huérfana" en league_members y nunca aparece
+        // en "Mis Ligas" ni para el propio creador.
+        const teamCheck = await pool.query('SELECT id FROM fantasy_teams WHERE id = $1 AND user_id = $2', [fantasy_team_id, ownerId]);
+        if (teamCheck.rows.length === 0) {
+            return res.status(403).json({ error: 'El equipo no te pertenece o no existe.' });
+        }
+
         // Generar código alfanumérico único de 6 caracteres
         const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789';
         let joinCode = '';
@@ -39,10 +50,14 @@ const createLeague = async (req, res) => {
         `;
         const values = [ownerId, name, description, max_participants, joinCode, passwordHash];
         const result = await pool.query(query, values);
+        const league = result.rows[0];
+
+        // Agregar al dueño como miembro de su propia liga con el equipo elegido
+        await pool.query('INSERT INTO league_members (league_id, fantasy_team_id) VALUES ($1, $2)', [league.id, fantasy_team_id]);
 
         res.status(201).json({
             message: 'Liga creada con éxito.',
-            league: result.rows[0]
+            league
         });
 
     } catch (error) {
@@ -80,12 +95,12 @@ const joinLeague = async (req, res) => {
             if (!password) {
                 return res.status(401).json({ error: 'Esta liga requiere una contraseña para ingresar.' });
             }
-            
+
             const isMatch = await bcrypt.compare(password, league.password_hash);
             if (!isMatch) {
                 return res.status(401).json({ error: 'Contraseña de liga incorrecta.' });
             }
-        } 
+        }
 
         // Verificar si la liga ya está llena
         const countQuery = await pool.query('SELECT COUNT(*) as total_members FROM league_members WHERE league_id = $1', [league.id]);
@@ -117,8 +132,16 @@ const getLeagueDetails = async (req, res) => {
     const leagueId = parseInt(req.params.id);
 
     try {
-        // Datos de la liga (sin el password_hash)
-        const leagueQuery = await pool.query('SELECT id, name, description, max_participants, owner_id FROM leagues WHERE id = $1', [leagueId]);
+        // Datos de la liga (sin el password_hash) + join_code y el username
+        // del dueño, que el frontend necesita para "Código de invitación"
+        // y "Administrador" en league-detail.html
+        const leagueQuery = await pool.query(`
+            SELECT l.id, l.name, l.description, l.max_participants, l.owner_id,
+                   l.join_code, u.username AS owner_username
+            FROM leagues l
+            JOIN users u ON l.owner_id = u.id
+            WHERE l.id = $1
+        `, [leagueId]);
         if (leagueQuery.rows.length === 0) {
             return res.status(404).json({ error: 'Liga no encontrada.' });
         }
@@ -190,7 +213,7 @@ const deleteLeague = async (req, res) => {
     try {
         // Validación de seguridad directa: owner_id = userId en el WHERE
         const result = await pool.query('DELETE FROM leagues WHERE id = $1 AND owner_id = $2 RETURNING id', [leagueId, userId]);
-        
+
         if (result.rows.length === 0) {
             return res.status(404).json({ error: 'Liga no encontrada o permisos insuficientes.' });
         }
@@ -202,10 +225,40 @@ const deleteLeague = async (req, res) => {
     }
 };
 
+// Abandonar liga (sin borrarla) — la usa league-detail.js vía
+// DELETE /api/leagues/:id/members/:teamId
+const leaveLeague = async (req, res) => {
+    const leagueId = parseInt(req.params.id);
+    const teamId = parseInt(req.params.teamId);
+    const userId = req.user.id;
+
+    try {
+        // Verificar que el equipo enviado pertenezca al usuario que hace la petición
+        const teamCheck = await pool.query('SELECT id FROM fantasy_teams WHERE id = $1 AND user_id = $2', [teamId, userId]);
+        if (teamCheck.rows.length === 0) {
+            return res.status(403).json({ error: 'Ese equipo no te pertenece.' });
+        }
+
+        const result = await pool.query(
+            'DELETE FROM league_members WHERE league_id = $1 AND fantasy_team_id = $2 RETURNING *',
+            [leagueId, teamId]
+        );
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'Tu equipo no forma parte de esta liga.' });
+        }
+
+        res.status(200).json({ message: 'Abandonaste la liga correctamente.' });
+    } catch (error) {
+        console.error('Error al abandonar liga:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
 module.exports = {
     createLeague,
     joinLeague,
     getLeagueDetails,
     updateLeague,
-    deleteLeague
+    deleteLeague,
+    leaveLeague
 };

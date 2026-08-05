@@ -12,23 +12,22 @@
 </head>
 <body class="app-body">
     <!-- Menú Lateral -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div> <!-- Overlay oscuro para el fondo -->
-
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <aside class="sidebar-menu" id="sidebarMenu">
-    <div class="sidebar-header-menu">
+        <div class="sidebar-header-menu">
             <button class="close-btn" id="closeSidebar" aria-label="Cerrar menú">
                 <img src="./img/x.svg" alt="Cerrar" width="28" height="28">
             </button>
             <h2>Menú</h2>
         </div>
         <nav class="sidebar-nav">
-            <a href="home.html" class="nav-link">Inicio</a>
-            <a href="my-teams.html" class="nav-link">Equipos</a>
-            <a href="leagues.html" class="nav-link">Ligas</a>
-            <a href="rules.html" class="nav-link active">Reglas</a>
-            <a href="profile.html" class="nav-link">Perfil</a>
+            <a href="home" class="nav-link">Inicio</a>
+            <a href="my-teams" class="nav-link">Equipos</a>
+            <a href="leagues" class="nav-link">Ligas</a>
+            <a href="rules" class="nav-link">Reglas</a>
+            <a href="profile" class="nav-link">Perfil</a>
             <div class="sidebar-divider"></div>
-            <a href="index.html" class="nav-link logout-link">Cerrar Sesión</a>
+            <a href="index" class="nav-link logout-link">Cerrar Sesión</a>
         </nav>
     </aside>
 
@@ -37,55 +36,104 @@
             <img src="./img/menu.svg" alt="Menú" width="28" height="28">
         </button>
         <h1 class="header-title">Reglas del Juego</h1>
-        <a href="profile.html" class="profile-link">
+        <a href="profile" class="profile-link">
             <img src="./img/circle-user.svg" alt="Perfil" class="pfp">
         </a>
     </header>
 
     <main class="rules-container">
         
+        <!-- SECCIÓN INTRODUCCIÓN -->
         <section class="rules-box">
-            <h2>Puntuaciones</h2>
-            <p>Los puntos se concederán/deducirán en función de la actuación del Piloto/Escudería en el Gran Premio. Las clasificaciones a lo largo del fin de semana se basan en las decisiones tomadas por la FIA y la Fórmula 2®.</p>
+            <h2>Sistema de Puntuación</h2>
+            <p>Los puntos se concederán o deducirán en función de la actuación del Piloto o Escudería en cada sesión del Gran Premio, de acuerdo con las decisiones oficiales de la FIA y la Fórmula 2.</p>
         </section>
 
+        <!-- SECCIÓN CLASIFICACIÓN (QUALY) -->
         <section class="rules-box">
-            <h2>Calificación</h2>
+            <h2>Clasificación (Qualy)</h2>
+            
             <h3>Pilotos</h3>
             <table class="rules-table">
                 <tbody>
-                    <tr><td>Pole position (1º puesto)</td><td>10 puntos</td></tr>
+                    <tr><td>1º puesto (Pole Position)</td><td>10 puntos</td></tr>
                     <tr><td>2º puesto</td><td>9 puntos</td></tr>
-                    <tr><td>3º puesto a 10º puesto</td><td>De 8 a 1 punto</td></tr>
+                    <tr><td>3º a 10º puesto</td><td>De 8 a 1 punto</td></tr>
                     <tr><td>11º - 22º puesto</td><td>0 puntos</td></tr>
-                    <tr><td>Sin tiempo</td><td>-5 puntos</td></tr>
+                    <tr><td>Sin tiempo / DNF / DSQ</td><td>-5 puntos</td></tr>
                 </tbody>
             </table>
-            <p class="rules-notes">*Los pilotos que no marquen un tiempo recibirán una penalización de 5 puntos.</p>
-            
+
             <h3 class="mt-1">Escuderías</h3>
-            <p>Las Escuderías puntuarán el total combinado de sus dos pilotos en la Calificación.</p>
+            <p>El rendimiento de las escuderías en la clasificación se evalúa en función del avance de sus pilotos a las fases de eliminación:</p>
+            <table class="rules-table">
+                <tbody>
+                    <tr><td>Ningún piloto llega a la Q2</td><td>-1 punto</td></tr>
+                    <tr><td>Un piloto llega a la Q2</td><td>1 punto</td></tr>
+                    <tr><td>Ambos pilotos llegan a la Q2</td><td>3 puntos</td></tr>
+                    <tr><td>Un piloto llega a la Q3</td><td>5 puntos</td></tr>
+                    <tr><td>Ambos pilotos llegan a la Q3</td><td>10 puntos</td></tr>
+                </tbody>
+            </table>
         </section>
 
+        <!-- SECCIÓN CARRERA SPRINT -->
         <section class="rules-box">
-            <h2>Carrera</h2>
+            <h2>Carrera Sprint</h2>
+            
             <h3>Pilotos</h3>
             <table class="rules-table">
                 <tbody>
-                    <tr><td>Posiciones ganadas</td><td>1 punto por posición</td></tr>
-                    <tr><td>Posiciones perdidas</td><td>-1 punto por posición</td></tr>
-                    <tr><td>Vuelta más rápida</td><td>10 puntos</td></tr>
+                    <tr><td>1º puesto</td><td>8 puntos</td></tr>
+                    <tr><td>2º puesto</td><td>7 puntos</td></tr>
+                    <tr><td>3º puesto</td><td>6 puntos</td></tr>
+                    <tr><td>4º puesto</td><td>5 puntos</td></tr>
+                    <tr><td>5º puesto</td><td>4 puntos</td></tr>
+                    <tr><td>6º puesto</td><td>3 puntos</td></tr>
+                    <tr><td>7º puesto</td><td>2 puntos</td></tr>
+                    <tr><td>8º puesto</td><td>1 punto</td></tr>
+                    <tr><td>9º - 20º puesto</td><td>0 puntos</td></tr>
+                    <tr><td>No clasificado / DSQ / DNF</td><td>-10 puntos</td></tr>
+                </tbody>
+            </table>
+
+            <h3 class="mt-1">Escuderías</h3>
+            <p>Las Escuderías sumarán o restarán automáticamente el <strong>total combinado de los puntos de sus dos pilotos</strong> obtenidos en la Carrera Sprint.</p>
+        </section>
+
+        <!-- SECCIÓN CARRERA PRINCIPAL (FEATURE) -->
+        <section class="rules-box">
+            <h2>Carrera Principal (Feature)</h2>
+            
+            <h3>Pilotos</h3>
+            <table class="rules-table">
+                <tbody>
                     <tr><td>1º puesto</td><td>25 puntos</td></tr>
                     <tr><td>2º puesto</td><td>18 puntos</td></tr>
                     <tr><td>3º puesto</td><td>15 puntos</td></tr>
-                    <tr><td>No clasificado/DSQ</td><td>-20 puntos</td></tr>
+                    <tr><td>4º puesto</td><td>12 puntos</td></tr>
+                    <tr><td>5º puesto</td><td>10 puntos</td></tr>
+                    <tr><td>6º puesto</td><td>8 puntos</td></tr>
+                    <tr><td>7º puesto</td><td>6 puntos</td></tr>
+                    <tr><td>8º puesto</td><td>4 puntos</td></tr>
+                    <tr><td>9º puesto</td><td>2 puntos</td></tr>
+                    <tr><td>10º puesto</td><td>1 punto</td></tr>
+                    <tr><td>11º - 20º puesto</td><td>0 puntos</td></tr>
+                    <tr><td>No clasificado / DSQ / DNF</td><td>-20 puntos</td></tr>
                 </tbody>
             </table>
-            
-            <h3 class="mt-1">Gestión de equipos</h3>
+
+            <h3 class="mt-1">Escuderías</h3>
+            <p>Al igual que en la Sprint, las Escuderías acumulan o descuentan automáticamente el <strong>total combinado de los puntos de sus dos pilotos</strong> en la Carrera Principal.</p>
+        </section>
+
+        <!-- SECCIÓN GESTIÓN GENERAL -->
+        <section class="rules-box">
+            <h2>Gestión de Equipos y Límites</h2>
             <table class="rules-table">
                 <tbody>
-                    <tr><td>Exceder el límite de transferencias gratuitas</td><td>-10 puntos (por transferencia)</td></tr>
+                    <tr><td>Exceder el límite de transferencias gratuitas</td><td>-10 puntos (por transferencia extra)</td></tr>
+                    <tr><td>Límite de presupuesto inicial</td><td>100.0M</td></tr>
                 </tbody>
             </table>
         </section>

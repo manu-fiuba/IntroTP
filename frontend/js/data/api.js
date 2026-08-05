@@ -17,7 +17,7 @@
  * cuando el backend arregle los bugs de nombres de columna).
  */
 
-const API_BASE_URL = "http://localhost:5000/api"; // puerto real del backend (ver docker-compose.yml)
+const API_BASE_URL = "http://localhost:5001/api"; // puerto real del backend (ver docker-compose.yml)
 const USE_MOCK = false  ; // <-- cambiar a false cuando el backend esté levantado
 
 const TOKEN_KEY = "f2fantasy_token";

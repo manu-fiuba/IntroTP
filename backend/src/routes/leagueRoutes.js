@@ -7,10 +7,11 @@ const authenticateToken = require('../middlewares/authMiddleware'); // Se verifi
 // ==========================================
 const {
     createLeague,
-    joinLeague, 
-    getLeagueDetails, 
-    updateLeague, 
-    deleteLeague 
+    joinLeague,
+    getLeagueDetails,
+    updateLeague,
+    deleteLeague,
+    leaveLeague
 } = require('../controllers/leagueController');
 
 // ==========================================
@@ -22,5 +23,6 @@ router.post('/join', authenticateToken, joinLeague); // Acción: Unirse a una li
 router.get('/:id', getLeagueDetails); // R: Trae datos y el Leaderboard de una liga específica
 router.put('/:id', authenticateToken, updateLeague); // U: Modificar nombre, descripción o límite (Solo para el owner)
 router.delete('/:id', authenticateToken, deleteLeague); // D: Eliminar la liga entera (Solo para el owner)
+router.delete('/:id/members/:teamId', authenticateToken, leaveLeague); // Acción: Un miembro abandona la liga sin borrarla
 
 module.exports = router;

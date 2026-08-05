@@ -1,74 +1,62 @@
-// js/pages/join-league.js
-
 document.addEventListener('DOMContentLoaded', async () => {
+
+    if (!Api.session.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const currentUser = Api.session.getUser();
+    const form = document.getElementById('joinLeagueForm');
+    const errorEl = document.getElementById('joinLeagueError');
+    const submitBtn = document.getElementById('joinLeagueSubmit');
     const teamSelect = document.getElementById('join-team');
-    const joinForm = document.getElementById('join-league-form');
 
-    // ==========================================
-    // 1. CARGAR LOS EQUIPOS EN EL SELECT
-    // ==========================================
-    const loadTeamsForSelect = async () => {
-        try {
-            const response = await api.getUserTeams();
-            
-            if (response.status === 'success') {
-                const teams = response.data;
-                
-                // Reiniciamos el select
-                teamSelect.innerHTML = '<option value="" selected>Selecciona un equipo</option>';
-                
-                if (teams.length === 0) {
-                    teamSelect.innerHTML = '<option value="" selected>No tienes equipos (Crea uno primero)</option>';
-                    return;
-                }
+    function showError(message) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+    }
+    function hideError() {
+        errorEl.classList.remove('visible');
+        errorEl.textContent = '';
+    }
 
-                // Insertamos cada equipo del usuario como una opción
-                teams.forEach(team => {
-                    const option = document.createElement('option');
-                    option.value = team.id;
-                    option.textContent = team.name;
-                    teamSelect.appendChild(option);
-                });
-            }
-        } catch (error) {
-            console.error("Error cargando equipos:", error);
-            teamSelect.innerHTML = '<option value="">Error al cargar equipos</option>';
+    // Poblar el <select> con los equipos reales del usuario
+    try {
+        const myTeams = await Api.users.getTeams(currentUser.id);
+        if (myTeams.length === 0) {
+            showError('Todavía no tenés ningún equipo — creá uno antes de unirte a una liga.');
+            submitBtn.disabled = true;
+        } else {
+            myTeams.forEach(team => {
+                const option = document.createElement('option');
+                option.value = team.id;
+                option.textContent = team.name;
+                teamSelect.appendChild(option);
+            });
         }
-    };
-
-    // ==========================================
-    // 2. MANEJAR EL ENVÍO DEL FORMULARIO
-    // ==========================================
-    joinForm.addEventListener('submit', async (e) => {
-        e.preventDefault(); // Evita que la página se recargue
-
-        const code = document.getElementById('join-code').value;
-        const password = document.getElementById('join-password').value;
-        const teamId = teamSelect.value;
-
-        // Cambiamos el texto del botón mientras "carga"
-        const submitBtn = joinForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.textContent = 'Uniéndose...';
+    } catch (error) {
+        showError('No se pudieron cargar tus equipos: ' + error.message);
         submitBtn.disabled = true;
+    }
+
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideError();
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Uniéndote...';
 
         try {
-            // Simulamos el envío a nuestro backend mock
-            const response = await api.joinLeague({ code, password, teamId });
-
-            if (response.status === 'success') {
-                alert(response.message); // En una app real usaríamos un modal o toast
-                window.location.href = 'leagues.html'; // Redirigimos a la vista de ligas
-            }
+            await Api.leagues.join({
+                join_code: document.getElementById('join-code').value.trim(),
+                password: document.getElementById('join-password').value,
+                fantasy_team_id: Number(teamSelect.value)
+            });
+            window.location.href = 'leagues.html';
         } catch (error) {
-            alert('Hubo un error al intentar unirse a la liga.');
-        } finally {
-            // Restauramos el botón
-            submitBtn.textContent = originalText;
+            showError(error.message);
             submitBtn.disabled = false;
+            submitBtn.textContent = 'Unirse';
         }
     });
-
-    // Ejecutamos la carga inicial
-    loadTeamsForSelect();
 });

@@ -312,14 +312,16 @@ const MockLeagues = {
     async create({ name, description, max_participants, password }) {
         await mockDelay();
         const ownerId = mockRequireAuth();
-        if (!name || !max_participants || !password) {
-            throw new Error("Nombre, límite de participantes y contraseña son obligatorios.");
+        if (!name || !max_participants) {
+            throw new Error("Nombre y límite de participantes son obligatorios.");
         }
         const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
         let joinCode = "";
         for (let i = 0; i < 6; i++) joinCode += chars[Math.floor(Math.random() * chars.length)];
 
-        const newLeague = { id: MOCK_DB.nextIds.leagues++, owner_id: ownerId, name, description, max_participants, join_code: joinCode, password };
+        // Igual que el backend real: sin contraseña, la liga queda pública (sin hash).
+        const hasPassword = password && password.trim() !== "";
+        const newLeague = { id: MOCK_DB.nextIds.leagues++, owner_id: ownerId, name, description, max_participants, join_code: joinCode, password: hasPassword ? password : null };
         MOCK_DB.leagues.push(newLeague);
         return { message: "Liga creada con éxito.", league: { id: newLeague.id, name: newLeague.name, join_code: newLeague.join_code } };
     },
@@ -327,15 +329,20 @@ const MockLeagues = {
     async join({ join_code, password, fantasy_team_id }) {
         await mockDelay();
         const userId = mockRequireAuth();
-        if (!join_code || !password || !fantasy_team_id) {
-            throw new Error("Código de liga, contraseña e ID de tu equipo son obligatorios.");
+        if (!join_code || !fantasy_team_id) {
+            throw new Error("Código de liga e ID de tu equipo son obligatorios.");
         }
         const team = MOCK_DB.fantasy_teams.find(t => t.id === Number(fantasy_team_id) && t.user_id === userId);
         if (!team) throw new Error("El equipo no te pertenece o no existe.");
 
         const league = MOCK_DB.leagues.find(l => l.join_code === join_code);
         if (!league) throw new Error("Liga no encontrada.");
-        if (league.password !== password) throw new Error("Contraseña de liga incorrecta.");
+
+        // Solo se valida contraseña si la liga es privada (tiene una seteada).
+        if (league.password !== null) {
+            if (!password) throw new Error("Esta liga requiere una contraseña para ingresar.");
+            if (league.password !== password) throw new Error("Contraseña de liga incorrecta.");
+        }
 
         const currentMembers = MOCK_DB.league_members.filter(m => m.league_id === league.id).length;
         if (currentMembers >= league.max_participants) throw new Error("La liga ya ha alcanzado su límite de participantes.");

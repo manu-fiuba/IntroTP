@@ -45,38 +45,40 @@
     </header>
 
     <main class="league-detail-container">
-        
+
+        <p class="form-error" id="leagueDetailError"></p>
+
         <!-- Tarjeta de Información de la Liga -->
-        <section class="league-info-card">
+        <section class="league-info-card" id="leagueInfoCard" style="display: none;">
             <div class="league-info-header">
-                <h2 class="league-title-large">Amigos de la Facu</h2>
+                <h2 class="league-title-large" id="leagueTitle"></h2>
                 
-                <div class="league-position-badge-blue">
-                    <strong>2&deg;</strong>
+                <div class="league-position-badge-blue" id="leaguePositionBadge" style="display: none;">
+                    <strong id="leaguePosition"></strong>
                 </div>
             </div>
             
-            <p class="league-desc-text">El que pierde a fin de año paga el asado. Solo cuentas principales.</p>
+            <p class="league-desc-text" id="leagueDesc"></p>
             
             <div class="league-meta-grid">
                 <div class="meta-item">
                     <span class="meta-label">Administrador</span>
-                    <span class="meta-value">Tato Fernandez</span>
+                    <span class="meta-value" id="leagueOwner"></span>
                 </div>
-                <div class="meta-item">
+                <div class="meta-item" id="myTeamMeta" style="display: none;">
                     <span class="meta-label">Tu Equipo</span>
-                    <span class="meta-value">Escudería Huevo</span>
+                    <span class="meta-value" id="leagueMyTeam"></span>
                 </div>
 
-                <div class="meta-item col-span-full">
+                <div class="meta-item col-span-full" id="joinCodeMeta" style="display: none;">
                     <span class="meta-label">Código de invitación</span>
-                    <div class="join-code-box">X89B-2026</div>
+                    <div class="join-code-box" id="leagueJoinCode"></div>
                 </div>
             </div>
         </section>
 
         <!-- Tabla de Posiciones -->
-        <section class="leaderboard-section">
+        <section class="leaderboard-section" id="leaderboardSection" style="display: none;">
             <h3 class="section-subtitle">Tabla de Posiciones</h3>
             
             <div class="table-responsive">
@@ -88,76 +90,21 @@
                             <th class="col-pts">Puntos</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- Fila 1: Oro -->
-                        <tr class="rank-1">
-                            <td class="col-pos">1</td>
-                            <td class="col-team">
-                                <div class="participant-info">
-                                    <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
-                                    <div class="participant-text">
-                                        <span class="user-name">Matías Fernandez</span>
-                                        <span class="team-name">Corsa Power</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="col-pts">1340</td>
-                        </tr>
-                        
-                        <!-- Fila 2: Plata + Usuario Actual -->
-                        <tr class="rank-2 current-user-row">
-                            <td class="col-pos">2</td>
-                            <td class="col-team">
-                                <div class="participant-info">
-                                    <img src="./img/circle-user.svg" alt="Tu Perfil" class="participant-avatar">
-                                    <div class="participant-text">
-                                        <span class="user-name">Tu Nombre</span>
-                                        <span class="team-name">Escudería Huevo</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="col-pts">1250</td>
-                        </tr>
-
-                        <!-- Fila 3: Bronce -->
-                        <tr class="rank-3">
-                            <td class="col-pos">3</td>
-                            <td class="col-team">
-                                <div class="participant-info">
-                                    <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
-                                    <div class="participant-text">
-                                        <span class="user-name">Juan Pérez</span>
-                                        <span class="team-name">Escudería Pistera</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="col-pts">1120</td>
-                        </tr>
-                        
-                        <!-- Fila 4 -->
-                        <tr>
-                            <td class="col-pos">4</td>
-                            <td class="col-team">
-                                <div class="participant-info">
-                                    <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
-                                    <div class="participant-text">
-                                        <span class="user-name">Lucas Gómez</span>
-                                        <span class="team-name">Frenada Larga</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="col-pts">980</td>
-                        </tr>
-                    </tbody>
+                    <tbody id="leaderboardBody"></tbody>
                 </table>
             </div>
         </section>
 
         <!-- Abandonar -->
-        <section class="danger-zone">
-            <button class="btn btn-danger btn-full">Abandonar Liga</button>
+        <section class="danger-zone" id="dangerZone" style="display: none;">
+            <button class="btn btn-danger btn-full" id="leaveLeagueBtn">Abandonar Liga</button>
         </section>
 
+    </main>
+
     <script src="./js/sidebar.js"></script>
+    <script src="./js/data/mock-data.js"></script>
+    <script src="./js/data/api.js"></script>
+    <script src="./js/pages/league-detail.js"></script>
 </body>
 </html>

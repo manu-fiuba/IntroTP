@@ -361,11 +361,39 @@ const MockLeagues = {
             })
             .sort((a, b) => b.total_points - a.total_points);
 
+        const owner = MOCK_DB.users.find(u => u.id === league.owner_id);
+
         return {
             id: league.id, name: league.name, description: league.description,
             max_participants: league.max_participants, owner_id: league.owner_id,
+            // ⚠️ owner_username y join_code NO vienen del backend real hoy
+            // (GET /api/leagues/:id solo devuelve id/name/description/
+            // max_participants/owner_id/leaderboard). Van a necesitar
+            // agregarlos para que "Administrador" y "Código de invitación"
+            // funcionen de verdad.
+            owner_username: owner ? owner.username : null,
+            join_code: league.join_code,
             leaderboard
         };
+    },
+
+    // ⚠️ No existe ningún endpoint real para que un miembro abandone una
+    // liga sin borrarla — solo hay DELETE /api/leagues/:id (borra la liga
+    // entera, y encima solo lo puede hacer el dueño). Van a necesitar algo
+    // como DELETE /api/leagues/:id/members/:teamId.
+    async leave(leagueId, teamId) {
+        await mockDelay();
+        const userId = mockRequireAuth();
+        const team = MOCK_DB.fantasy_teams.find(t => t.id === Number(teamId) && t.user_id === userId);
+        if (!team) throw new Error("Ese equipo no te pertenece.");
+        const before = MOCK_DB.league_members.length;
+        MOCK_DB.league_members = MOCK_DB.league_members.filter(
+            m => !(m.league_id === Number(leagueId) && m.fantasy_team_id === Number(teamId))
+        );
+        if (MOCK_DB.league_members.length === before) {
+            throw new Error("Tu equipo no forma parte de esta liga.");
+        }
+        return { message: "Abandonaste la liga correctamente." };
     },
 
     async update(id, { name, description, max_participants }) {
@@ -480,7 +508,9 @@ const Api = {
         join: (data) => USE_MOCK ? MockLeagues.join(data) : request("POST", "/leagues/join", data, true),
         getById: (id) => USE_MOCK ? MockLeagues.getById(id) : request("GET", `/leagues/${id}`),
         update: (id, data) => USE_MOCK ? MockLeagues.update(id, data) : request("PUT", `/leagues/${id}`, data, true),
-        delete: (id) => USE_MOCK ? MockLeagues.delete(id) : request("DELETE", `/leagues/${id}`, undefined, true)
+        delete: (id) => USE_MOCK ? MockLeagues.delete(id) : request("DELETE", `/leagues/${id}`, undefined, true),
+        // ⚠️ Mock-only: no existe endpoint real para esto todavía (ver nota en MockLeagues.leave).
+        leave: (leagueId, teamId) => USE_MOCK ? MockLeagues.leave(leagueId, teamId) : request("DELETE", `/leagues/${leagueId}/members/${teamId}`, undefined, true)
     },
 
     f2: {

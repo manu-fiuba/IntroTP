@@ -1,104 +1,114 @@
-// js/pages/league-detail.js
-
 document.addEventListener('DOMContentLoaded', async () => {
-    
-    // Obtenemos el ID de la liga de la URL (Ej: league-detail.html?id=123)
-    const urlParams = new URLSearchParams(window.location.search);
-    const leagueId = urlParams.get('id') || '1'; // '1' por defecto para el mock
-    
-    // Referencias al DOM
-    const ui = {
-        name: document.getElementById('league-name'),
-        position: document.getElementById('league-position'),
-        description: document.getElementById('league-description'),
-        admin: document.getElementById('league-admin'),
-        userTeam: document.getElementById('league-user-team'),
-        code: document.getElementById('league-code'),
-        leaderboard: document.getElementById('leaderboard-body'),
-        leaveBtn: document.getElementById('leave-league-btn')
-    };
 
-    // ==========================================
-    // 1. OBTENER Y MOSTRAR DATOS
-    // ==========================================
-    const loadLeagueData = async () => {
-        try {
-            const response = await api.getLeagueDetails(leagueId);
-            
-            if (response.status === 'success') {
-                const data = response.data;
-                renderLeagueInfo(data);
-                renderLeaderboard(data.leaderboard);
-            }
-        } catch (error) {
-            console.error("Error al cargar la liga:", error);
-            ui.name.textContent = 'Error al cargar los datos';
-        }
-    };
+    if (!Api.session.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+    }
 
-    const renderLeagueInfo = (data) => {
-        ui.name.textContent = data.name;
-        ui.position.textContent = data.userPosition;
-        ui.description.textContent = data.description;
-        ui.admin.textContent = data.adminName;
-        ui.userTeam.textContent = data.userTeamName;
-        ui.code.textContent = data.inviteCode;
-    };
+    const currentUser = Api.session.getUser();
+    const leagueId = new URLSearchParams(window.location.search).get('leagueId');
+    const errorEl = document.getElementById('leagueDetailError');
 
-    const renderLeaderboard = (leaderboard) => {
-        ui.leaderboard.innerHTML = ''; // Limpiar tabla
+    function showError(message) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+    }
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str ?? '';
+        return div.innerHTML;
+    }
 
-        leaderboard.forEach(participant => {
-            // Clases especiales para el top 3 y para el usuario actual
-            let rowClass = participant.position <= 3 ? `rank-${participant.position}` : '';
-            if (participant.isCurrentUser) {
-                rowClass += ' current-user-row';
-            }
+    if (!leagueId) {
+        showError('No se especificó qué liga mostrar.');
+        return;
+    }
 
-            const row = `
-                <tr class="${rowClass.trim()}">
-                    <td class="col-pos">${participant.position}</td>
-                    <td class="col-team">
-                        <div class="participant-info">
-                            <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
-                            <div class="participant-text">
-                                <span class="user-name">${participant.userName}</span>
-                                <span class="team-name">${participant.teamName}</span>
-                            </div>
+    let league;
+    let myTeams;
+    let myEntry = null;
+
+    try {
+        [league, myTeams] = await Promise.all([
+            Api.leagues.getById(leagueId),
+            Api.users.getTeams(currentUser.id)
+        ]);
+    } catch (error) {
+        showError('No se pudo cargar la liga: ' + error.message);
+        return;
+    }
+
+    const myTeamIds = myTeams.map(t => t.id);
+    const myEntryIndex = league.leaderboard.findIndex(entry => myTeamIds.includes(entry.team_id));
+    if (myEntryIndex >= 0) myEntry = league.leaderboard[myEntryIndex];
+
+    // --- Tarjeta de información ---
+    document.getElementById('leagueInfoCard').style.display = '';
+    document.title = `F2 Fantasy | ${league.name}`;
+    document.getElementById('leagueTitle').textContent = league.name;
+    document.getElementById('leagueDesc').textContent = league.description;
+    document.getElementById('leagueOwner').textContent = league.owner_username || 'Desconocido';
+
+    if (myEntryIndex >= 0) {
+        document.getElementById('leaguePositionBadge').style.display = '';
+        document.getElementById('leaguePosition').textContent = `${myEntryIndex + 1}°`;
+        document.getElementById('myTeamMeta').style.display = '';
+        document.getElementById('leagueMyTeam').textContent = myEntry.team_name;
+    }
+
+    if (league.join_code) {
+        document.getElementById('joinCodeMeta').style.display = '';
+        document.getElementById('leagueJoinCode').textContent = league.join_code;
+    }
+
+    // --- Tabla de posiciones ---
+    if (league.leaderboard.length > 0) {
+        document.getElementById('leaderboardSection').style.display = '';
+        const tbody = document.getElementById('leaderboardBody');
+        league.leaderboard.forEach((entry, index) => {
+            const rank = index + 1;
+            const tr = document.createElement('tr');
+            let rowClasses = [];
+            if (rank === 1) rowClasses.push('rank-1');
+            if (rank === 2) rowClasses.push('rank-2');
+            if (rank === 3) rowClasses.push('rank-3');
+            if (entry.team_id === myEntry?.team_id) rowClasses.push('current-user-row');
+            tr.className = rowClasses.join(' ');
+
+            tr.innerHTML = `
+                <td class="col-pos">${rank}</td>
+                <td class="col-team">
+                    <div class="participant-info">
+                        <img src="./img/circle-user.svg" alt="Perfil" class="participant-avatar">
+                        <div class="participant-text">
+                            <span class="user-name">${escapeHtml(entry.manager_name)}</span>
+                            <span class="team-name">${escapeHtml(entry.team_name)}</span>
                         </div>
-                    </td>
-                    <td class="col-pts">${participant.points}</td>
-                </tr>
+                    </div>
+                </td>
+                <td class="col-pts">${entry.total_points}</td>
             `;
-            ui.leaderboard.innerHTML += row;
+            tbody.appendChild(tr);
         });
-    };
+    }
 
-    // ==========================================
-    // 2. ACCIONES (ABANDONAR LIGA)
-    // ==========================================
-    ui.leaveBtn.addEventListener('click', async () => {
-        const confirmLeave = confirm("¿Estás seguro de que querés abandonar esta liga? Perderás todo tu progreso en ella.");
-        
-        if (confirmLeave) {
-            const originalText = ui.leaveBtn.textContent;
-            ui.leaveBtn.textContent = 'Saliendo...';
-            ui.leaveBtn.disabled = true;
-
+    // --- Abandonar liga ---
+    if (myEntry) {
+        const dangerZone = document.getElementById('dangerZone');
+        dangerZone.style.display = '';
+        const leaveBtn = document.getElementById('leaveLeagueBtn');
+        leaveBtn.addEventListener('click', async () => {
+            if (!confirm(`¿Seguro que querés abandonar "${league.name}" con ${myEntry.team_name}?`)) return;
+            leaveBtn.disabled = true;
+            leaveBtn.textContent = 'Abandonando...';
             try {
-                const response = await api.leaveLeague(leagueId);
-                if (response.status === 'success') {
-                    alert(response.message);
-                    window.location.href = 'leagues.html'; // Redirigir al listado general
-                }
+                await Api.leagues.leave(league.id, myEntry.team_id);
+                window.location.href = 'leagues.html';
             } catch (error) {
-                alert("Ocurrió un error al intentar salir de la liga.");
-                ui.leaveBtn.textContent = originalText;
-                ui.leaveBtn.disabled = false;
+                showError(error.message);
+                leaveBtn.disabled = false;
+                leaveBtn.textContent = 'Abandonar Liga';
             }
-        }
-    });
-
-    // Iniciar carga al abrir la página
-    loadLeagueData();
+        });
+    }
 });

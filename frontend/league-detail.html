@@ -45,38 +45,40 @@
     </header>
 
     <main class="league-detail-container">
-        
+
+        <p class="form-error" id="leagueDetailError"></p>
+
         <!-- Tarjeta de Información de la Liga -->
-        <section class="league-info-card">
+        <section class="league-info-card" id="leagueInfoCard" style="display: none;">
             <div class="league-info-header">
-                <h2 class="league-title-large" id="league-name">Cargando...</h2>
+                <h2 class="league-title-large" id="leagueTitle"></h2>
                 
-                <div class="league-position-badge-blue">
-                    <strong id="league-position">-</strong>
+                <div class="league-position-badge-blue" id="leaguePositionBadge" style="display: none;">
+                    <strong id="leaguePosition"></strong>
                 </div>
             </div>
             
-            <p class="league-desc-text" id="league-description">Cargando descripción...</p>
+            <p class="league-desc-text" id="leagueDesc"></p>
             
             <div class="league-meta-grid">
                 <div class="meta-item">
                     <span class="meta-label">Administrador</span>
-                    <span class="meta-value" id="league-admin">-</span>
+                    <span class="meta-value" id="leagueOwner"></span>
                 </div>
-                <div class="meta-item">
+                <div class="meta-item" id="myTeamMeta" style="display: none;">
                     <span class="meta-label">Tu Equipo</span>
-                    <span class="meta-value" id="league-user-team">-</span>
+                    <span class="meta-value" id="leagueMyTeam"></span>
                 </div>
 
-                <div class="meta-item col-span-full">
+                <div class="meta-item col-span-full" id="joinCodeMeta" style="display: none;">
                     <span class="meta-label">Código de invitación</span>
-                    <div class="join-code-box" id="league-code">-</div>
+                    <div class="join-code-box" id="leagueJoinCode"></div>
                 </div>
             </div>
         </section>
 
         <!-- Tabla de Posiciones -->
-        <section class="leaderboard-section">
+        <section class="leaderboard-section" id="leaderboardSection" style="display: none;">
             <h3 class="section-subtitle">Tabla de Posiciones</h3>
             
             <div class="table-responsive">
@@ -88,23 +90,21 @@
                             <th class="col-pts">Puntos</th>
                         </tr>
                     </thead>
-                    <tbody id="leaderboard-body">
-                        <!-- JS inyectará las filas acá -->
-                    </tbody>
+                    <tbody id="leaderboardBody"></tbody>
                 </table>
             </div>
         </section>
 
         <!-- Abandonar -->
-        <section class="danger-zone">
-            <button class="btn btn-danger btn-full" id="leave-league-btn">Abandonar Liga</button>
+        <section class="danger-zone" id="dangerZone" style="display: none;">
+            <button class="btn btn-danger btn-full" id="leaveLeagueBtn">Abandonar Liga</button>
         </section>
 
-    </main> <!-- Cerrando el main que tenías arriba -->
+    </main>
 
     <script src="./js/sidebar.js"></script>
     <script src="./js/data/mock-data.js"></script>
-    <script src="./js/api-mock.js"></script>
+    <script src="./js/data/api.js"></script>
     <script src="./js/pages/league-detail.js"></script>
 </body>
 </html>

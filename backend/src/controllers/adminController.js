@@ -46,15 +46,28 @@ const createResult = async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *;
         `;
-        const values = [race_id, entity_id, entity_type, qualy_points || 0, sprint_points || 0, feature_points || 0];
+        const values = [race_id, entity_id, entity_type, (qualy_points || 0), (sprint_points || 0), (feature_points || 0)];
         const result = await pool.query(query, values);
 
-        const totalNewPoints =qualy_points || 0 + sprint_points || 0 + feature_points || 0
+        const totalNewPoints = (qualy_points || 0) + (sprint_points || 0) + (feature_points || 0);
         await applyPointsToEntities(entity_id, entity_type, totalNewPoints);
 
         res.status(201).json({ message: 'Resultado cargado exitosamente', result: result.rows[0] });
     } catch (error) {
         console.error('Error al cargar resultado:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
+// Obtener resultados de una carrera específica
+const getResults = async (req, res) => {
+    const raceId = parseInt(req.params.race_id);
+    try {
+        const query = 'SELECT * FROM race_results WHERE race_id = $1';
+        const result = await pool.query(query, [raceId]);
+        res.status(200).json(result.rows);
+    } catch (error) {
+        console.error('Error al obtener resultados:', error);
         res.status(500).json({ error: 'Error interno del servidor.' });
     }
 };
@@ -150,6 +163,7 @@ const closeRaceWeekend = async (req, res) => {
 
 module.exports = {
     createResult,
+    getResults,
     updateResult,
     deleteResult,
     closeRaceWeekend

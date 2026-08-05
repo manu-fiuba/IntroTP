@@ -18,7 +18,7 @@
  */
 
 const API_BASE_URL = "http://localhost:5000/api"; // puerto real del backend (ver docker-compose.yml)
-const USE_MOCK = true; // <-- cambiar a false cuando el backend esté levantado
+const USE_MOCK = false  ; // <-- cambiar a false cuando el backend esté levantado
 
 const TOKEN_KEY = "f2fantasy_token";
 const USER_KEY = "f2fantasy_user";
@@ -323,6 +323,10 @@ const MockLeagues = {
         const hasPassword = password && password.trim() !== "";
         const newLeague = { id: MOCK_DB.nextIds.leagues++, owner_id: ownerId, name, description, max_participants, join_code: joinCode, password: hasPassword ? password : null };
         MOCK_DB.leagues.push(newLeague);
+        const userTeam = MOCK_DB.fantasy_teams.find(t => t.user_id === ownerId);
+        if (userTeam) {
+            MOCK_DB.league_members.push({ league_id: newLeague.id, fantasy_team_id: userTeam.id });
+        }
         return { message: "Liga creada con éxito.", league: { id: newLeague.id, name: newLeague.name, join_code: newLeague.join_code } };
     },
 

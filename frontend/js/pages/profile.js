@@ -1,112 +1,99 @@
-// js/pages/profile.js
+document.addEventListener('DOMContentLoaded', () => {
 
-document.addEventListener('DOMContentLoaded', async () => {
-    // Referencias a los elementos visuales
-    const displayName = document.getElementById('display-name');
-    const displayUsername = document.getElementById('display-username');
-    
-    // Referencias a los inputs del formulario de edición
-    const editForm = document.getElementById('edit-profile-form');
+    // Sin sesión, no hay perfil que mostrar.
+    if (!Api.session.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    const currentUser = Api.session.getUser();
+
+    const nameEl = document.getElementById('profileName');
+    const usernameEl = document.getElementById('profileUsername');
     const firstNameInput = document.getElementById('firstname');
     const lastNameInput = document.getElementById('lastname');
-    
-    // Referencia al formulario de contraseña
-    const passwordForm = document.getElementById('change-password-form');
 
-    // ==========================================
-    // 1. CARGAR DATOS DEL PERFIL
-    // ==========================================
-    const loadProfile = async () => {
+    function showMessage(el, message) {
+        el.textContent = message;
+        el.classList.add('visible');
+    }
+    function hideMessage(el) {
+        el.classList.remove('visible');
+        el.textContent = '';
+    }
+
+    // --- Cargar los datos actuales del usuario ---
+    Api.users.getById(currentUser.id)
+        .then(user => {
+            const fullName = [user.first_name, user.last_name].filter(Boolean).join(' ');
+            nameEl.textContent = fullName || user.username;
+            usernameEl.textContent = `@${user.username}`;
+            firstNameInput.value = user.first_name || '';
+            lastNameInput.value = user.last_name || '';
+        })
+        .catch(() => {
+            nameEl.textContent = currentUser.username;
+            usernameEl.textContent = `@${currentUser.username}`;
+        });
+
+    // --- Formulario "Editar Datos" ---
+    const editForm = document.getElementById('editDataForm');
+    const editError = document.getElementById('editDataError');
+    const editSuccess = document.getElementById('editDataSuccess');
+    const editSubmit = document.getElementById('editDataSubmit');
+
+    editForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideMessage(editError);
+        hideMessage(editSuccess);
+
+        editSubmit.disabled = true;
+        editSubmit.textContent = 'Guardando...';
+
         try {
-            const response = await api.getUserProfile();
-            
-            if (response.status === 'success') {
-                const user = response.data;
-                
-                // Actualizar la tarjeta superior
-                displayName.textContent = `${user.firstName} ${user.lastName}`;
-                displayUsername.textContent = `@${user.username}`;
-                
-                // Precompletar los inputs del formulario
-                firstNameInput.value = user.firstName;
-                lastNameInput.value = user.lastName;
-            }
-        } catch (error) {
-            console.error("Error al cargar el perfil:", error);
-            displayName.textContent = 'Error al cargar';
-        }
-    };
-
-    // ==========================================
-    // 2. GUARDAR CAMBIOS DEL PERFIL
-    // ==========================================
-    editForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const submitBtn = editForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Guardando...';
-        submitBtn.disabled = true;
-
-        try {
-            const response = await api.updateUserProfile({
-                firstName: firstNameInput.value,
-                lastName: lastNameInput.value
+            const result = await Api.users.update(currentUser.id, {
+                first_name: firstNameInput.value.trim(),
+                last_name: lastNameInput.value.trim()
             });
-
-            if (response.status === 'success') {
-                alert(response.message);
-                // Refrescamos la tarjeta visual
-                displayName.textContent = `${firstNameInput.value} ${lastNameInput.value}`;
-            }
+            nameEl.textContent = [result.user.first_name, result.user.last_name].filter(Boolean).join(' ') || result.user.username;
+            showMessage(editSuccess, result.message);
         } catch (error) {
-            alert('Error al guardar los cambios.');
+            showMessage(editError, error.message);
         } finally {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            editSubmit.disabled = false;
+            editSubmit.textContent = 'Guardar Cambios';
         }
     });
 
-    // ==========================================
-    // 3. ACTUALIZAR CONTRASEÑA
-    // ==========================================
-    passwordForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
+    // --- Formulario "Cambiar Contraseña" ---
+    const passwordForm = document.getElementById('changePasswordForm');
+    const passwordError = document.getElementById('changePasswordError');
+    const passwordSuccess = document.getElementById('changePasswordSuccess');
+    const passwordSubmit = document.getElementById('changePasswordSubmit');
+
+    passwordForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        hideMessage(passwordError);
+        hideMessage(passwordSuccess);
+
         const currentPassword = document.getElementById('current-password').value;
         const newPassword = document.getElementById('new-password').value;
-        const repeatPassword = document.getElementById('repeat-password').value;
+        const repeatNewPassword = document.getElementById('repeat-password').value;
 
-        // Validación rápida en frontend
-        if (newPassword !== repeatPassword) {
-            return alert('Las contraseñas nuevas no coinciden.');
-        }
-
-        const submitBtn = passwordForm.querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        
-        submitBtn.textContent = 'Actualizando...';
-        submitBtn.disabled = true;
+        passwordSubmit.disabled = true;
+        passwordSubmit.textContent = 'Actualizando...';
 
         try {
-            const response = await api.changePassword({
-                currentPassword,
-                newPassword,
-                repeatPassword
+            const result = await Api.users.updatePassword(currentUser.id, {
+                currentPassword, newPassword, repeatNewPassword
             });
-
-            if (response.status === 'success') {
-                alert(response.message);
-                passwordForm.reset(); // Vaciamos los inputs
-            }
+            showMessage(passwordSuccess, result.message);
+            passwordForm.reset();
         } catch (error) {
-            alert(error.message || 'Error al cambiar la contraseña.');
+            showMessage(passwordError, error.message);
         } finally {
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
+            passwordSubmit.disabled = false;
+            passwordSubmit.textContent = 'Actualizar Contraseña';
         }
     });
-
-    // Iniciar carga al abrir la página
-    loadProfile();
 });

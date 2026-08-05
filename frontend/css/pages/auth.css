@@ -111,3 +111,14 @@
 .form-error.visible {
     display: block;
 }
+
+.form-success {
+    display: none;
+    color: #6bcf7f;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.form-success.visible {
+    display: block;
+}

@@ -53,59 +53,65 @@
         <!-- Box con foto, nombre y arroba -->
         <section class="profile-card">
             <img src="./img/circle-user.svg" alt="Foto de perfil" class="profile-avatar">
-            <h2 class="profile-name" id="display-name">Cargando...</h2>
-            <span class="profile-username" id="display-username">@...</span>
+            <h2 class="profile-name" id="profileName">Cargando...</h2>
+            <span class="profile-username" id="profileUsername"></span>
         </section>
 
-        <!-- Formulario para editar los datos -->
-        <form class="auth-card" id="edit-profile-form">
+        <!-- Formulario para editar los datos (menos el arroba) -->
+        <form class="auth-card" id="editDataForm">
             <h2>Editar Datos</h2>
+
+            <p class="form-error" id="editDataError"></p>
+            <p class="form-success" id="editDataSuccess"></p>
 
             <div class="form-group">
                 <label for="firstname">Nombre</label>
-                <input type="text" id="firstname" name="firstname" required>
+                <input type="text" id="firstname" name="firstname">
             </div>
 
             <div class="form-group">
                 <label for="lastname">Apellido</label>
-                <input type="text" id="lastname" name="lastname" required>
+                <input type="text" id="lastname" name="lastname">
             </div>
 
             <div class="form-group">
                 <label for="photo">Cambiar foto</label>
-                <input type="file" id="photo" name="photo" accept="image/*">
+                <input type="file" id="photo" name="photo" accept="image/*" disabled>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full">Guardar Cambios</button>
+            <button type="submit" class="btn btn-primary btn-full" id="editDataSubmit">Guardar Cambios</button>
         </form>
 
         <!-- Formulario para cambiar la contraseña -->
-        <form class="auth-card" id="change-password-form">
+        <form class="auth-card" id="changePasswordForm">
             <h2>Cambiar Contraseña</h2>
+
+            <p class="form-error" id="changePasswordError"></p>
+            <p class="form-success" id="changePasswordSuccess"></p>
 
             <div class="form-group">
                 <label for="current-password">Contraseña actual</label>
-                <input type="password" id="current-password" name="current-password" placeholder="Ingresa tu contraseña actual" required>
+                <input type="password" id="current-password" name="current-password" placeholder="Ingresa tu contraseña actual">
             </div>
 
             <div class="form-group">
                 <label for="new-password">Nueva contraseña</label>
-                <input type="password" id="new-password" name="new-password" placeholder="Ingresa tu nueva contraseña" required>
+                <input type="password" id="new-password" name="new-password" placeholder="Ingresa tu nueva contraseña">
             </div>
 
             <div class="form-group">
                 <label for="repeat-password">Repetir nueva contraseña</label>
-                <input type="password" id="repeat-password" name="repeat-password" placeholder="Repite tu nueva contraseña" required>
+                <input type="password" id="repeat-password" name="repeat-password" placeholder="Repite tu nueva contraseña">
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full">Actualizar Contraseña</button>
+            <button type="submit" class="btn btn-primary btn-full" id="changePasswordSubmit">Actualizar Contraseña</button>
         </form>
 
     </main>
 
     <script src="./js/sidebar.js"></script>
     <script src="./js/data/mock-data.js"></script>
-    <script src="./js/api-mock.js"></script>
+    <script src="./js/data/api.js"></script>
     <script src="./js/pages/profile.js"></script>
 </body>
 </html>

@@ -17,8 +17,8 @@
  * cuando el backend arregle los bugs de nombres de columna).
  */
 
-const API_BASE_URL = "http://localhost:3000/api";
-const USE_MOCK = false; // <-- cambiar a false cuando el backend esté levantado
+const API_BASE_URL = "http://localhost:5000/api"; // puerto real del backend (ver docker-compose.yml)
+const USE_MOCK = true; // <-- cambiar a false cuando el backend esté levantado
 
 const TOKEN_KEY = "f2fantasy_token";
 const USER_KEY = "f2fantasy_user";
@@ -129,7 +129,10 @@ const MockUsers = {
         await mockDelay();
         const user = MOCK_DB.users.find(u => u.id === Number(id));
         if (!user) throw new Error("Usuario no encontrado.");
-        return { id: user.id, username: user.username };
+        // NOTA: el backend real hoy solo hace "SELECT id, username" acá,
+        // sin first_name/last_name. Para que profile.html pueda mostrar
+        // el nombre completo, van a necesitar agregarlos a esa query.
+        return { id: user.id, username: user.username, first_name: user.first_name, last_name: user.last_name };
     },
 
     async getTeams(id) {

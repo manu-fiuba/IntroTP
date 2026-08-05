@@ -299,6 +299,12 @@ const MockTeams = {
         if (!team) throw new Error("Equipo no encontrado o no tienes permisos para borrarlo.");
         MOCK_DB.fantasy_teams = MOCK_DB.fantasy_teams.filter(t => t !== team);
         return { message: "Equipo eliminado correctamente." };
+    },
+
+    // ⚠️ No hay endpoint real para esto todavía (ver nota en mock-data.js).
+    async getRaceHistory(id) {
+        await mockDelay();
+        return MOCK_DB.team_race_history[id] || { lastRace: null, bestWeek: null };
     }
 };
 
@@ -464,7 +470,9 @@ const Api = {
         create: (data) => USE_MOCK ? MockTeams.create(data) : request("POST", "/teams", data, true),
         getById: (id) => USE_MOCK ? MockTeams.getById(id) : request("GET", `/teams/${id}`),
         updateRoster: (id, data) => USE_MOCK ? MockTeams.updateRoster(id, data) : request("PUT", `/teams/${id}`, data, true),
-        delete: (id) => USE_MOCK ? MockTeams.delete(id) : request("DELETE", `/teams/${id}`, undefined, true)
+        delete: (id) => USE_MOCK ? MockTeams.delete(id) : request("DELETE", `/teams/${id}`, undefined, true),
+        // ⚠️ Mock-only: todavía no existe GET /api/teams/:id/race-history en el backend real.
+        getRaceHistory: (id) => USE_MOCK ? MockTeams.getRaceHistory(id) : request("GET", `/teams/${id}/race-history`)
     },
 
     leagues: {

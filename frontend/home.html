@@ -51,59 +51,64 @@
 
     <main class="dashboard-container">
         
-        <!-- Banner Próxima Carrera -->
-        <section class="next-race-banner">
+        <!-- Banner Próxima Carrera (se completa con home.js) -->
+        <section class="next-race-banner" id="nextRaceBanner" style="display: none;">
             <div class="race-circuit-img">
-                <img src="./img/circuit_monza.svg" alt="Circuito de Monza">
+                <img src="./img/circuit_monza.svg" alt="Circuito" id="raceCircuitImg">
             </div>
             
             <div class="race-info">
-                <span class="round-badge">ROUND 11</span>
-                <h2>Italia</h2>
-                <p>FORMULA 2 PIRELLI GRAN PREMIO D'ITALIA 2026</p>
-                <span class="race-date">04 - 06 Sep</span>
+                <span class="round-badge" id="raceRound"></span>
+                <h2 id="raceName"></h2>
+                <p id="raceFullName"></p>
+                <span class="race-date" id="raceDate"></span>
             </div>
 
             <div class="race-actions">
                 <div class="countdown-panel">
                     <span class="countdown-label">Fecha límite para cerrar el equipo:</span>
                     <div class="countdown-timer">
-                        <div class="time-box"><strong>24</strong><span>DÍAS</span></div>
+                        <div class="time-box"><strong id="countdownDays">-</strong><span>DÍAS</span></div>
                         <span class="time-sep">:</span>
-                        <div class="time-box"><strong>13</strong><span>HORAS</span></div>
+                        <div class="time-box"><strong id="countdownHours">-</strong><span>HORAS</span></div>
                         <span class="time-sep">:</span>
-                        <div class="time-box"><strong>45</strong><span>MIN</span></div>
+                        <div class="time-box"><strong id="countdownMinutes">-</strong><span>MIN</span></div>
                     </div>
                 </div>
                 <a href="my-teams.html" class="btn btn-primary">Gestiona tu equipo &rsaquo;</a>
             </div>
         </section>
 
+        <!-- Sin equipos todavía -->
+        <a href="create-team.html" class="team-card empty-slot" id="noTeamsMessage" style="display: none;">
+            <div class="empty-content">
+                <span class="plus-icon">+</span>
+                <h3>Todavía no armaste ningún equipo</h3>
+                <p>Creá tu primer equipo para empezar a jugar</p>
+            </div>
+        </a>
+
         <!-- Resultados Carreras Anteriores -->
-        <div class="decorated-heading">
+        <div class="decorated-heading" id="lastRaceHeading" style="display: none;">
             <h2>Última carrera</h2>
-            <span class="heading-tag">Hungría</span>
+            <span class="heading-tag" id="lastRaceTag"></span>
         </div>
 
-        <section class="grid-3-cols" id="last-race-grid">
-            <!-- JS inyectará las tarjetas acá -->
-        </section>
+        <section class="grid-3-cols" id="lastRaceTeams"></section>
 
         <!-- Estadísticas de Temporada -->
-        <div class="decorated-heading">
+        <div class="decorated-heading" id="seasonStatsHeading" style="display: none;">
             <h2>Tus Estadísticas de Temporada</h2>
             <a href="my-teams.html" class="heading-btn">Mis Equipos &rsaquo;</a>
         </div>
 
-        <section class="grid-3-cols" id="season-stats-grid">
-            <!-- JS inyectará las tarjetas acá -->
-        </section>
+        <section class="grid-3-cols" id="seasonStatsTeams"></section>
 
     </main>
     
     <script src="./js/sidebar.js"></script>
     <script src="./js/data/mock-data.js"></script>
-    <script src="./js/api-mock.js"></script>
+    <script src="./js/data/api.js"></script>
     <script src="./js/pages/home.js"></script>
 </body>
 </html>

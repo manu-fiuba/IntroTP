@@ -57,6 +57,19 @@ const MOCK_DB = {
         { id: 2, season: 2026, round_number: 10, name: "Italia",  country_code: "ITA", date: "2026-09-06T13:00:00Z" }
     ],
 
+    // ⚠️ ESTO NO ES UNA TABLA REAL. No existe ningún endpoint hoy que
+    // devuelva "puntos de tu equipo en tal carrera" ni "tu mejor semana".
+    // Lo pongo acá como mock hasta que el backend tenga algo como
+    // GET /api/teams/:id/race-history — hace falta para las secciones
+    // "Última carrera" y "Mejor semana" de home.html.
+    team_race_history: {
+        1: { lastRace: { raceId: 1, points: 232 }, bestWeek: { raceId: 1, raceName: "Hungría", dateLabel: "25 - 26 Jul", points: 232 } },
+        2: { lastRace: { raceId: 1, points: 173 }, bestWeek: { raceId: 2, raceName: "Arabia Saudita", dateLabel: "14 - 15 Mar", points: 294 } },
+        3: { lastRace: { raceId: 1, points: 210 }, bestWeek: { raceId: 1, raceName: "Hungría", dateLabel: "25 - 26 Jul", points: 210 } },
+        4: { lastRace: { raceId: 1, points: 140 }, bestWeek: { raceId: 1, raceName: "Hungría", dateLabel: "25 - 26 Jul", points: 140 } },
+        5: { lastRace: { raceId: 1, points: 90 },  bestWeek: { raceId: 1, raceName: "Hungría", dateLabel: "25 - 26 Jul", points: 90 } }
+    },
+
     // Tabla: leagues
     // (password acá es texto plano solo para el mock, igual que en users)
     leagues: [

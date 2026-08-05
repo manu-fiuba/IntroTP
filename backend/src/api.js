@@ -44,7 +44,7 @@ app.use('/api/admin', adminRoutes);
 // INICIO DEL SERVIDOR
 // =========================================
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     await createAdmin();
     console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

@@ -15,8 +15,9 @@
     <!-- Este contenedor lo reutilizamos del Login/Register -->
     <main class="auth-container">
         
-        <form class="auth-card" action="leagues">
-            <h2>Crear Liga Privada</h2>
+        <form class="auth-card" action="leagues" id="createLeagueForm">
+
+            <p class="form-error" id="createLeagueError"></p>
             
             <div class="form-group">
                 <label for="league-name">Nombre de la Liga</label>
@@ -30,7 +31,7 @@
             
             <div class="form-group">
                 <label for="league-password">Contraseña (Opcional)</label>
-                <input type="password" id="league-password" name="league-password" placeholder="Contraseña">
+                <input type="password" id="league-password" name="league-password" placeholder="Dejar vacío = liga pública">
             </div>
 
             <div class="form-group">
@@ -39,10 +40,24 @@
             </div>
             
             <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+
                 <a href="leagues" class="btn btn-outline btn-full">Cancelar</a>
-                <button type="submit" class="btn btn-primary btn-full">Crear Liga</button>
+                <button type="submit" class="btn btn-primary btn-full" id="createLeagueSubmit">Crear Liga</button>
+
             </div>
         </form>
+
+        <!-- Se muestra después de crear la liga, con el código para compartir -->
+        <div class="auth-card" id="createLeagueSuccess" style="display: none;">
+            <h2>¡Liga creada!</h2>
+            <p class="form-success visible">Compartí este código con quienes quieras invitar:</p>
+            <div class="join-code-box" id="createdJoinCode" style="text-align: center; font-size: 1.5rem;"></div>
+            <a href="leagues.html" class="btn btn-primary btn-full">Ir a Mis Ligas</a>
+        </div>
     </main>
+
+    <script src="./js/data/mock-data.js"></script>
+    <script src="./js/data/api.js"></script>
+    <script src="./js/pages/create-league.js"></script>
 </body>
 </html>

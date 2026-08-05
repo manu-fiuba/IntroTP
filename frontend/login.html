@@ -17,8 +17,10 @@
             <h1>F2 Fantasy</h1>
         </div>
         
-        <form class="auth-card">
+        <form class="auth-card" id="loginForm">
             <h2>Iniciar Sesión</h2>
+
+            <p class="form-error" id="loginError"></p>
             
             <div class="form-group">
                 <label for="username">Usuario</label>
@@ -30,13 +32,16 @@
                 <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required>
             </div>
             
-            <button type="submit" class="btn btn-primary btn-full">Entrar</button>
+            <button type="submit" class="btn btn-primary btn-full" id="loginSubmit">Entrar</button>
             
             <p class="auth-footer">
                 ¿No tienes una cuenta? <a href="register">Regístrate aquí</a>
             </p>
         </form>
     </main>
-<script type="module" src="./js/login.js"></script>
+
+    <script src="./js/data/mock-data.js"></script>
+    <script src="./js/data/api.js"></script>
+    <script src="./js/pages/login.js"></script>
 </body>
 </html>

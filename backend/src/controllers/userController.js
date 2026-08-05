@@ -108,7 +108,7 @@ const getUserById = async (req, res) => {
 
     try {
         // Traemos los datos ( Sin el password_hash por seguridad)
-        const query = 'SELECT id, username FROM users WHERE id = $1';
+        const query = 'SELECT id, username, first_name, last_name FROM users WHERE id = $1';
         const result = await pool.query(query, [userId]);
 
         if (result.rows.length === 0) {
@@ -173,9 +173,9 @@ const updateUser = async (req, res) => {
         const query = `
             UPDATE users 
             SET first_name = COALESCE($1, first_name), 
-                last_name = COALESCE($2, last_name), 
-            WHERE id = $4
-            RETURNING id, username, first_name, last_name, country;
+                last_name = COALESCE($2, last_name) 
+            WHERE id = $3
+            RETURNING id, username, first_name, last_name;
         `;
         
         // COALESCE: si el frontend no manda un campo mantenga el valor que ya tenía en la base de datos

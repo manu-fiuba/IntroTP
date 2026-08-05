@@ -1,58 +1,77 @@
-// js/pages/leagues.js
-
 document.addEventListener('DOMContentLoaded', async () => {
-    const leaguesContainer = document.getElementById('user-leagues-list');
 
-    const loadLeagues = async () => {
-        try {
-            // Mantenemos el H2 y mostramos un estado de carga temporal
-            leaguesContainer.innerHTML = '<h2>Mis Ligas</h2><p>Cargando ligas...</p>';
+    if (!Api.session.isLoggedIn()) {
+        window.location.href = 'login.html';
+        return;
+    }
 
-            const response = await api.getUserLeagues();
+    const currentUser = Api.session.getUser();
+    const listEl = document.getElementById('leaguesList');
+    const emptyEl = document.getElementById('noLeaguesMessage');
+    const errorEl = document.getElementById('leaguesError');
 
-            if (response.status === 'success') {
-                renderLeagues(response.data);
-            }
-        } catch (error) {
-            console.error("Error al cargar las ligas:", error);
-            leaguesContainer.innerHTML = '<h2>Mis Ligas</h2><p>Hubo un error al cargar tus ligas.</p>';
-        }
-    };
+    function showError(message) {
+        errorEl.textContent = message;
+        errorEl.classList.add('visible');
+    }
 
-    const renderLeagues = (leagues) => {
-        // Limpiamos el contenedor, pero volvemos a poner el título
-        leaguesContainer.innerHTML = '<h2>Mis Ligas</h2>';
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str ?? '';
+        return div.innerHTML;
+    }
+
+    try {
+        const [leagues, myTeams] = await Promise.all([
+            Api.users.getLeagues(currentUser.id),
+            Api.users.getTeams(currentUser.id)
+        ]);
 
         if (leagues.length === 0) {
-            leaguesContainer.innerHTML += '<p>Todavía no estás participando en ninguna liga. ¡Creá una o unite a la de tus amigos!</p>';
+            emptyEl.style.display = '';
             return;
         }
 
-        // Generamos el HTML por cada liga
-        leagues.forEach(league => {
-            // Notá cómo le pasamos el ID en la URL de destino
-            const card = `
-                <a href="league-detail.html?id=${league.id}" class="league-card">
-                    <div class="league-card-header">
-                        <div class="league-info">
-                            <h3 class="league-title">${league.name}</h3>
-                            <p class="league-desc">${league.description}</p>
-                        </div>
-                        <div class="league-position">
-                            <span class="pos-number">${league.position}</span>
-                            <span class="pos-total">/ ${league.totalParticipants.toLocaleString('es-AR')}</span>
-                        </div>
-                    </div>
-                    <div class="league-card-footer">
-                        <span class="team-label">Equipo actual:</span>
-                        <span class="team-name">${league.userTeamName}</span>
-                    </div>
-                </a>
-            `;
-            leaguesContainer.innerHTML += card;
-        });
-    };
+        const myTeamIds = myTeams.map(t => t.id);
 
-    // Ejecutamos la carga inicial
-    loadLeagues();
+        // Api.users.getLeagues no trae posición ni el nombre de tu equipo en
+        // cada liga (el backend real tampoco lo hace hoy) — para eso hay que
+        // pedir el detalle completo de cada liga y buscarte en la tabla de
+        // posiciones.
+        const details = await Promise.all(leagues.map(l => Api.leagues.getById(l.id)));
+
+        leagues.forEach((league, index) => {
+            const detail = details[index];
+            const myEntryIndex = detail.leaderboard.findIndex(entry => myTeamIds.includes(entry.team_id));
+            const myEntry = myEntryIndex >= 0 ? detail.leaderboard[myEntryIndex] : null;
+            const position = myEntryIndex >= 0 ? myEntryIndex + 1 : null;
+
+            listEl.appendChild(renderLeagueCard(league, position, myEntry));
+        });
+    } catch (error) {
+        showError('No se pudieron cargar tus ligas: ' + error.message);
+    }
+
+    function renderLeagueCard(league, position, myEntry) {
+        const a = document.createElement('a');
+        a.href = `league-detail.html?leagueId=${league.id}`;
+        a.className = 'league-card';
+        a.innerHTML = `
+            <div class="league-card-header">
+                <div class="league-info">
+                    <h3 class="league-title">${escapeHtml(league.name)}</h3>
+                    <p class="league-desc">${escapeHtml(league.description)}</p>
+                </div>
+                <div class="league-position">
+                    <span class="pos-number">${position ?? '-'}</span>
+                    <span class="pos-total">/ ${league.max_participants.toLocaleString('es-AR')}</span>
+                </div>
+            </div>
+            <div class="league-card-footer">
+                <span class="team-label">Equipo:</span>
+                <span class="team-name">${escapeHtml(myEntry ? myEntry.team_name : 'Sin equipo en esta liga')}</span>
+            </div>
+        `;
+        return a;
+    }
 });

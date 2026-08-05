@@ -51,17 +51,22 @@
             <a href="join-league.html" class="btn btn-outline text-center">Unirse a una Liga</a>
         </section>
 
-        <!-- Lista de Ligas -->
-        <section class="leagues-list" id="user-leagues-list">
+        <!-- Lista de Ligas (se completa con leagues.js) -->
+        <section class="leagues-list">
             <h2>Mis Ligas</h2>
-            <!-- JS inyectará las tarjetas acá -->
+
+            <p class="form-error" id="leaguesError"></p>
+
+            <div id="leaguesList"></div>
+
+            <p class="date-micro" id="noLeaguesMessage" style="display: none;">Todavía no formás parte de ninguna liga.</p>
         </section>
 
     </main>
 
     <script src="./js/sidebar.js"></script>
     <script src="./js/data/mock-data.js"></script>
-    <script src="./js/api-mock.js"></script>
+    <script src="./js/data/api.js"></script>
     <script src="./js/pages/leagues.js"></script>
 </body>
 </html>

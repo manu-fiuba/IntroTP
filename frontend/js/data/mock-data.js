@@ -82,7 +82,8 @@ const MOCK_DB = {
         { league_id: 1, fantasy_team_id: 2 }, // "Tu equipo" (Escudería Huevo) — 1250 pts
         { league_id: 1, fantasy_team_id: 3 }, // Corsa Power — 1340 pts
         { league_id: 1, fantasy_team_id: 4 }, // Escudería Pistera — 1120 pts
-        { league_id: 1, fantasy_team_id: 5 }  // Frenada Larga — 980 pts
+        { league_id: 1, fantasy_team_id: 5 }, // Frenada Larga — 980 pts
+        { league_id: 2, fantasy_team_id: 2 }  // Escudería Huevo también está en la liga global
     ],
 
     // Contadores para simular SERIAL PRIMARY KEY al insertar

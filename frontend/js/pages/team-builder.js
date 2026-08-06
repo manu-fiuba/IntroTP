@@ -19,6 +19,38 @@ document.addEventListener('DOMContentLoaded', async () => {
     const marketListEl = document.getElementById('marketList');
     const saveBtn = document.getElementById('saveTeamBtn');
 
+    const DRIVER_IMAGES = {
+    "Rafael Câmara": "rafael_camara.jpeg",
+    "Joshua Dürksen": "joashua_duerksen.avif",
+    "Ritomo Miyata": "ritomo_miyata.jpg",
+    "Colton Herta": "colton_herta.webp",
+    "Noel Leon": "noel_leon.png",
+    "Nikola Tsolov": "nikola_tsolov.webp",
+    "Dino Beganovic": "dino_beganovic.jpg",
+    "Roman Bilinski": "roman_bilinski.jpg",
+    "Gabriele Mini": "gabriele_mini.webp",
+    "Oliver Goethe": "oliver_goethe.jpg",
+    "Sebastian Montoya": "sebastian_montoya.jpg",
+    "Mari Boya": "mari_boya.jpg",
+    "Martinius Stenshorne": "martinius_stenshorne.webp",
+    "Alexander Dunne": "alexander_dunne.webp",
+    "Kush Maini": "kush_maini.avif",
+    "Tasanapol Inthraphuvasak": "tasanapol_inthraphuvasak.webp",
+    "Emerson Fittipaldi": "emerson_fanuchi.jpg",
+    "Cian Shields": "cian_shields.webp",
+    "Nico Varrone": "nicolas_varrone.jpg",
+    "Rafael Villagomez": "rafael_villagomez.png",
+    "Laurens van Hoepen": "laurens_van_hoepen.webp",
+    "John Bennett": "john_bennett.webp"
+    };
+
+    function getDriverImage(driverName) {
+        if (DRIVER_IMAGES[driverName]) {
+        return `./img/${DRIVER_IMAGES[driverName]}`;
+        }
+        return null;
+    }
+    
     function showError(message) {
         errorEl.textContent = message;
         errorEl.classList.add('visible');
@@ -111,9 +143,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             slotEl.innerHTML = '<span class="plus-icon">+</span>';
             return;
         }
+
         slotEl.classList.remove('empty');
         slotEl.disabled = false;
-        slotEl.innerHTML = `<strong>${escapeHtml(item.name)}</strong><span>$${item.market_price.toFixed(1)}M</span>`;
+
+        const imgSrc = type === 'driver' ? getDriverImage(item.name) : null;
+
+        if (imgSrc) {
+            // Tarjeta con Imagen para Pilotos
+            slotEl.innerHTML = `
+                <img src="${imgSrc}" alt="${escapeHtml(item.name)}" class="slot-bg-img">
+                <div class="slot-hover-info">
+                    <strong>${escapeHtml(item.name)}</strong>
+                    <span>$${item.market_price.toFixed(1)}M</span>
+                </div>
+            `;
+        } else {
+            // Fallback por defecto (para escuderías o pilotos sin foto)
+            slotEl.innerHTML = `
+                <div class="slot-hover-info" style="opacity: 1; background: transparent;">
+                    <strong>${escapeHtml(item.name)}</strong>
+                    <span>$${item.market_price.toFixed(1)}M</span>
+                </div>
+            `;
+        }
+
         slotEl.onclick = () => {
             if (type === 'driver') {
                 selectedDriverIds = selectedDriverIds.filter(id => id !== item.id);

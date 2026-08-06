@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     if (!Api.session.isLoggedIn()) {
-        window.location.href = 'login.html';
+        window.location.href = 'login';
         return;
     }
 
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 driver_ids: selectedDriverIds,
                 constructor_ids: selectedConstructorIds
             });
-            window.location.href = 'my-teams.html';
+            window.location.href = 'my-teams';
         } catch (error) {
             showError(error.message);
             saveBtn.disabled = false;

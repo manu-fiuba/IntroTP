@@ -1,4 +1,4 @@
-import { fetchAPI } from './api.js';
+import { fetchAPI } from './js/api.js';
 
 const userRole = localStorage.getItem('f2_role');
 if (userRole !== 'admin') {

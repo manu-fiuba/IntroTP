@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Sin sesión, no hay perfil que mostrar.
     if (!Api.session.isLoggedIn()) {
-        window.location.href = 'login.html';
+        window.location.href = 'login';
         return;
     }
 

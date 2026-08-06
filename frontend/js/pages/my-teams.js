@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async () => {
 
     if (!Api.session.isLoggedIn()) {
-        window.location.href = 'login.html';
+        window.location.href = 'login';
         return;
     }
 
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <strong>$${teamValue.toFixed(1)}M</strong>
             </div>
             <div class="team-footer mt-1" style="margin-top: 1rem;">
-                <a href="manage-team.html?teamId=${team.id}" class="btn btn-outline btn-full text-center" style="width: 100%;">Gestionar Equipo</a>
+                <a href="manage-team?teamId=${team.id}" class="btn btn-outline btn-full text-center" style="width: 100%;">Gestionar Equipo</a>
             </div>
         `;
         return article;
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function renderEmptySlot() {
         const a = document.createElement('a');
-        a.href = 'create-team.html';
+        a.href = 'create-team';
         a.className = 'team-card empty-slot';
         a.innerHTML = `
             <div class="empty-content">

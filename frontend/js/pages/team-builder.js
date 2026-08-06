@@ -111,9 +111,28 @@ document.addEventListener('DOMContentLoaded', async () => {
             slotEl.innerHTML = '<span class="plus-icon">+</span>';
             return;
         }
+    
         slotEl.classList.remove('empty');
         slotEl.disabled = false;
-        slotEl.innerHTML = `<strong>${escapeHtml(item.name)}</strong><span>$${item.market_price.toFixed(1)}M</span>`;
+    
+        if (type === 'driver') {
+            // Lógica para pilotos (CON IMAGEN Y HOVER)
+            const imageUrl = item.image_path || './img/f2_logo.webp';
+            slotEl.innerHTML = `
+                <img src="${imageUrl}" alt="${escapeHtml(item.name)}" class="card-bg-img">
+                <div class="card-overlay">
+                    <strong class="card-name">${escapeHtml(item.name)}</strong>
+                    <span class="card-price">$${item.market_price.toFixed(1)}M</span>
+                </div>
+            `;
+        } else {
+            // Lógica para escuderías (TEXTO NORMAL)
+            slotEl.innerHTML = `
+                <strong>${escapeHtml(item.name)}</strong>
+                <span style="color: #589bd8; font-weight: bold;">$${item.market_price.toFixed(1)}M</span>
+            `;
+        }
+
         slotEl.onclick = () => {
             if (type === 'driver') {
                 selectedDriverIds = selectedDriverIds.filter(id => id !== item.id);

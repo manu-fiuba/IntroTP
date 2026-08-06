@@ -15,7 +15,8 @@ CREATE TABLE drivers (
     name VARCHAR(100) NOT NULL,
     constructor_id INT REFERENCES constructors(id) ON DELETE RESTRICT,
     market_price DECIMAL(5,1) NOT NULL,
-    total_points INT DEFAULT 0
+    total_points INT DEFAULT 0,
+    image_path VARCHAR(255) DEFAULT './img/f2_logo.webp'
 );
 
 CREATE TABLE races (
@@ -119,29 +120,29 @@ SELECT setval('constructors_id_seq', (SELECT MAX(id) FROM constructors));
 
 -- 2. PILOTOS (Drivers)
 -- Relacionados con su respectivo constructor_id
-INSERT INTO drivers (number, name, constructor_id, market_price, total_points) VALUES
-(1, 'Rafael Câmara', 1, 16.0, 0),
-(2, 'Joshua Dürksen', 1, 14.5, 0),
-(3, 'Ritomo Miyata', 2, 13.5, 0),
-(4, 'Colton Herta', 2, 15.0, 0),
-(5, 'Noel Leon', 3, 14.0, 0),
-(6, 'Nikola Tsolov', 3, 13.0, 0),
-(7, 'Dino Beganovic', 4, 12.5, 0),
-(8, 'Roman Bilinski', 4, 11.5, 0),
-(9, 'Gabriele Mini', 5, 15.5, 0),
-(10, 'Oliver Goethe', 5, 14.0, 0),
-(11, 'Sebastian Montoya', 6, 16.5, 0),
-(12, 'Mari Boya', 6, 15.0, 0),
-(14, 'Martinius Stenshorne', 7, 13.5, 0),
-(15, 'Alexander Dunne', 7, 12.0, 0),
-(16, 'Kush Maini', 8, 14.5, 0),
-(17, 'Tasanapol Inthraphuvasak', 8, 11.0, 0),
-(20, 'Emerson Fittipaldi', 9, 8.5, 0),
-(21, 'Cian Shields', 9, 7.5, 0),
-(22, 'Nico Varrone', 10, 10.5, 0),
-(23, 'Rafael Villagomez', 10, 9.0, 0),
-(24, 'Laurens van Hoepen', 11, 10.0, 0),
-(25, 'John Bennett', 11, 8.0, 0);
+INSERT INTO drivers (number, name, constructor_id, market_price, total_points, image_path) VALUES
+(1, 'Rafael Câmara', 1, 16.0, 0, './img/rafael_camara.jpeg'),
+(2, 'Joshua Dürksen', 1, 14.5, 0, './img/joshua_durksen.avif'),
+(3, 'Ritomo Miyata', 2, 13.5, 0, './img/ritomo_miyata.jpg'),
+(4, 'Colton Herta', 2, 15.0, 0, './img/colton_herta.webp'),
+(5, 'Noel Leon', 3, 14.0, 0, './img/noel_leon.png'),
+(6, 'Nikola Tsolov', 3, 13.0, 0, './img/nikola_tsolov.webp'),
+(7, 'Dino Beganovic', 4, 12.5, 0, './img/dino_beganovic.jpg'),
+(8, 'Roman Bilinski', 4, 11.5, 0, './img/roman_bilinski.jpg'),
+(9, 'Gabriele Mini', 5, 15.5, 0, './img/gabriele_mini.webp'),
+(10, 'Oliver Goethe', 5, 14.0, 0, './img/oliver_goethe.jpg'),
+(11, 'Sebastian Montoya', 6, 16.5, 0, './img/sebastian_montoya.jpg'),
+(12, 'Mari Boya', 6, 15.0, 0, './img/mari_boya.jpg'),
+(14, 'Martinius Stenshorne', 7, 13.5, 0, './img/martinius_stenshorne.webp'),
+(15, 'Alexander Dunne', 7, 12.0, 0, './img/alexander_dunne.webp'),
+(16, 'Kush Maini', 8, 14.5, 0, './img/kush_maini.avif'),
+(17, 'Tasanapol Inthraphuvasak', 8, 11.0, 0, './img/tasanapol_inthraphuvasak.webp'),
+(20, 'Emerson Fittipaldi', 9, 8.5, 0, './img/emerson_fanuchi.jpg'),
+(21, 'Cian Shields', 9, 7.5, 0, './img/cian_shields.webp'),
+(22, 'Nico Varrone', 10, 10.5, 0, './img/nicolas_varrone.jpg'),
+(23, 'Rafael Villagomez', 10, 9.0, 0, './img/rafael_villagomez.png'),
+(24, 'Laurens van Hoepen', 11, 10.0, 0, './img/laurens_van_hoepen.webp'),
+(25, 'John Bennett', 11, 8.0, 0, './img/john_bennett.webp');
 
 
 -- 3. CALENDARIO DE CARRERAS (Races) - Temporada 2026

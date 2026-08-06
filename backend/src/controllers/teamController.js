@@ -46,7 +46,7 @@ const getTeamById = async (req, res) => {
 
         // Lista de pilotos
         const driversQuery = await pool.query(`
-            SELECT d.id, d.name, d.market_price, d.total_points
+            SELECT d.id, d.name, d.market_price, d.total_points, d.image_path 
             FROM drivers d
             JOIN fantasy_team_drivers ftd ON d.id = ftd.driver_id
             WHERE ftd.fantasy_team_id = $1

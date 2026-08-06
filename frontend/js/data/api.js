@@ -1,4 +1,4 @@
-const BACK_PORT = 5000 // puerto del backend (ver docker-compose.yml)
+const BACK_PORT = 5001 // puerto del backend (ver docker-compose.yml)
 const API_BASE_URL = `http://localhost:${BACK_PORT}/api`;
 
 const TOKEN_KEY = "f2_token";

@@ -5,14 +5,14 @@
     justify-content: center;
     gap: 1.5rem;
 }
-
+/*
 @media (min-width: 1024px) {
     .grid-3-cols {
         grid-template-columns: repeat(3, 1fr);
         justify-content: stretch;
     }
 }
-
+*/
 .team-card {
     background-color: #1e1e1e;
     border: 1px solid #333;

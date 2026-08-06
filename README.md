@@ -7,16 +7,16 @@
 
 ## Tabla de Contenidos
 
-1. [Descripción del Proyecto](#-descripción-del-proyecto)
-2. [Características Principales](#-características-principales)
+1. [Descripción del Proyecto](#descripción-del-proyecto)
+2. [Características Principales](#características-principales)
 3. [Requisitos Previos](#-requisitos-previos)
-4. [Configuración del Entorno](#-configuración-del-entorno)
-5. [Cómo Levantar el Sistema](#-cómo-levantar-el-sistema)
+4. [Configuración del Entorno](#configuración-del-entorno)
+5. [Cómo Levantar el Sistema](#cómo-levantar-el-sistema)
    - [Opción A: Mediante Make (Recomendado)](#opción-a-mediante-make-recomendado)
    - [Opción B: Mediante Docker Compose](#opción-b-mediante-docker-compose)
-6. [Acceso a la Aplicación](#-acceso-a-la-aplicación)
-7. [Comandos Útiles de Mantenimiento](#-comandos-útiles-de-mantenimiento)
-8. [Arquitectura del Sistema](#-arquitectura-del-sistema)
+6. [Acceso a la Aplicación](#acceso-a-la-aplicación)
+7. [Comandos Útiles de Mantenimiento](#comandos-útiles-de-mantenimiento)
+8. [Arquitectura del Sistema](#arquitectura-del-sistema)
 
 ---
 

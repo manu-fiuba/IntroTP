@@ -40,7 +40,7 @@
 
 Asegúrate de contar con las siguientes herramientas instaladas en tu sistema antes de comenzar:
 
-* **Docker** & **Docker Desktop** (con soporte para Docker Compose)
+* **Docker** (con soporte para Docker Compose)
 * **Make** *(Opcional, altamente recomendado para ejecutar comandos abreviados)*
 
 ---
@@ -54,8 +54,9 @@ cd f2fantasy
 ```
 
 ### 2. Configurar Variables de Entorno
-Crea un archivo `.env` en la raíz del proyecto. Puedes guiarte del siguiente bloque con los valores por defecto:
+Modifica el archivo `.env` en la raíz del proyecto. Personalizá usuario y contraseña de la cuenta de administrador WEB. Modificá la clave JWT así como usuario y contraseña de la base de datos por seguridad.
 
+Archivo .env por defecto:
 ```env
 # ----------------------------------
 # Puertos de la Aplicación
@@ -123,11 +124,11 @@ Una vez iniciados los servicios, accedé desde tu navegador web:
 | Servicio | URL / Dirección | Detalles |
 | :--- | :--- | :--- |
 | **Frontend Web** | `http://localhost:3000` | Interfaz de usuario de la aplicación |
-| **API Backend** | `http://localhost:5000/api` | Endpoint base de la API REST |
+| **API Backend** | `http://localhost:5001/api` | Endpoint base de la API REST |
 | **Base de Datos** | `localhost:5432` | PostgreSQL 17 |
 
 ### Credenciales de Administrador (Por Defecto)
-El backend inicializa automáticamente una cuenta administrativa al arrancar por primera vez:
+El backend inicializa automáticamente una cuenta administrativa al arrancar por primera vez. Por defecto las credenciales son:
 
 * **Usuario:** `admin`
 * **Contraseña:** `admin123`
@@ -147,21 +148,23 @@ Utiliza las metas definidas en el `Makefile` para facilitar las tareas de desarr
 | `make up-back` | Levanta únicamente el backend y la base de datos. |
 | `make up-front` | Levanta únicamente el contenedor del frontend. |
 
+Para más comandos revisar directamente el archivo `Makefile`.
+
 ---
 
 ## Arquitectura del Sistema
 
 ```text
-  [ Cliente / Navegador ]
+       [ Navegador ]
              │
              ▼
      ┌───────────────┐
-         Frontend       (Puerto 3000 - SPA React/HTML)
+         Frontend       (Puerto 3000 - HTML / CSS / JS)
      └───────┬───────┘
              │  Peticiones HTTP con JWT
              ▼
      ┌───────────────┐
-          Backend        (Puerto 5000 - Node.js + Express)
+          Backend        (Puerto 5001 - Node.js + Express)
      └───────┬───────┘
              │  Consultas SQL
              ▼
@@ -177,6 +180,8 @@ Utiliza las metas definidas en el `Makefile` para facilitar las tareas de desarr
 ---
 
 ## Capturas de Pantalla
+
+Con el proyecto levantado la WEB debería verse así:
 
 ### Inicio / Home
 ![Inicio](frontend/img/screen_home.png)

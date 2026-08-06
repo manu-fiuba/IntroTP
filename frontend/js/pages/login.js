@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Si ya hay una sesión activa, no tiene sentido ver el login de nuevo.
     if (Api.session.isLoggedIn()) {
-        window.location.href = 'home.html';
+        window.location.href = 'home';
         return;
     }
 
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             await Api.users.login({ username, password });
-            window.location.href = 'home.html';
+            window.location.href = 'home';
         } catch (error) {
             showError(error.message);
             submitBtn.disabled = false;

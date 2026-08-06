@@ -38,15 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.removeItem('f2fantasy_user');
         }
 
-        window.location.href = 'login.html'; // Redirige con la sesión limpia
+        window.location.href = '/';
     }
 
     // Se ejecuta siempre que la página se vuelve a mostrar (incluso al ir "Atrás" en el navegador)
-window.addEventListener('pageshow', () => {
+    window.addEventListener('pageshow', () => {
     // Si la API está cargada y NO hay sesión activa, expulsar al login
-    if (typeof Api !== 'undefined' && !Api.session.isLoggedIn()) {
-        window.location.href = 'login.html';
-    }
+        if (typeof Api !== 'undefined' && !Api.session.isLoggedIn()) {
+            window.location.href = 'login';
+        }
 });
 });
 

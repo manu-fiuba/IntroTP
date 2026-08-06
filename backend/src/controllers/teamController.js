@@ -211,9 +211,73 @@ const deleteTeam = async (req, res) => {
     }
 };
 
+// Obtener historial de puntos del equipo actual
+const getTeamRaceHistory = async (req, res) => {
+    const teamId = parseInt(req.params.id);
+    try {
+        const query = `
+            WITH team_entities AS (
+                SELECT driver_id AS entity_id, 'DRIVER' AS entity_type FROM fantasy_team_drivers WHERE fantasy_team_id = $1
+                UNION ALL
+                SELECT constructor_id AS entity_id, 'CONSTRUCTOR' AS entity_type FROM fantasy_team_constructors WHERE fantasy_team_id = $1
+            ),
+            race_points AS (
+                SELECT
+                    r.id AS race_id,
+                    r.name AS race_name,
+                    r.date,
+                    COALESCE(SUM(rr.qualy_points + rr.sprint_points + rr.feature_points), 0) AS points
+                FROM races r
+                LEFT JOIN race_results rr ON r.id = rr.race_id
+                INNER JOIN team_entities te ON rr.entity_id = te.entity_id AND rr.entity_type = te.entity_type
+                GROUP BY r.id, r.name, r.date
+            )
+            SELECT * FROM race_points ORDER BY date DESC;
+        `;
+        
+        const result = await pool.query(query, [teamId]);
+        const history = result.rows;
+
+        if (history.length === 0) {
+            return res.status(200).json({ lastRace: null, bestWeek: null });
+        }
+
+        const lastRace = history[0];
+        let bestWeek = history[0];
+
+        for (const race of history) {
+            if (parseInt(race.points) > parseInt(bestWeek.points)) {
+                bestWeek = race;
+            }
+        }
+
+        const formatMonth = (dateStr) => {
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('es-AR', { day: '2-digit', month: 'short' }).replace('.', '').toUpperCase();
+        };
+
+        res.status(200).json({
+            lastRace: {
+                raceId: lastRace.race_id,
+                points: parseInt(lastRace.points)
+            },
+            bestWeek: {
+                raceId: bestWeek.race_id,
+                raceName: bestWeek.race_name,
+                dateLabel: formatMonth(bestWeek.date),
+                points: parseInt(bestWeek.points)
+            }
+        });
+    } catch (error) {
+        console.error('Error al obtener historial:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+};
+
 module.exports = {
     createTeam,
     getTeamById,
     updateTeamRoster,
-    deleteTeam
+    deleteTeam,
+    getTeamRaceHistory
 };

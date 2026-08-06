@@ -9,16 +9,18 @@ const {
     createTeam, 
     getTeamById, 
     updateTeamRoster, 
-    deleteTeam 
+    deleteTeam,
+    getTeamRaceHistory
 } = require('../controllers/teamController');
 
 // ==========================================
 // ENDPOINTS DE EQUIPOS FANTASY (/api/teams/...)
 // ==========================================
 
-router.post('/', authenticateToken, createTeam);  // C: Crea el equipo
-router.get('/:id', getTeamById); // R: Trae el equipo, sus puntos y el roster actual
-router.put('/:id', authenticateToken, updateTeamRoster); // U: Actualiza roster validando transferencias y presupuesto
-router.delete('/:id', authenticateToken, deleteTeam); // D: Borra el equipo del usuario
+router.post('/', authenticateToken, createTeam); 
+router.get('/:id', getTeamById); 
+router.get('/:id/race-history', getTeamRaceHistory);
+router.put('/:id', authenticateToken, updateTeamRoster); 
+router.delete('/:id', authenticateToken, deleteTeam); 
 
 module.exports = router;

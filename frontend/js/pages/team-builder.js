@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const DRIVER_IMAGES = {
     "Rafael Câmara": "rafael_camara.jpeg",
-    "Joshua Dürksen": "joshua_durksen.avif",
+    "Joshua Dürksen": "joashua_duerksen.avif",
     "Ritomo Miyata": "ritomo_miyata.jpg",
     "Colton Herta": "colton_herta.webp",
     "Noel Leon": "noel_leon.png",

@@ -1,25 +1,45 @@
 const BACK_PORT = 5000 // puerto del backend (ver docker-compose.yml)
 const API_BASE_URL = `http://localhost:${BACK_PORT}/api`;
 
-const TOKEN_KEY = "f2fantasy_token";
-const USER_KEY = "f2fantasy_user";
+const TOKEN_KEY = "f2_token";
+const ROLE_KEY = "f2_role";
 
 // SESIÓN (token JWT guardado en localStorage)
 const Session = {
-    getToken() { return localStorage.getItem(TOKEN_KEY); },
-    getUser() {
-        const raw = localStorage.getItem(USER_KEY);
-        return raw ? JSON.parse(raw) : null;
+    getToken: () => localStorage.getItem(TOKEN_KEY),
+    getUser: () => {
+        const token = localStorage.getItem(TOKEN_KEY);
+        if (!token) return null;
+        try {
+            // Arreglo para que atob() no falle por falta de padding o caracteres Base64Url
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            while (base64.length % 4 !== 0) {
+                base64 += '=';
+            }
+            const payload = JSON.parse(atob(base64));
+            
+            // Si el payload no tiene ID (token viejo o corrupto), forzamos null para que el frontend lo expulse
+            if (!payload.id) return null; 
+            
+            return payload;
+        } catch (e) { 
+            return null; 
+        }
     },
-    save(token, user) {
+    save: (token, role) => {
         localStorage.setItem(TOKEN_KEY, token);
-        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        if (role) localStorage.setItem(ROLE_KEY, role);
     },
-    clear() {
+    clear: () => {
         localStorage.removeItem(TOKEN_KEY);
-        localStorage.removeItem(USER_KEY);
+        localStorage.removeItem(ROLE_KEY);
     },
-    isLoggedIn() { return !!Session.getToken(); }
+    isLoggedIn: () => {
+        const token = localStorage.getItem(TOKEN_KEY);
+        // Validamos no solo que exista, sino que sea válido y tenga ID
+        return !!token && Session.getUser() !== null;
+    }
 };
 
 // CLIENTE REAL (fetch)

@@ -12,6 +12,12 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tu_usuario -d tu_base"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
 
   # BACKEND
   backend:
@@ -22,7 +28,8 @@ services:
     env_file:
       - .env   
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   # FRONTEND
   frontend:

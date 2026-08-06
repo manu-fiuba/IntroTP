@@ -40,24 +40,3 @@
     color: #aaaaaa;
 }
 
-.form-group input[type="file"] {
-    background-color: #121212;
-    border: 1px solid #333;
-    color: #aaaaaa;
-    padding: 0.6rem 1rem;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    cursor: pointer;
-}
-
-.form-group input[type="file"]::file-selector-button {
-    background-color: #589bd8;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    padding: 0.4rem 0.8rem;
-    margin-right: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: 'Titillium Web', sans-serif;
-}

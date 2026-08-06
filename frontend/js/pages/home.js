@@ -27,7 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (race.circuit_img) {
                 document.getElementById('raceCircuitImg').src = race.circuit_img;
             }
-            document.getElementById('lastRaceTag').textContent = race.name;
 
             startCountdown(race.date);
         } catch (error) {
@@ -67,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function loadTeams() {
         try {
             const teams = await Api.users.getTeams(currentUser.id);
-
+            
             if (teams.length === 0) {
                 document.getElementById('noTeamsMessage').style.display = '';
                 return;
@@ -76,17 +75,36 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('lastRaceHeading').style.display = '';
             document.getElementById('seasonStatsHeading').style.display = '';
 
-            // Traer el historial de puntos de cada equipo en paralelo
+            // Traer el historial de puntos de cada equipo
             const histories = await Promise.all(teams.map(t => Api.teams.getRaceHistory(t.id)));
 
             const lastRaceContainer = document.getElementById('lastRaceTeams');
             const seasonStatsContainer = document.getElementById('seasonStatsTeams');
+            
+            // Determinamos la última carrera global basándonos en el historial del primer equipo
+            const globalLastRace = histories[0]?.lastRace;
+            const lastRaceTag = document.getElementById('lastRaceTag');
+
+            // Lógica de negocio: ¿La temporada ya empezó?
+            if (globalLastRace) {
+                lastRaceTag.textContent = globalLastRace.raceName;
+            } else {
+                lastRaceTag.textContent = "Pretemporada";
+                lastRaceContainer.innerHTML = `
+                    <div style="grid-column: 1 / -1; padding: 2rem; background-color: #1e1e1e; border: 1px dashed #333; border-radius: 12px; text-align: center; color: #aaa;">
+                        <p>La temporada aún no ha comenzado. ¡Prepárate para la primera carrera!</p>
+                    </div>`;
+            }
 
             teams.forEach((team, index) => {
                 const history = histories[index];
                 const badge = `T${index + 1}`;
 
-                lastRaceContainer.appendChild(renderLastRaceCard(team, badge, history.lastRace));
+                // Solo inyectamos las tarjetas de última carrera si hay datos
+                if (globalLastRace) {
+                    lastRaceContainer.appendChild(renderLastRaceCard(team, badge, history.lastRace));
+                }
+                
                 seasonStatsContainer.appendChild(renderSeasonStatsCard(team, badge, history.bestWeek));
             });
         } catch (error) {

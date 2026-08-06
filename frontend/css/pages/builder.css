@@ -84,6 +84,7 @@
     cursor: pointer;
     transition: all 0.2s;
     overflow: hidden;
+    position: relative;
 }
 
 .driver-slot {
@@ -104,6 +105,50 @@
     border-color: #589bd8;
     color: #fff;
     background-color: rgba(88, 155, 216, 0.05);
+}
+
+.roster-card .slot-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.roster-card:hover .slot-bg-img {
+    filter: blur(4px) brightness(0.6);
+    transform: scale(1.05);
+}
+
+.roster-card .slot-hover-info {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+}
+
+.roster-card:hover .slot-hover-info {
+    opacity: 1;
+}
+
+.roster-card .slot-hover-info strong {
+    font-size: 0.95rem;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+}
+
+.roster-card .slot-hover-info span {
+    font-size: 0.85rem;
+    color: #589bd8;
+    font-weight: 700;
 }
 
 /* Lista del Mercado */

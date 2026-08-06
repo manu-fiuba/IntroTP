@@ -176,4 +176,29 @@ Utiliza las metas definidas en el `Makefile` para facilitar las tareas de desarr
 
 ---
 
+## Capturas de Pantalla
+
+### Inicio / Home
+![Inicio](frontend/img/screen_home.png)
+
+### Alineación de Equipos
+![Mis Equipos](frontend/img/screen_teams.png)
+
+### Gestión y Configuración de Equipos
+![Gestión de Equipos](frontend/img/screen_mng_teams.png)
+
+### Explorador de Ligas
+![Ligas](frontend/img/screen_leagues.png)
+
+### Vista de Liga y Clasificación
+![Mi Liga](frontend/img/screen_my_league.png)
+
+### Reglas y Sistema de Puntuación
+![Reglas](frontend/img/screen_rules.png)
+
+### Perfil de Usuario
+![Perfil de Usuario](frontend/img/screen_profile.png)
+
+---
+
 *Proyecto F2 Fantasy — Guía de documentación e instalación.*
